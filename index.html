@@ -15,7 +15,9 @@ h1,h2,h3{font-family:'Bricolage Grotesque','Hind Siliguri',sans-serif;line-heigh
 .wrap{max-width:960px;margin:0 auto;padding:0 20px}
 nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
 .nav .logo,.logo{margin:0}
-.logo img{height:56px;width:auto;display:block}
+.logo{display:block;position:relative;width:240px;height:114px;overflow:hidden}
+.logo img{position:absolute;left:-39px;top:-99px;width:309px;height:309px;max-width:none;mix-blend-mode:multiply}
+@media(max-width:720px){.logo{width:170px;height:80px}.logo img{left:-27px;top:-70px;width:218px;height:218px}}
 nav a{color:var(--ink);text-decoration:none;margin-left:18px;font-weight:600}
 nav a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
 .hero{padding:40px 0 60px;display:grid;gap:32px;grid-template-columns:1.1fr .9fr;align-items:center}
