@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -47,14 +47,50 @@ footer{padding:28px 0;text-align:center;font-size:.9rem}
 .about ol{padding-left:20px}
 html{scroll-behavior:smooth}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-@media(max-width:720px){.hero{grid-template-columns:1fr}nav a{margin-left:12px}}
-@media(max-width:720px){nav{flex-direction:column;align-items:flex-start;gap:8px}nav div a{margin:0 14px 0 0}.logo{flex-shrink:0}}</style>
+@media(max-width:720px){.hero{grid-template-columns:1fr}nav a{margin-left:12px}}(function(){
+var R=document.documentElement;
+function sv(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function ld(k){try{return localStorage.getItem(k)}catch(e){return null}}
+var nav=document.querySelector('nav'),mb=document.getElementById('menuBtn');
+mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+nav.addEventListener('click',function(e){if(e.target.closest('a[href^="#"]'))nav.classList.remove('open')});
+var tb=document.getElementById('themeBtn');
+function setTheme(t){R.setAttribute('data-theme',t);tb.textContent=t==='dark'?'☀️':'🌙';sv('mf-theme',t)}
+tb.addEventListener('click',function(){setTheme(R.getAttribute('data-theme')==='dark'?'light':'dark')});
+setTheme(ld('mf-theme')==='dark'?'dark':'light');
+var N='nav > div:not(.tools) ';
+var BN=[
+[N+'a[href="#courses"]','কোর্স'],[N+'a[href="#free"]','ফ্রি ক্লাস'],[N+'a[href="#teachers"]','শিক্ষক'],[N+'a[href="#pay"]','পেমেন্ট'],[N+'a[href="#about"]','আমাদের কথা'],[N+'a[href="#contact"]','যোগাযোগ'],
+['.hero h1','প্রকৃতি লেখা হয়েছে গণিতের ভাষায়'],
+['.hero p','Math Freaks-এ সহজ ক্লাস, প্র্যাকটিস আর নিয়মিত পরীক্ষা। আপনি ফ্রিতে শুরু করতে পারেন।'],
+['.hero .btn','কোর্স দেখুন'],
+['.challenge strong','১০ সেকেন্ডের চ্যালেঞ্জ'],
+['label[for="ans"]','x-এর একটি মান কত?'],
+['#check','দেখি'],
+['#courses h2','কোর্সসমূহ'],['#free h2','ফ্রি ক্লাস'],['#free > p','এই ক্লাসগুলো সবার জন্য ফ্রি। এখানেই দেখে নিন।'],
+['#teachers h2','আমাদের শিক্ষক'],['#pay h2','কীভাবে পেমেন্ট করবেন'],
+['#pay li:nth-child(1)','আপনার bKash বা Nagad অ্যাপ খুলে <strong id="ptype"></strong> বেছে নিন।'],
+['#pay li:nth-child(2)','কোর্সের ফি পাঠান <strong>bKash: <span id="pb"></span></strong> অথবা <strong>Nagad: <span id="pn"></span></strong> নম্বরে।'],
+['#pay li:nth-child(3)','রেফারেন্সে আপনার নাম ও কোর্সের নাম লিখুন।'],
+['#pay li:nth-child(4)','নিজের তথ্য ও <strong>Transaction ID</strong> দিয়ে ভর্তির ফর্মটি পূরণ করুন। যাচাই করে ২৪ ঘণ্টার মধ্যে আপনাকে যুক্ত করা হবে।'],
+['#pc','ভর্তির ফর্ম খুলুন'],
+['#about h2','আমাদের কথা'],['#contact h2','আমাদের সাথে যোগ দিন']
+];
+var items=[];
+BN.forEach(function(p){var el=document.querySelector(p[0]);if(el)items.push({el:el,en:el.innerHTML,bn:p[1]})});
+var lb=document.getElementById('langBtn');
+function fill(){var m={pb:'bkash',pn:'nagad',ptype:'type'};for(var id in m){var e=document.getElementById(id);if(e&&typeof PAY!=='undefined')e.textContent=PAY[m[id]]}}
+function setLang(l){items.forEach(function(i){i.el.innerHTML=l==='bn'?i.bn:i.en});fill();R.lang=l;lb.textContent=l==='bn'?'EN':'বাং';sv('mf-lang',l)}
+lb.addEventListener('click',function(){setLang(R.lang==='bn'?'en':'bn')});
+setLang(ld('mf-lang')==='bn'?'bn':'en');
+})();
+</style>
 </head>
 <body>
 <div class="wrap">
-<nav><a class="logo" href="#"><img src="Math freaks logo.png" alt="Math Freaks "></a>
-<div><a href="#courses">Courses</a><a href="#free">Free Classes</a><a href="#teachers">Teachers</a><a href="#pay">How to Pay</a><a href="#about">About Us</a><a href="#contact">Contact</a></div></nav>
-
+<nav><a class="logo" href="#"><img src="Math freaks logo.png" alt="Math Freaks"></a>
+<div><a href="#courses">Courses</a><a href="#free">Free Classes</a><a href="#teachers">Teachers</a><a href="#pay">How to Pay</a><a href="#about">About Us</a><a href="#contact">Contact</a></div>
+<div class="tools"><button id="langBtn" type="button" aria-label="Change language">বাং</button><button id="themeBtn" type="button" aria-label="Dark mode">🌙</button><button id="menuBtn" type="button" aria-label="Menu" aria-expanded="false">☰</button></div></nav>
 <header class="hero">
 <div>
 <h1>Nature is written in mathematical language</h1>
@@ -147,6 +183,43 @@ document.getElementById('check').addEventListener('click',function(){
   if(v===2||v===3){m.textContent='Correct! Both x = 2 and x = 3 work.';m.style.color='#0e8a7d'}
   else{m.textContent='Try again. Can you factor it as (x−2)(x−3)?';m.style.color='#b3261e'}
 });
+(function(){
+var R=document.documentElement;
+function sv(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function ld(k){try{return localStorage.getItem(k)}catch(e){return null}}
+var nav=document.querySelector('nav'),mb=document.getElementById('menuBtn');
+mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+nav.addEventListener('click',function(e){if(e.target.closest('a[href^="#"]'))nav.classList.remove('open')});
+var tb=document.getElementById('themeBtn');
+function setTheme(t){R.setAttribute('data-theme',t);tb.textContent=t==='dark'?'☀️':'🌙';sv('mf-theme',t)}
+tb.addEventListener('click',function(){setTheme(R.getAttribute('data-theme')==='dark'?'light':'dark')});
+setTheme(ld('mf-theme')==='dark'?'dark':'light');
+var N='nav > div:not(.tools) ';
+var BN=[
+[N+'a[href="#courses"]','কোর্স'],[N+'a[href="#free"]','ফ্রি ক্লাস'],[N+'a[href="#teachers"]','শিক্ষক'],[N+'a[href="#pay"]','পেমেন্ট'],[N+'a[href="#about"]','আমাদের কথা'],[N+'a[href="#contact"]','যোগাযোগ'],
+['.hero h1','প্রকৃতি লেখা হয়েছে গণিতের ভাষায়'],
+['.hero p','Math Freaks-এ সহজ ক্লাস, প্র্যাকটিস আর নিয়মিত পরীক্ষা। আপনি ফ্রিতে শুরু করতে পারেন।'],
+['.hero .btn','কোর্স দেখুন'],
+['.challenge strong','১০ সেকেন্ডের চ্যালেঞ্জ'],
+['label[for="ans"]','x-এর একটি মান কত?'],
+['#check','দেখি'],
+['#courses h2','কোর্সসমূহ'],['#free h2','ফ্রি ক্লাস'],['#free > p','এই ক্লাসগুলো সবার জন্য ফ্রি। এখানেই দেখে নিন।'],
+['#teachers h2','আমাদের শিক্ষক'],['#pay h2','কীভাবে পেমেন্ট করবেন'],
+['#pay li:nth-child(1)','আপনার bKash বা Nagad অ্যাপ খুলে <strong id="ptype"></strong> বেছে নিন।'],
+['#pay li:nth-child(2)','কোর্সের ফি পাঠান <strong>bKash: <span id="pb"></span></strong> অথবা <strong>Nagad: <span id="pn"></span></strong> নম্বরে।'],
+['#pay li:nth-child(3)','রেফারেন্সে আপনার নাম ও কোর্সের নাম লিখুন।'],
+['#pay li:nth-child(4)','নিজের তথ্য ও <strong>Transaction ID</strong> দিয়ে ভর্তির ফর্মটি পূরণ করুন। যাচাই করে ২৪ ঘণ্টার মধ্যে আপনাকে যুক্ত করা হবে।'],
+['#pc','ভর্তির ফর্ম খুলুন'],
+['#about h2','আমাদের কথা'],['#contact h2','আমাদের সাথে যোগ দিন']
+];
+var items=[];
+BN.forEach(function(p){var el=document.querySelector(p[0]);if(el)items.push({el:el,en:el.innerHTML,bn:p[1]})});
+var lb=document.getElementById('langBtn');
+function fill(){var m={pb:'bkash',pn:'nagad',ptype:'type'};for(var id in m){var e=document.getElementById(id);if(e&&typeof PAY!=='undefined')e.textContent=PAY[m[id]]}}
+function setLang(l){items.forEach(function(i){i.el.innerHTML=l==='bn'?i.bn:i.en});fill();R.lang=l;lb.textContent=l==='bn'?'EN':'বাং';sv('mf-lang',l)}
+lb.addEventListener('click',function(){setLang(R.lang==='bn'?'en':'bn')});
+setLang(ld('mf-lang')==='bn'?'bn':'en');
+})();
 </script>
 </body>
 </html>
