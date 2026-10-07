@@ -65,6 +65,12 @@ footer{padding:28px 0;text-align:center;font-size:.9rem}
 .faq details{background:var(--white);border:2px solid var(--ink);border-radius:10px;padding:10px 18px;margin-bottom:10px;max-width:720px}
 .faq summary{cursor:pointer;font-weight:600}
 .faq p{margin:8px 0 4px}
+.inst{margin:0 0 6px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modal[hidden]{display:none}
+.mbox{position:relative;background:var(--white);color:var(--ink);border:2px solid var(--ink);border-radius:12px;padding:24px;max-width:520px;width:100%;max-height:85vh;overflow:auto}
+.mclose{position:absolute;top:8px;right:8px;font-size:1.4rem;line-height:1;background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:8px;width:36px;height:36px;cursor:pointer}
+.avatar.big{width:88px;height:88px;font-size:2rem}
 .chat{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;align-items:flex-end;z-index:5}
 .chat a{color:#fff;text-decoration:none;font-weight:600;padding:10px 16px;border-radius:99px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .chat .ms{background:#0084ff}.chat .wa{background:#25d366}
@@ -72,7 +78,8 @@ footer a{color:var(--teal);font-weight:600}
 #toTop{position:fixed;left:16px;bottom:16px;width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:var(--gold);color:#14233b;font-size:1.3rem;font-weight:800;cursor:pointer;z-index:5}
 html{scroll-behavior:smooth}
 [data-theme="dark"]{--paper:#0c1424;--ink:#e8eef7;--grid:#1c2943;--white:#16213a}
-[data-theme="dark"] .logo img{filter:invert(1) hue-rotate(180deg);mix-blend-mode:screen}
+[data-theme="dark"] .logo{background:#fff;border-radius:10px}
+[data-theme="dark"] .logo img{filter:none;mix-blend-mode:normal}
 [data-theme="dark"] .avatar{color:#14233b}
 [data-theme="dark"] .contact a{color:#7a4f00}
 [data-theme="dark"] .video{background:#000}
@@ -170,6 +177,7 @@ Email: <a href="mailto:mathfreaks.official@gmail.com">mathfreaks.official@gmail.
 </section>
 <footer>© 2026 Math Freaks · <a href="terms.html">Terms &amp; Conditions</a> · <a href="terms.html#privacy">Privacy Policy</a></footer>
 </div>
+<div class="modal" id="tmodal" hidden role="dialog" aria-modal="true" aria-label="Teacher profile"><div class="mbox"><button id="tclose" class="mclose" type="button" aria-label="Close">×</button><div id="tbody"></div></div></div>
 <div class="chat" id="chat"></div>
 <button id="toTop" type="button" aria-label="Back to top" hidden>↑</button>
 <script>
@@ -180,6 +188,7 @@ var COURSES=[
   title:"SSC General Math Academic Full Course",
   text:"Full academic course for General Math SSC Board Exam",
   image:"",
+  teacher:"Shakhawat Hussain Sawom",
   price:"৳ 1500",
   details:[
    "🎥 HD class",
@@ -195,6 +204,7 @@ var COURSES=[
   title:"SSC Higher Math Academic Full Course",
   text:"Full academic course for Higher Math SSC Board Exam",
   image:"",
+  teacher:"Shakhawat Hussain Sawom",
   price:"৳ 1500",
   details:[
    "🎥 HD class",
@@ -210,6 +220,7 @@ var COURSES=[
   title:"SSC General Math Final Revision Course",
   text:"Compact revision course for General Math.",
   image:"",
+  teacher:"Shakhawat Hussain Sawom",
   price:"৳ 1200",
   details:[
    "🎥 HD class",
@@ -225,6 +236,7 @@ var COURSES=[
   title:"SSC Higher Math Final Revision Course",
   text:"Compact revision course for Higher Math.",
   image:"",
+  teacher:"Shakhawat Hussain Sawom",
   price:"৳ 1200",
   details:[
    "🎥 HD class",
@@ -269,12 +281,18 @@ var CHAT={messenger:"https://m.me/61574148955553", whatsapp:""};
 var FORM_ENTRY="";
 /* ====== END OF INFO. No need to change anything below ====== */
 function put(id,items,fn){document.getElementById(id).innerHTML=items.map(fn).join('')}
-put('courseList',COURSES,function(c){var d=c.details?'<details open><summary>What you will get</summary><ul>'+c.details.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></details>':'';return '<div class="course"'+(c.price?' data-c="'+c.title+'" data-p="'+c.price+'"':'')+'>'+(c.image?'<img class="thumb" src="'+c.image+'" alt="'+c.title+'" loading="lazy">':'')+'<h3>'+c.title+'</h3><p>'+c.text+'</p>'+(c.meta?'<p class="meta">'+c.meta+'</p>':'')+d+(c.price?'<p class="price">'+c.price+'</p>':'')+(c.link?'<a href="'+c.link+'">View details</a> &nbsp; ':'')+(c.price?'<a class="enroll" href="#pay">Enroll</a>':'')+'</div>'});
+put('courseList',COURSES,function(c){var d=c.details?'<details open><summary>What you will get</summary><ul>'+c.details.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></details>':'';return '<div class="course"'+(c.price?' data-c="'+c.title+'" data-p="'+c.price+'"':'')+'>'+(c.image?'<img class="thumb" src="'+c.image+'" alt="'+c.title+'" loading="lazy">':'')+'<h3>'+c.title+'</h3><p>'+c.text+'</p>'+(c.teacher?'<p class="inst">Instructor: <a href="#" class="tlink" data-t="'+c.teacher+'"><strong>'+c.teacher+'</strong></a></p>':'')+(c.meta?'<p class="meta">'+c.meta+'</p>':'')+d+(c.price?'<p class="price">'+c.price+'</p>':'')+(c.link?'<a href="'+c.link+'">View details</a> &nbsp; ':'')+(c.price?'<a class="enroll" href="#pay">Enroll</a>':'')+'</div>'});
 put('freeList',FREE,function(f){var v=f.id?'<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/'+f.id+'" title="'+f.title+'" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>':'';return '<div class="course"><span class="tag">'+f.level+'</span><h3>'+f.title+'</h3>'+v+(f.link?'<a href="'+f.link+'" target="_blank" rel="noopener">Open on YouTube</a>':'')+'</div>'});
 put('teacherList',TEACHERS,function(t){var pic=t.photo?'<img class="avatar" src="'+t.photo+'" alt="'+t.name+'">':'<div class="avatar">'+t.name.charAt(0)+'</div>';return '<div class="course">'+pic+'<h3>'+t.name+'</h3><span class="tag">'+t.subject+'</span><p>'+t.bio+'</p></div>'});
 function formLink(course){var u=PAY.contact;if(FORM_ENTRY&&course){u+=(u.indexOf('?')>-1?'&':'?')+'entry.'+FORM_ENTRY+'='+encodeURIComponent(course)}document.getElementById('pc').href=u}
 formLink('');
 var ch='';if(CHAT.messenger)ch+='<a class="ms" href="'+CHAT.messenger+'" target="_blank" rel="noopener">💬 Messenger</a>';if(CHAT.whatsapp)ch+='<a class="wa" href="https://wa.me/'+CHAT.whatsapp+'" target="_blank" rel="noopener">📞 WhatsApp</a>';document.getElementById('chat').innerHTML=ch;
+function openT(n){var t=TEACHERS.filter(function(x){return x.name===n})[0];if(!t)return;var cs=COURSES.filter(function(c){return c.teacher===n});var pic=t.photo?'<img class="avatar big" src="'+t.photo+'" alt="'+t.name+'">':'<div class="avatar big">'+t.name.charAt(0)+'</div>';document.getElementById('tbody').innerHTML=pic+'<h2>'+t.name+'</h2><span class="tag">'+t.subject+'</span><p>'+t.bio+'</p>'+(cs.length?'<p><strong>Courses by '+t.name+':</strong></p><ul>'+cs.map(function(c){return '<li>'+c.title+'</li>'}).join('')+'</ul>':'');document.getElementById('tmodal').hidden=false;document.getElementById('tclose').focus()}
+function closeT(){document.getElementById('tmodal').hidden=true}
+document.addEventListener('click',function(e){var l=e.target.closest&&e.target.closest('.tlink');if(l){e.preventDefault();openT(l.getAttribute('data-t'))}});
+document.getElementById('tclose').addEventListener('click',closeT);
+document.getElementById('tmodal').addEventListener('click',function(e){if(e.target.id==='tmodal')closeT()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeT()});
 if(NOTICE){var nt=document.getElementById('notice');nt.textContent=NOTICE;nt.hidden=false}
 function renderDyn(l){var bn=l==='bn';
 put('whyList',WHY,function(w){return '<div class="course"><h3>'+w.icon+' '+(bn&&w.bt?w.bt:w.title)+'</h3><p>'+(bn&&w.bx?w.bx:w.text)+'</p></div>'});
