@@ -18,7 +18,7 @@ body{margin:0;font-family:'Hind Siliguri',sans-serif;color:var(--ink);line-heigh
 h1,h2,h3{font-family:'Bricolage Grotesque','Hind Siliguri',sans-serif;line-height:1.2;margin:0 0 .5em}
 .wrap{max-width:960px;margin:0 auto;padding:0 20px}
 nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
-nav a{color:var(--ink);text-decoration:none;margin-left:18px;font-weight:600}
+nav a{color:var(--ink);text-decoration:none;margin-left:12px;font-weight:600}
 nav a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
 .logo{display:block;flex-shrink:0;position:relative;width:240px;height:114px;overflow:hidden;margin:0}
 .logo img{position:absolute;left:-39px;top:-99px;width:309px;height:309px;max-width:none;mix-blend-mode:multiply}
@@ -76,10 +76,11 @@ footer{padding:28px 0;text-align:center;font-size:.9rem}
 .chat .ms{background:#0084ff}.chat .wa{background:#25d366}
 footer a{color:var(--teal);font-weight:600}
 #toTop{position:fixed;left:16px;bottom:16px;width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:var(--gold);color:#14233b;font-size:1.3rem;font-weight:800;cursor:pointer;z-index:5}
+nav > div:not(.tools){display:flex;flex-wrap:wrap;justify-content:center;flex:1;min-width:0;font-size:.95rem}
 html{scroll-behavior:smooth}
 [data-theme="dark"]{--paper:#0c1424;--ink:#e8eef7;--grid:#1c2943;--white:#16213a}
-[data-theme="dark"] .logo{background:#fff;border-radius:10px}
-[data-theme="dark"] .logo img{filter:none;mix-blend-mode:normal}
+[data-theme="dark"] .logo{background:#fff!important;border-radius:10px;isolation:isolate}
+[data-theme="dark"] .logo img{filter:none!important;mix-blend-mode:normal!important;opacity:1!important}
 [data-theme="dark"] .avatar{color:#14233b}
 [data-theme="dark"] .contact a{color:#7a4f00}
 [data-theme="dark"] .video{background:#000}
@@ -100,7 +101,7 @@ nav > div:not(.tools) a{margin:0;padding:8px 0}
 <div id="notice" class="notice" hidden></div>
 <div class="wrap">
 <nav><a class="logo" href="#"><img src="Math freaks logo.png" alt="Math Freaks"></a>
-<div><a href="#courses">Courses</a><a href="#free">Free Classes</a><a href="#teachers">Teachers</a><a href="#pay">How to Pay</a><a href="#about">About Us</a><a href="#contact">Contact</a></div>
+<div><a href="#why">Why Us</a><a href="#courses">Courses</a><a href="#free">Free Classes</a><a href="#teachers">Teachers</a><a href="#pay">How to Pay</a><a href="#faq">FAQ</a><a href="#about">About Us</a><a href="#contact">Contact</a></div>
 <div class="tools"><button id="langBtn" type="button" aria-label="Change language">বাং</button><button id="themeBtn" type="button" aria-label="Dark mode">🌙</button><button id="menuBtn" type="button" aria-label="Menu" aria-expanded="false">☰</button></div></nav>
 <header class="hero">
 <div>
@@ -318,7 +319,7 @@ tb.addEventListener('click',function(){setTheme(R.getAttribute('data-theme')==='
 setTheme(ld('mf-theme')==='dark'?'dark':'light');
 var N='nav > div:not(.tools) ';
 var BN=[
-[N+'a[href="#courses"]','কোর্স'],[N+'a[href="#free"]','ফ্রি ক্লাস'],[N+'a[href="#teachers"]','শিক্ষক'],[N+'a[href="#pay"]','পেমেন্ট'],[N+'a[href="#about"]','আমাদের কথা'],[N+'a[href="#contact"]','যোগাযোগ'],
+[N+'a[href="#why"]','কেন আমরা'],[N+'a[href="#faq"]','প্রশ্নোত্তর'],[N+'a[href="#courses"]','কোর্স'],[N+'a[href="#free"]','ফ্রি ক্লাস'],[N+'a[href="#teachers"]','শিক্ষক'],[N+'a[href="#pay"]','পেমেন্ট'],[N+'a[href="#about"]','আমাদের কথা'],[N+'a[href="#contact"]','যোগাযোগ'],
 ['.hero h1','প্রকৃতি লেখা হয়েছে গণিতের ভাষায়'],
 ['.hero p','Math Freaks-এ সহজ ক্লাস, প্র্যাকটিস আর নিয়মিত পরীক্ষা। আপনি ফ্রিতে শুরু করতে পারেন।'],
 ['.hero .btn','কোর্স দেখুন'],
