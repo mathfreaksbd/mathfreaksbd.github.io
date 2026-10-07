@@ -184,11 +184,13 @@ Email: <a href="mailto:mathfreaks.official@gmail.com">mathfreaks.official@gmail.
 <button id="toTop" type="button" aria-label="Back to top" hidden>↑</button>
 <script>
 /* ====== EDIT YOUR INFO HERE. To add something new, copy one line and paste it below ====== */
-/* Each course: details = list of lines inside [ ]. Edit, delete or add lines. Put an emoji at the start of each line. */
+/* Each course: title, text, details = English. bt, bx, bd = the same in Bangla. Edit both. */
 var COURSES=[
  {
   title:"SSC General Math Academic Full Course",
   text:"Full academic course for General Math SSC Board Exam",
+  bt:"এসএসসি সাধারণ গণিত একাডেমিক ফুল কোর্স",
+  bx:"এসএসসি বোর্ড পরীক্ষার জন্য সাধারণ গণিতের পূর্ণাঙ্গ একাডেমিক কোর্স",
   image:"",
   teacher:"Shakhawat Hussain Sawom",
   price:"৳ 1500",
@@ -201,10 +203,23 @@ var COURSES=[
    "💬 Doubt solving support",
    "👨‍🏫 Live class on Teachmint",
    "📱 Mobile and computer friendly"
-  ], link:""},
+  ],
+  bd:[
+   "🎥 HD ক্লাস",
+   "📄 লেকচার শিট",
+   "📝 অধ্যায়ভিত্তিক প্র্যাকটিস শিট",
+   "🧪 সাপ্তাহিক পরীক্ষা",
+   "📊 ফাইনাল মডেল টেস্ট",
+   "💬 ডাউট সলভিং সাপোর্ট",
+   "👨‍🏫 Teachmint-এ লাইভ ক্লাস",
+   "📱 মোবাইল ও কম্পিউটারে দেখা যাবে"
+  ],
+  link:""},
  {
   title:"SSC Higher Math Academic Full Course",
   text:"Full academic course for Higher Math SSC Board Exam",
+  bt:"এসএসসি উচ্চতর গণিত একাডেমিক ফুল কোর্স",
+  bx:"এসএসসি বোর্ড পরীক্ষার জন্য উচ্চতর গণিতের পূর্ণাঙ্গ একাডেমিক কোর্স",
   image:"",
   teacher:"Shakhawat Hussain Sawom",
   price:"৳ 1500",
@@ -217,10 +232,23 @@ var COURSES=[
    "💬 Doubt solving support",
    "👨‍🏫 Live class on Teachmint",
    "📐 Board question solving"
-  ], link:""},
+  ],
+  bd:[
+   "🎥 HD ক্লাস",
+   "📄 লেকচার শিট",
+   "📝 অধ্যায়ভিত্তিক প্র্যাকটিস শিট",
+   "🧪 সাপ্তাহিক পরীক্ষা",
+   "📊 ফাইনাল মডেল টেস্ট",
+   "💬 ডাউট সলভিং সাপোর্ট",
+   "👨‍🏫 Teachmint-এ লাইভ ক্লাস",
+   "📐 বোর্ড প্রশ্ন সমাধান"
+  ],
+  link:""},
  {
   title:"SSC General Math Final Revision Course",
   text:"Compact revision course for General Math.",
+  bt:"এসএসসি সাধারণ গণিত ফাইনাল রিভিশন কোর্স",
+  bx:"সাধারণ গণিতের সংক্ষিপ্ত রিভিশন কোর্স।",
   image:"",
   teacher:"Shakhawat Hussain Sawom",
   price:"৳ 1200",
@@ -233,10 +261,23 @@ var COURSES=[
    "📊 Final model test",
    "💬 Doubt solving support",
    "👨‍🏫 Live class on Teachmint"
-  ], link:""},
+  ],
+  bd:[
+   "🎥 HD ক্লাস",
+   "📄 লেকচার শিট",
+   "⚡ দ্রুত অধ্যায়ভিত্তিক রিভিশন",
+   "📝 গুরুত্বপূর্ণ MCQ ও CQ অনুশীলন",
+   "🧪 প্রতি অধ্যায় শেষে পরীক্ষা",
+   "📊 ফাইনাল মডেল টেস্ট",
+   "💬 ডাউট সলভিং সাপোর্ট",
+   "👨‍🏫 Teachmint-এ লাইভ ক্লাস"
+  ],
+  link:""},
  {
   title:"SSC Higher Math Final Revision Course",
   text:"Compact revision course for Higher Math.",
+  bt:"এসএসসি উচ্চতর গণিত ফাইনাল রিভিশন কোর্স",
+  bx:"উচ্চতর গণিতের সংক্ষিপ্ত রিভিশন কোর্স।",
   image:"",
   teacher:"Shakhawat Hussain Sawom",
   price:"৳ 1200",
@@ -249,7 +290,18 @@ var COURSES=[
    "📊 Final model test",
    "💬 Doubt solving support",
    "👨‍🏫 Live class on Teachmint"
-  ], link:""}
+  ],
+  bd:[
+   "🎥 HD ক্লাস",
+   "📄 লেকচার শিট",
+   "⚡ দ্রুত অধ্যায়ভিত্তিক রিভিশন",
+   "📝 গুরুত্বপূর্ণ MCQ ও CQ অনুশীলন",
+   "🧪 প্রতি অধ্যায় শেষে পরীক্ষা",
+   "📊 ফাইনাল মডেল টেস্ট",
+   "💬 ডাউট সলভিং সাপোর্ট",
+   "👨‍🏫 Teachmint-এ লাইভ ক্লাস"
+  ],
+  link:""}
 ];
 var PAY={bkash:"01849120713", nagad:"01849120713", type:"Send Money", contact:"https://docs.google.com/forms/d/e/1FAIpQLSfNwy3wv1ZxFOxQhRI6UiHmSeZYWFEhdy74WGUeal50fHzTpQ/viewform?usp=dialog"};
 var FREE=[
@@ -283,7 +335,7 @@ var CHAT={messenger:"https://m.me/61574148955553", whatsapp:""};
 var FORM_ENTRY="";
 /* ====== END OF INFO. No need to change anything below ====== */
 function put(id,items,fn){document.getElementById(id).innerHTML=items.map(fn).join('')}
-put('courseList',COURSES,function(c){var d=c.details?'<details open><summary>What you will get</summary><ul>'+c.details.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></details>':'';return '<div class="course"'+(c.price?' data-c="'+c.title+'" data-p="'+c.price+'"':'')+'>'+(c.image?'<img class="thumb" src="'+c.image+'" alt="'+c.title+'" loading="lazy">':'')+'<h3>'+c.title+'</h3><p>'+c.text+'</p>'+(c.teacher?'<p class="inst">Instructor: <a href="#" class="tlink" data-t="'+c.teacher+'"><strong>'+c.teacher+'</strong></a></p>':'')+(c.meta?'<p class="meta">'+c.meta+'</p>':'')+d+(c.price?'<p class="price">'+c.price+'</p>':'')+(c.link?'<a href="'+c.link+'">View details</a> &nbsp; ':'')+(c.price?'<a class="enroll" href="#pay">Enroll</a>':'')+'</div>'});
+function courseCard(c,bn){var T=bn&&c.bt?c.bt:c.title,X=bn&&c.bx?c.bx:c.text,D=bn&&c.bd?c.bd:c.details;var L=bn?{g:'কী কী পাবেন',i:'ইনস্ট্রাক্টর:',e:'ভর্তি হন',v:'বিস্তারিত দেখুন'}:{g:'What you will get',i:'Instructor:',e:'Enroll',v:'View details'};var d=D?'<details open><summary>'+L.g+'</summary><ul>'+D.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></details>':'';return '<div class="course"'+(c.price?' data-c="'+c.title+'" data-p="'+c.price+'"':'')+'>'+(c.image?'<img class="thumb" src="'+c.image+'" alt="'+T+'" loading="lazy">':'')+'<h3>'+T+'</h3><p>'+X+'</p>'+(c.teacher?'<p class="inst">'+L.i+' <a href="#" class="tlink" data-t="'+c.teacher+'"><strong>'+c.teacher+'</strong></a></p>':'')+(c.meta?'<p class="meta">'+c.meta+'</p>':'')+d+(c.price?'<p class="price">'+c.price+'</p>':'')+(c.link?'<a href="'+c.link+'">'+L.v+'</a> &nbsp; ':'')+(c.price?'<a class="enroll" href="#pay">'+L.e+'</a>':'')+'</div>'}
 put('freeList',FREE,function(f){var v=f.id?'<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/'+f.id+'" title="'+f.title+'" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>':'';return '<div class="course"><span class="tag">'+f.level+'</span><h3>'+f.title+'</h3>'+v+(f.link?'<a href="'+f.link+'" target="_blank" rel="noopener">Open on YouTube</a>':'')+'</div>'});
 put('teacherList',TEACHERS,function(t){var pic=t.photo?'<img class="avatar" src="'+t.photo+'" alt="'+t.name+'">':'<div class="avatar">'+t.name.charAt(0)+'</div>';return '<div class="course">'+pic+'<h3>'+t.name+'</h3><span class="tag">'+t.subject+'</span><p>'+t.bio+'</p></div>'});
 function formLink(course){var u=PAY.contact;if(FORM_ENTRY&&course){u+=(u.indexOf('?')>-1?'&':'?')+'entry.'+FORM_ENTRY+'='+encodeURIComponent(course)}document.getElementById('pc').href=u}
@@ -297,6 +349,7 @@ document.getElementById('tmodal').addEventListener('click',function(e){if(e.targ
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeT()});
 if(NOTICE){var nt=document.getElementById('notice');nt.textContent=NOTICE;nt.hidden=false}
 function renderDyn(l){var bn=l==='bn';
+put('courseList',COURSES,function(c){return courseCard(c,bn)});
 put('whyList',WHY,function(w){return '<div class="course"><h3>'+w.icon+' '+(bn&&w.bt?w.bt:w.title)+'</h3><p>'+(bn&&w.bx?w.bx:w.text)+'</p></div>'});
 put('faqList',FAQ,function(q){return '<details><summary>'+(bn&&q[2]?q[2]:q[0])+'</summary><p>'+(bn&&q[3]?q[3]:q[1])+'</p></details>'})}
 document.querySelectorAll('.copy').forEach(function(b){b.addEventListener('click',function(){var n=PAY[b.getAttribute('data-k')],o=b.textContent;function ok(){b.textContent='Copied ✓';setTimeout(function(){b.textContent=o},1500)}if(navigator.clipboard){navigator.clipboard.writeText(n).then(ok,function(){})}else{var t=document.createElement('textarea');t.value=n;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();ok()}})});
