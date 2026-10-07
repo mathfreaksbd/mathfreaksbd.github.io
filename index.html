@@ -1,92 +1,96 @@
-<!DOCTYPE html
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>Math Freaks</title>
-   <link rel="icon" type="image/png" href="Math freaks logo.png">
+<title>Math Freaks</title>
+<meta name="description" content="Math Freaks: simple online Math classes for SSC students. Free classes, lecture sheets, exams and doubt solving.">
+<meta property="og:title" content="Math Freaks">
+<meta property="og:description" content="Simple online Math classes for SSC students. Start with free classes.">
+<meta property="og:image" content="https://mathfreaksbd.github.io/Math%20freaks%20logo.png">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="Math freaks logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--paper:#eef3f8;--ink:#14233b;--grid:#cfdceb;--gold:#ffb400;--teal:#0e8a7d;--white:#fff}
 *{box-sizing:border-box}
-body{margin:0;font-family:'Hind Siliguri',sans-serif;color:var(--ink);line-height:1.7;
-background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+body{margin:0;font-family:'Hind Siliguri',sans-serif;color:var(--ink);line-height:1.7;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
 h1,h2,h3{font-family:'Bricolage Grotesque','Hind Siliguri',sans-serif;line-height:1.2;margin:0 0 .5em}
 .wrap{max-width:960px;margin:0 auto;padding:0 20px}
 nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
-.nav .logo,.logo{margin:0}
-.logo{display:block;position:relative;width:240px;height:114px;overflow:hidden}
-.logo img{position:absolute;left:-39px;top:-99px;width:309px;height:309px;max-width:none;mix-blend-mode:multiply}
-@media(max-width:720px){.logo{width:170px;height:80px}.logo img{left:-27px;top:-70px;width:218px;height:218px}}
 nav a{color:var(--ink);text-decoration:none;margin-left:18px;font-weight:600}
 nav a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.logo{display:block;flex-shrink:0;position:relative;width:240px;height:114px;overflow:hidden;margin:0}
+.logo img{position:absolute;left:-39px;top:-99px;width:309px;height:309px;max-width:none;mix-blend-mode:multiply}
+.tools{display:flex;gap:8px;align-items:center}
+.tools button{font:inherit;font-weight:600;background:var(--white);color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:4px 10px;cursor:pointer;line-height:1.4}
+#menuBtn{display:none}
 .hero{padding:40px 0 60px;display:grid;gap:32px;grid-template-columns:1.1fr .9fr;align-items:center}
 .hero h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:800}
 .btn{display:inline-block;background:var(--ink);color:var(--white);padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px}
 .challenge{background:var(--white);border:2px solid var(--ink);border-radius:12px;padding:24px;box-shadow:6px 6px 0 var(--gold)}
 .eq{font-family:'Bricolage Grotesque';font-size:1.7rem;font-weight:800;margin:6px 0 14px}
 .challenge input{width:90px;font-size:1.1rem;padding:8px;border:2px solid var(--ink);border-radius:6px}
-.challenge button{font:inherit;font-weight:600;padding:9px 16px;margin-left:6px;border:0;border-radius:6px;background:var(--teal);color:var(--white);cursor:pointer}
+.challenge button{font:inherit;font-weight:600;padding:9px 16px;margin-left:6px;border:0;border-radius:6px;background:var(--teal);color:#fff;cursor:pointer}
 #msg{min-height:1.7em;margin:12px 0 0;font-weight:600}
 section{padding:40px 0}
 .courses{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .course{background:var(--white);border:2px solid var(--ink);border-radius:10px;padding:20px}
 .course:nth-child(2){border-color:var(--teal)}
 .course:nth-child(3){border-color:var(--gold)}
+.course a{color:var(--teal);font-weight:600}
+.course[data-c]{cursor:pointer;transition:transform .15s}
+.course[data-c]:hover{transform:translateY(-3px)}
+.course.sel{box-shadow:6px 6px 0 var(--gold)}
+.thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;margin-bottom:12px}
+.meta{font-size:.9rem;font-weight:600;background:var(--paper);border-radius:6px;padding:4px 10px;display:inline-block;margin:0 0 6px}
+.course details{margin:6px 0 12px}
+.course summary{cursor:pointer;font-weight:600;color:var(--teal)}
+.course details ul{margin:8px 0 0;padding-left:0;list-style:none}
+.course details li{margin-bottom:4px}
+.price{font-weight:600;color:var(--teal);margin:0 0 8px}
+.enroll{background:var(--gold);color:var(--ink)!important;padding:6px 14px;border-radius:6px;text-decoration:none}
+.tag{display:inline-block;background:var(--gold);color:#14233b;padding:0 10px;border-radius:99px;font-size:.85rem;font-weight:600;margin-bottom:6px}
+.avatar{width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--gold);display:grid;place-items:center;font:800 1.5rem 'Bricolage Grotesque';object-fit:cover;margin-bottom:10px}
+.about{background:var(--white);border:2px solid var(--ink);border-radius:12px;padding:8px 24px;max-width:720px}
+.about ol{padding-left:20px}
+.video{position:relative;aspect-ratio:16/9;margin:8px 0 10px;background:var(--ink);border-radius:8px;overflow:hidden}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .contact{background:var(--ink);color:var(--white);border-radius:12px;padding:32px}
 .contact a{color:var(--gold)}
 footer{padding:28px 0;text-align:center;font-size:.9rem}
-.course a{color:var(--teal);font-weight:600}
-.tag{display:inline-block;background:var(--gold);padding:0 10px;border-radius:99px;font-size:.85rem;font-weight:600;margin-bottom:6px}
-.avatar{width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--gold);display:grid;place-items:center;font:800 1.5rem 'Bricolage Grotesque';object-fit:cover;margin-bottom:10px}
-.about{background:var(--white);border:2px solid var(--ink);border-radius:12px;padding:8px 24px;max-width:720px}
-.video{position:relative;aspect-ratio:16/9;margin:8px 0 10px;background:var(--ink);border-radius:8px;overflow:hidden}
-.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.price{font-weight:600;color:var(--teal);margin:0 0 8px}
-.enroll{background:var(--gold);color:var(--ink)!important;padding:6px 14px;border-radius:6px;text-decoration:none}
-.about ol{padding-left:20px}
+.notice{background:var(--gold);color:#14233b;text-align:center;font-weight:600;padding:8px 16px}
+.notice[hidden],#toTop[hidden]{display:none}
+.copy{font:inherit;font-weight:600;background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer;margin:0 4px 6px 0}
+.faq details{background:var(--white);border:2px solid var(--ink);border-radius:10px;padding:10px 18px;margin-bottom:10px;max-width:720px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:8px 0 4px}
+.chat{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;align-items:flex-end;z-index:5}
+.chat a{color:#fff;text-decoration:none;font-weight:600;padding:10px 16px;border-radius:99px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.chat .ms{background:#0084ff}.chat .wa{background:#25d366}
+footer a{color:var(--teal);font-weight:600}
+#toTop{position:fixed;left:16px;bottom:16px;width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:var(--gold);color:#14233b;font-size:1.3rem;font-weight:800;cursor:pointer;z-index:5}
 html{scroll-behavior:smooth}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-@media(max-width:720px){.hero{grid-template-columns:1fr}nav a{margin-left:12px}}(function(){
-var R=document.documentElement;
-function sv(k,v){try{localStorage.setItem(k,v)}catch(e){}}
-function ld(k){try{return localStorage.getItem(k)}catch(e){return null}}
-var nav=document.querySelector('nav'),mb=document.getElementById('menuBtn');
-mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
-nav.addEventListener('click',function(e){if(e.target.closest('a[href^="#"]'))nav.classList.remove('open')});
-var tb=document.getElementById('themeBtn');
-function setTheme(t){R.setAttribute('data-theme',t);tb.textContent=t==='dark'?'☀️':'🌙';sv('mf-theme',t)}
-tb.addEventListener('click',function(){setTheme(R.getAttribute('data-theme')==='dark'?'light':'dark')});
-setTheme(ld('mf-theme')==='dark'?'dark':'light');
-var N='nav > div:not(.tools) ';
-var BN=[
-[N+'a[href="#courses"]','কোর্স'],[N+'a[href="#free"]','ফ্রি ক্লাস'],[N+'a[href="#teachers"]','শিক্ষক'],[N+'a[href="#pay"]','পেমেন্ট'],[N+'a[href="#about"]','আমাদের কথা'],[N+'a[href="#contact"]','যোগাযোগ'],
-['.hero h1','প্রকৃতি লেখা হয়েছে গণিতের ভাষায়'],
-['.hero p','Math Freaks-এ সহজ ক্লাস, প্র্যাকটিস আর নিয়মিত পরীক্ষা। আপনি ফ্রিতে শুরু করতে পারেন।'],
-['.hero .btn','কোর্স দেখুন'],
-['.challenge strong','১০ সেকেন্ডের চ্যালেঞ্জ'],
-['label[for="ans"]','x-এর একটি মান কত?'],
-['#check','দেখি'],
-['#courses h2','কোর্সসমূহ'],['#free h2','ফ্রি ক্লাস'],['#free > p','এই ক্লাসগুলো সবার জন্য ফ্রি। এখানেই দেখে নিন।'],
-['#teachers h2','আমাদের শিক্ষক'],['#pay h2','কীভাবে পেমেন্ট করবেন'],
-['#pay li:nth-child(1)','আপনার bKash বা Nagad অ্যাপ খুলে <strong id="ptype"></strong> বেছে নিন।'],
-['#pay li:nth-child(2)','কোর্সের ফি পাঠান <strong>bKash: <span id="pb"></span></strong> অথবা <strong>Nagad: <span id="pn"></span></strong> নম্বরে।'],
-['#pay li:nth-child(3)','রেফারেন্সে আপনার নাম ও কোর্সের নাম লিখুন।'],
-['#pay li:nth-child(4)','নিজের তথ্য ও <strong>Transaction ID</strong> দিয়ে ভর্তির ফর্মটি পূরণ করুন। যাচাই করে ২৪ ঘণ্টার মধ্যে আপনাকে যুক্ত করা হবে।'],
-['#pc','ভর্তির ফর্ম খুলুন'],
-['#about h2','আমাদের কথা'],['#contact h2','আমাদের সাথে যোগ দিন']
-];
-var items=[];
-BN.forEach(function(p){var el=document.querySelector(p[0]);if(el)items.push({el:el,en:el.innerHTML,bn:p[1]})});
-var lb=document.getElementById('langBtn');
-function fill(){var m={pb:'bkash',pn:'nagad',ptype:'type'};for(var id in m){var e=document.getElementById(id);if(e&&typeof PAY!=='undefined')e.textContent=PAY[m[id]]}}
-function setLang(l){items.forEach(function(i){i.el.innerHTML=l==='bn'?i.bn:i.en});fill();R.lang=l;lb.textContent=l==='bn'?'EN':'বাং';sv('mf-lang',l)}
-lb.addEventListener('click',function(){setLang(R.lang==='bn'?'en':'bn')});
-setLang(ld('mf-lang')==='bn'?'bn':'en');
-})();
+[data-theme="dark"]{--paper:#0c1424;--ink:#e8eef7;--grid:#1c2943;--white:#16213a}
+[data-theme="dark"] .logo img{filter:invert(1) hue-rotate(180deg);mix-blend-mode:screen}
+[data-theme="dark"] .avatar{color:#14233b}
+[data-theme="dark"] .contact a{color:#7a4f00}
+[data-theme="dark"] .video{background:#000}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.course[data-c]{transition:none}.course[data-c]:hover{transform:none}}
+@media(max-width:720px){
+.hero{grid-template-columns:1fr}
+.logo{width:170px;height:80px}
+.logo img{left:-27px;top:-70px;width:218px;height:218px}
+nav{flex-wrap:wrap}
+#menuBtn{display:inline-block}
+nav > div:not(.tools){display:none;width:100%;order:3;flex-direction:column;padding:8px 0}
+nav.open > div:not(.tools){display:flex}
+nav > div:not(.tools) a{margin:0;padding:8px 0}
+}
 </style>
 </head>
 <body>
+<div id="notice" class="notice" hidden></div>
 <div class="wrap">
 <nav><a class="logo" href="#"><img src="Math freaks logo.png" alt="Math Freaks"></a>
 <div><a href="#courses">Courses</a><a href="#free">Free Classes</a><a href="#teachers">Teachers</a><a href="#pay">How to Pay</a><a href="#about">About Us</a><a href="#contact">Contact</a></div>
@@ -106,6 +110,11 @@ setLang(ld('mf-lang')==='bn'?'bn':'en');
 <p id="msg" role="status"></p>
 </div>
 </header>
+
+<section id="why">
+<h2>Why Math Freaks?</h2>
+<div class="courses" id="whyList"></div>
+</section>
 
 <section id="courses">
 <h2>Courses</h2>
@@ -131,16 +140,22 @@ setLang(ld('mf-lang')==='bn'?'bn':'en');
 <li>Open your bKash or Nagad app and choose <strong id="ptype"></strong>.</li>
 <li>Send the course fee to <strong>bKash: <span id="pb"></span></strong> or <strong>Nagad: <span id="pn"></span></strong>.</li>
 <li>Write your name and the course in the reference.</li>
-   <li>Fill in the enrollment form with your details and your <strong>Transaction ID</strong>. We will confirm and add you within 24 hours.</li>
+<li>Fill in the enrollment form with your details and your <strong>Transaction ID</strong>. We will confirm and add you within 24 hours.</li>
 </ol>
-<p><a class="btn" id="pc" href="#" target="_blank" rel="noopener">Send payment proof</a></p>
+<p><button class="copy" type="button" data-k="bkash">📋 Copy bKash number</button> <button class="copy" type="button" data-k="nagad">📋 Copy Nagad number</button></p>
+<p><a class="btn" id="pc" href="#" target="_blank" rel="noopener">Open enrollment form</a></p>
 </div>
+</section>
+
+<section id="faq">
+<h2>FAQ</h2>
+<div class="faq" id="faqList"></div>
 </section>
 
 <section id="about">
 <h2>About Us</h2>
 <div class="about">
-<p>Is studying a source of stress for you? At Math Freaks, we believe every student can succeed with the right guidance. We break down complex topics into simple, easy-to-understand steps, so you never feel lost or overwhelmed. Our mission is to move beyond rote memorization by teaching the core logic behind every subject, helping you build a strong foundation and develop a genuine love for learning. Whether it's understanding a tough concept or preparing for exams, we're here to support you at every step. Join us today and make learning easy, enjoyable, and stress-free!Our motto: <strong>Smart Solution</strong>.</p>
+<p>Is studying a source of stress for you? At Math Freaks, we believe every student can succeed with the right guidance. We break down complex topics into simple, easy-to-understand steps, so you never feel lost or overwhelmed. Our mission is to move beyond rote memorization by teaching the core logic behind every subject, helping you build a strong foundation and develop a genuine love for learning. Whether it's understanding a tough concept or preparing for exams, we're here to support you at every step. Join us today and make learning easy, enjoyable, and stress-free! Our motto: <strong>Smart Solution</strong>.</p>
 <p>Our Goal: To help every student build confidence, think clearly, and achieve their full potential. We want to create a supportive learning environment where students feel free to ask questions, make mistakes, and grow. By making education simple, enjoyable, and accessible, we aim to turn fear into curiosity and hard work into success.</p>
 </div>
 </section>
@@ -153,31 +168,120 @@ Youtube: <a href="https://www.youtube.com/@Math.Freaks">Math Freaks</a><br>
 Email: <a href="mailto:mathfreaks.official@gmail.com">mathfreaks.official@gmail.com</a></p>
 </div>
 </section>
-<footer>© 2026 Math Freaks </footer>
+<footer>© 2026 Math Freaks · <a href="terms.html">Terms &amp; Conditions</a> · <a href="terms.html#privacy">Privacy Policy</a></footer>
 </div>
+<div class="chat" id="chat"></div>
+<button id="toTop" type="button" aria-label="Back to top" hidden>↑</button>
 <script>
 /* ====== EDIT YOUR INFO HERE. To add something new, copy one line and paste it below ====== */
+/* Each course: details = list of lines inside [ ]. Edit, delete or add lines. Put an emoji at the start of each line. */
 var COURSES=[
- {title:"SSC General Math Academic Full Course", text:"Full academic course for General Math SSC Board Exam", price:"৳ 1500", link:""},
- {title:"SSC Higher Math Academic Full Course", text:"Full academic course for Higher Math SSC Board Exam", price:"৳ 1500", link:""},
- {title:"SSC General Math Final Revision Course", text:"Compact revision course for General Math.", price:"৳ 1200", link:""},
- {title:"SSC Higher Math Final Revision Course", text:"Compact revision course for Higher Math.", price:"৳ 1200", link:""}
+ {
+  title:"SSC General Math Academic Full Course",
+  text:"Full academic course for General Math SSC Board Exam",
+  image:"",
+  price:"৳ 1500",
+  details:[
+   "🎥 HD class",
+   "📄 Lecture sheet",
+   "📝 Chapter-wise practice sheet",
+   "🧪 Weekly exam",
+   "📊 Final model test",
+   "💬 Doubt solving support",
+   "👨‍🏫 Live class on Teachmint",
+   "📱 Mobile and computer friendly"
+  ], link:""},
+ {
+  title:"SSC Higher Math Academic Full Course",
+  text:"Full academic course for Higher Math SSC Board Exam",
+  image:"",
+  price:"৳ 1500",
+  details:[
+   "🎥 HD class",
+   "📄 Lecture sheet",
+   "📝 Chapter-wise practice sheet",
+   "🧪 Weekly exam",
+   "📊 Final model test",
+   "💬 Doubt solving support",
+   "👨‍🏫 Live class on Teachmint",
+   "📐 Board question solving"
+  ], link:""},
+ {
+  title:"SSC General Math Final Revision Course",
+  text:"Compact revision course for General Math.",
+  image:"",
+  price:"৳ 1200",
+  details:[
+   "🎥 HD class",
+   "📄 Lecture sheet",
+   "⚡ Quick chapter-wise revision",
+   "📝 Important MCQ and CQ practice",
+   "🧪 Exam after every chapter",
+   "📊 Final model test",
+   "💬 Doubt solving support",
+   "👨‍🏫 Live class on Teachmint"
+  ], link:""},
+ {
+  title:"SSC Higher Math Final Revision Course",
+  text:"Compact revision course for Higher Math.",
+  image:"",
+  price:"৳ 1200",
+  details:[
+   "🎥 HD class",
+   "📄 Lecture sheet",
+   "⚡ Quick chapter-wise revision",
+   "📝 Important MCQ and CQ practice",
+   "🧪 Exam after every chapter",
+   "📊 Final model test",
+   "💬 Doubt solving support",
+   "👨‍🏫 Live class on Teachmint"
+  ], link:""}
 ];
 var PAY={bkash:"01849120713", nagad:"01849120713", type:"Send Money", contact:"https://docs.google.com/forms/d/e/1FAIpQLSfNwy3wv1ZxFOxQhRI6UiHmSeZYWFEhdy74WGUeal50fHzTpQ/viewform?usp=dialog"};
-var FREE=[ {title:"SSC General Math: Probability", level:"SSC", id:"2pE1hdnhDIQ", link:""},
- {title:"SSC ICT: Chapter 1 ", level:"SSC", id:"4Qfgm6pPkow", link:""}
+var FREE=[
+ {title:"SSC General Math: Probability", level:"SSC", id:"2pE1hdnhDIQ", link:""},
+ {title:"SSC ICT: Chapter 1", level:"SSC", id:"4Qfgm6pPkow", link:""}
 ];
 var TEACHERS=[
  {name:"Shakhawat Hussain Sawom", subject:"Math", bio:"Hello everyone! I'm Shakhawat Hussain Sawom, a Mathematics undergraduate and a passionate tutor for students of classes 6 to 10. Through this page, I'll share simple lessons, problem-solving tricks, and motivation to help you overcome the fear of math and build confidence. Let's learn, grow, and explore the beauty of mathematics together!", photo:"6055358435563343404.jpg"},
  {name:"Showmik Islam", subject:"ICT", bio:"Hello everyone! I'm Showmik Islam, an undergraduate student and a passionate tutor of ICT and English for classes 6 to 10. Through this page, I'll share simple lessons, helpful tips, and motivation to help you overcome the fear of these subjects and build confidence. Let's learn, grow, and explore together!", photo:"6183561985283266479.jpg"}
 ];
+/* Top banner message. Leave "" to hide it. Example: "New batch starts on 1 November!" */
+var NOTICE="";
+/* Why Math Freaks. icon, title, text = English. bt, bx = Bangla title and text. Edit, delete or add lines */
+var WHY=[
+ {icon:"🎯", title:"Simple explanation", text:"Hard topics broken into easy steps.", bt:"সহজ ব্যাখ্যা", bx:"কঠিন বিষয়ও সহজ ধাপে বুঝিয়ে দেওয়া হয়।"},
+ {icon:"📝", title:"Regular practice", text:"Practice sheets and exams after chapters.", bt:"নিয়মিত অনুশীলন", bx:"প্রতিটি অধ্যায়ের পর প্র্যাকটিস শিট ও পরীক্ষা।"},
+ {icon:"💬", title:"Doubt solving", text:"Ask questions and get clear answers.", bt:"প্রশ্ন সমাধান", bx:"যেকোনো প্রশ্ন করুন, পরিষ্কার উত্তর পাবেন।"},
+ {icon:"💸", title:"Affordable fee", text:"Quality classes at a fair price.", bt:"সাশ্রয়ী ফি", bx:"ন্যায্য মূল্যে মানসম্মত ক্লাস।"}
+];
+/* FAQ: ["English question","English answer","Bangla question","Bangla answer"]. No comma after the last line */
+var FAQ=[
+ ["How do I enroll?","Click a course, send the fee by bKash or Nagad, then fill in the enrollment form with your Transaction ID.","কীভাবে ভর্তি হব?","কোর্সে ক্লিক করুন, bKash বা Nagad-এ ফি পাঠান, তারপর Transaction ID দিয়ে ভর্তির ফর্মটি পূরণ করুন।"],
+ ["How are the classes held?","Classes run on the Teachmint app. You will get the class code after your payment is confirmed.","ক্লাস কীভাবে হয়?","ক্লাস হয় Teachmint অ্যাপে। পেমেন্ট নিশ্চিত হওয়ার পর আপনাকে ক্লাসের কোড দেওয়া হবে।"],
+ ["How long does confirmation take?","We confirm your payment and add you to the class within 24 hours.","ভর্তি নিশ্চিত হতে কতক্ষণ লাগে?","পেমেন্ট যাচাই করে ২৪ ঘণ্টার মধ্যে আপনাকে ক্লাসে যুক্ত করা হয়।"],
+ ["Are there any free classes?","Yes. Watch the free classes on this page before you decide.","কোনো ফ্রি ক্লাস আছে কি?","হ্যাঁ। সিদ্ধান্ত নেওয়ার আগে এই পেজের ফ্রি ক্লাসগুলো দেখে নিন।"],
+ ["How can I contact you?","Message our Facebook page or send an email. Links are at the bottom of the page.","কীভাবে যোগাযোগ করব?","আমাদের Facebook পেজে মেসেজ করুন বা ইমেইল পাঠান। লিংক পেজের নিচে আছে।"]
+];
+/* Floating chat buttons. messenger = your m.me link. whatsapp = number with 880 like "8801XXXXXXXXX". Leave "" to hide a button */
+var CHAT={messenger:"https://m.me/61574148955553", whatsapp:""};
+/* Google Form course name auto-fill. Put the entry number here, example "1234567890". Leave "" to turn off */
+var FORM_ENTRY="";
 /* ====== END OF INFO. No need to change anything below ====== */
 function put(id,items,fn){document.getElementById(id).innerHTML=items.map(fn).join('')}
-put('courseList',COURSES,function(c){return '<div class="course"><h3>'+c.title+'</h3><p>'+c.text+'</p>'+(c.price?'<p class="price">'+c.price+'</p>':'')+(c.link?'<a href="'+c.link+'">View details</a> &nbsp; ':'')+(c.price?'<a class="enroll" href="#pay" data-c="'+c.title+'">Enroll</a>':'')+'</div>'});
-document.getElementById('pb').textContent=PAY.bkash;document.getElementById('pn').textContent=PAY.nagad;document.getElementById('ptype').textContent=PAY.type;document.getElementById('pc').href=PAY.contact;
-document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('.enroll');if(t)document.getElementById('picked').textContent=t.getAttribute('data-c')});
+put('courseList',COURSES,function(c){var d=c.details?'<details open><summary>What you will get</summary><ul>'+c.details.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></details>':'';return '<div class="course"'+(c.price?' data-c="'+c.title+'" data-p="'+c.price+'"':'')+'>'+(c.image?'<img class="thumb" src="'+c.image+'" alt="'+c.title+'" loading="lazy">':'')+'<h3>'+c.title+'</h3><p>'+c.text+'</p>'+(c.meta?'<p class="meta">'+c.meta+'</p>':'')+d+(c.price?'<p class="price">'+c.price+'</p>':'')+(c.link?'<a href="'+c.link+'">View details</a> &nbsp; ':'')+(c.price?'<a class="enroll" href="#pay">Enroll</a>':'')+'</div>'});
 put('freeList',FREE,function(f){var v=f.id?'<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/'+f.id+'" title="'+f.title+'" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>':'';return '<div class="course"><span class="tag">'+f.level+'</span><h3>'+f.title+'</h3>'+v+(f.link?'<a href="'+f.link+'" target="_blank" rel="noopener">Open on YouTube</a>':'')+'</div>'});
 put('teacherList',TEACHERS,function(t){var pic=t.photo?'<img class="avatar" src="'+t.photo+'" alt="'+t.name+'">':'<div class="avatar">'+t.name.charAt(0)+'</div>';return '<div class="course">'+pic+'<h3>'+t.name+'</h3><span class="tag">'+t.subject+'</span><p>'+t.bio+'</p></div>'});
+function formLink(course){var u=PAY.contact;if(FORM_ENTRY&&course){u+=(u.indexOf('?')>-1?'&':'?')+'entry.'+FORM_ENTRY+'='+encodeURIComponent(course)}document.getElementById('pc').href=u}
+formLink('');
+var ch='';if(CHAT.messenger)ch+='<a class="ms" href="'+CHAT.messenger+'" target="_blank" rel="noopener">💬 Messenger</a>';if(CHAT.whatsapp)ch+='<a class="wa" href="https://wa.me/'+CHAT.whatsapp+'" target="_blank" rel="noopener">📞 WhatsApp</a>';document.getElementById('chat').innerHTML=ch;
+if(NOTICE){var nt=document.getElementById('notice');nt.textContent=NOTICE;nt.hidden=false}
+function renderDyn(l){var bn=l==='bn';
+put('whyList',WHY,function(w){return '<div class="course"><h3>'+w.icon+' '+(bn&&w.bt?w.bt:w.title)+'</h3><p>'+(bn&&w.bx?w.bx:w.text)+'</p></div>'});
+put('faqList',FAQ,function(q){return '<details><summary>'+(bn&&q[2]?q[2]:q[0])+'</summary><p>'+(bn&&q[3]?q[3]:q[1])+'</p></details>'})}
+document.querySelectorAll('.copy').forEach(function(b){b.addEventListener('click',function(){var n=PAY[b.getAttribute('data-k')],o=b.textContent;function ok(){b.textContent='Copied ✓';setTimeout(function(){b.textContent=o},1500)}if(navigator.clipboard){navigator.clipboard.writeText(n).then(ok,function(){})}else{var t=document.createElement('textarea');t.value=n;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();ok()}})});
+var tp=document.getElementById('toTop');window.addEventListener('scroll',function(){tp.hidden=window.scrollY<500});tp.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+document.addEventListener('click',function(e){var c=e.target.closest&&e.target.closest('.course[data-c]');if(!c)return;if(e.target.closest('summary')||e.target.closest('details'))return;if(e.target.closest('a:not(.enroll)'))return;document.getElementById('picked').textContent=c.getAttribute('data-c')+' — '+c.getAttribute('data-p');formLink(c.getAttribute('data-c'));document.querySelectorAll('.course.sel').forEach(function(x){x.classList.remove('sel')});c.classList.add('sel');document.getElementById('pay').scrollIntoView({behavior:'smooth'})});
 document.getElementById('check').addEventListener('click',function(){
   var v=Number(document.getElementById('ans').value),m=document.getElementById('msg');
   if(v===2||v===3){m.textContent='Correct! Both x = 2 and x = 3 work.';m.style.color='#0e8a7d'}
@@ -210,13 +314,13 @@ var BN=[
 ['#pay li:nth-child(3)','রেফারেন্সে আপনার নাম ও কোর্সের নাম লিখুন।'],
 ['#pay li:nth-child(4)','নিজের তথ্য ও <strong>Transaction ID</strong> দিয়ে ভর্তির ফর্মটি পূরণ করুন। যাচাই করে ২৪ ঘণ্টার মধ্যে আপনাকে যুক্ত করা হবে।'],
 ['#pc','ভর্তির ফর্ম খুলুন'],
-['#about h2','আমাদের কথা'],['#contact h2','আমাদের সাথে যোগ দিন']
+['#about h2','আমাদের কথা'],['#why h2','কেন Math Freaks?'],['#faq h2','সাধারণ প্রশ্ন'],['#contact h2','আমাদের সাথে যোগ দিন']
 ];
 var items=[];
 BN.forEach(function(p){var el=document.querySelector(p[0]);if(el)items.push({el:el,en:el.innerHTML,bn:p[1]})});
 var lb=document.getElementById('langBtn');
-function fill(){var m={pb:'bkash',pn:'nagad',ptype:'type'};for(var id in m){var e=document.getElementById(id);if(e&&typeof PAY!=='undefined')e.textContent=PAY[m[id]]}}
-function setLang(l){items.forEach(function(i){i.el.innerHTML=l==='bn'?i.bn:i.en});fill();R.lang=l;lb.textContent=l==='bn'?'EN':'বাং';sv('mf-lang',l)}
+function fill(){var m={pb:'bkash',pn:'nagad',ptype:'type'};for(var id in m){var e=document.getElementById(id);if(e)e.textContent=PAY[m[id]]}}
+function setLang(l){renderDyn(l);items.forEach(function(i){i.el.innerHTML=l==='bn'?i.bn:i.en});fill();R.lang=l;lb.textContent=l==='bn'?'EN':'বাং';sv('mf-lang',l)}
 lb.addEventListener('click',function(){setLang(R.lang==='bn'?'en':'bn')});
 setLang(ld('mf-lang')==='bn'?'bn':'en');
 })();
