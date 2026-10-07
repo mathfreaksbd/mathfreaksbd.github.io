@@ -21,7 +21,8 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0
 nav a{color:var(--ink);text-decoration:none;margin-left:12px;font-weight:600}
 nav a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
 .logo{display:block;flex-shrink:0;position:relative;width:240px;height:114px;overflow:hidden;margin:0}
-.logo img{position:absolute;left:-39px;top:-99px;width:309px;height:309px;max-width:none;mix-blend-mode:multiply}
+.logo img.l-light{position:absolute;left:-39px;top:-99px;width:309px;height:309px;max-width:none;mix-blend-mode:multiply}
+.l-dark{display:none!important}
 .tools{display:flex;gap:8px;align-items:center}
 .tools button{font:inherit;font-weight:600;background:var(--white);color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:4px 10px;cursor:pointer;line-height:1.4}
 #menuBtn{display:none}
@@ -79,8 +80,8 @@ footer a{color:var(--teal);font-weight:600}
 nav > div:not(.tools){display:flex;flex-wrap:wrap;justify-content:center;flex:1;min-width:0;font-size:.95rem}
 html{scroll-behavior:smooth}
 [data-theme="dark"]{--paper:#0c1424;--ink:#e8eef7;--grid:#1c2943;--white:#16213a}
-[data-theme="dark"] .logo{background:#fff!important;border-radius:10px;isolation:isolate}
-[data-theme="dark"] .logo img{filter:none!important;mix-blend-mode:normal!important;opacity:1!important}
+[data-theme="dark"] .l-light{display:none!important}
+[data-theme="dark"] .l-dark{display:block!important;width:100%;height:100%;object-fit:contain;object-position:left center}
 [data-theme="dark"] .avatar{color:#14233b}
 [data-theme="dark"] .contact a{color:#7a4f00}
 [data-theme="dark"] .video{background:#000}
@@ -88,7 +89,7 @@ html{scroll-behavior:smooth}
 @media(max-width:720px){
 .hero{grid-template-columns:1fr}
 .logo{width:170px;height:80px}
-.logo img{left:-27px;top:-70px;width:218px;height:218px}
+.logo img.l-light{left:-27px;top:-70px;width:218px;height:218px}
 nav{flex-wrap:wrap}
 #menuBtn{display:inline-block}
 nav > div:not(.tools){display:none;width:100%;order:3;flex-direction:column;padding:8px 0}
@@ -100,7 +101,7 @@ nav > div:not(.tools) a{margin:0;padding:8px 0}
 <body>
 <div id="notice" class="notice" hidden></div>
 <div class="wrap">
-<nav><a class="logo" href="#"><img src="Math freaks logo.png" alt="Math Freaks"></a>
+<nav><a class="logo" href="#"><img class="l-light" src="Math freaks logo.png" alt="Math Freaks"><img class="l-dark" src="logo-dark.png" alt="Math Freaks"></a>
 <div><a href="#why">Why Us</a><a href="#courses">Courses</a><a href="#free">Free Classes</a><a href="#teachers">Teachers</a><a href="#pay">How to Pay</a><a href="#faq">FAQ</a><a href="#about">About Us</a><a href="#contact">Contact</a></div>
 <div class="tools"><button id="langBtn" type="button" aria-label="Change language">বাং</button><button id="themeBtn" type="button" aria-label="Dark mode">🌙</button><button id="menuBtn" type="button" aria-label="Menu" aria-expanded="false">☰</button></div></nav>
 <header class="hero">
