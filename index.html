@@ -10,7 +10,7 @@
 <meta property="og:image" content="https://mathfreaksbd.github.io/Math%20freaks%20logo.png">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/png" href="Math freaks logo.png">
- <link rel="manifest" href="manifest.webmanifest">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#14233b">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
@@ -99,7 +99,7 @@ nav > div:not(.tools){display:none;width:100%;order:3;flex-direction:column;padd
 nav.open > div:not(.tools){display:flex}
 nav > div:not(.tools) a{margin:0;padding:8px 0}
 }
- .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .tab{font:inherit;font-weight:600;background:var(--white);color:var(--ink);border:2px solid var(--ink);border-radius:99px;padding:4px 16px;cursor:pointer}
 .tab.on{background:var(--gold);color:#14233b}
 </style>
@@ -133,7 +133,8 @@ nav > div:not(.tools) a{margin:0;padding:8px 0}
 
 <section id="courses">
 <h2>Courses</h2>
-<div class="courses"<div class="tabs" id="courseTabs"></div> id="courseList"></div>
+<div class="tabs" id="courseTabs"></div>
+<div class="courses" id="courseList"></div>
 </section>
 
 <section id="free">
@@ -307,8 +308,8 @@ var COURSES=[
    "💬 ডাউট সলভিং সাপোর্ট",
    "👨‍🏫 Teachmint-এ লাইভ ক্লাস"
   ],
-   link:""},
-  {
+  link:""},
+ {
   title:"SSC ICT Academic Full Course",
   text:"Full academic course for ICT SSC Board Exam",
   bt:"এসএসসি আইসিটি একাডেমিক ফুল কোর্স",
@@ -366,11 +367,11 @@ var COURSES=[
    "📐 বোর্ড প্রশ্ন সমাধান"
   ],
   link:""},
-  {
+ {
   title:"SSC English 2nd paper Academic Full Course",
   text:"Full academic course for English 2nd paper SSC Board Exam",
-  bt:"এসএসসি ইংরেজি ২য় পত্র একাডেমিক ফুল কোর্স",
-  bx:"এসএসসি বোর্ড পরীক্ষার জন্য ইংরেজি ২য় পত্রের পূর্ণাঙ্গ একাডেমিক কোর্স",
+  bt:"এসএসসি ইংরেজি ২য় পত্র একাডেমিক ফুল কোর্স",
+  bx:"এসএসসি বোর্ড পরীক্ষার জন্য ইংরেজি ২য় পত্রের পূর্ণাঙ্গ একাডেমিক কোর্স",
   image:"Gemini_Generated_Image_980run980run980r.jfif",
   teacher:"Showmik Islam",
   price:"৳ 1200",
@@ -403,7 +404,7 @@ var FREE=[
 ];
 var TEACHERS=[
  {name:"Shakhawat Hussain Sawom", subject:"Math", bio:"Hello everyone! I'm Shakhawat Hussain Sawom, a Mathematics undergraduate and a passionate tutor for students of classes 6 to 10. Through this page, I'll share simple lessons, problem-solving tricks, and motivation to help you overcome the fear of math and build confidence. Let's learn, grow, and explore the beauty of mathematics together!", photo:"6055358435563343404.jpg"},
- {name:"Showmik Islam", subject:"ICT""English", bio:"Hello everyone! I'm Showmik Islam, an undergraduate student and a passionate tutor of ICT and English for classes 6 to 10. Through this page, I'll share simple lessons, helpful tips, and motivation to help you overcome the fear of these subjects and build confidence. Let's learn, grow, and explore together!", photo:"6183561985283266479.jpg"}
+ {name:"Showmik Islam", subject:"ICT & English", bio:"Hello everyone! I'm Showmik Islam, an undergraduate student and a passionate tutor of ICT and English for classes 6 to 10. Through this page, I'll share simple lessons, helpful tips, and motivation to help you overcome the fear of these subjects and build confidence. Let's learn, grow, and explore together!", photo:"6183561985283266479.jpg"}
 ];
 /* Top banner message. Leave "" to hide it. Example: "New batch starts on 1 November!" */
 var NOTICE="";
@@ -426,12 +427,12 @@ var FAQ=[
 var CHAT={messenger:"https://m.me/61574148955553", whatsapp:""};
 /* Google Form course name auto-fill. Put the entry number here, example "1234567890". Leave "" to turn off */
 var FORM_ENTRY="";
- /* Google Analytics ID. Leave "" to turn off */
+/* Google Analytics ID. Leave "" to turn off */
 var GA_ID="G-H17KCG48MQ";
 /* ====== END OF INFO. No need to change anything below ====== */
 if(GA_ID){var gs=document.createElement('script');gs.async=true;gs.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(gs);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config',GA_ID)}
 function track(n,p){if(window.gtag&&GA_ID)gtag('event',n,p||{})}
- function put(id,items,fn){document.getElementById(id).innerHTML=items.map(fn).join('')}
+function put(id,items,fn){document.getElementById(id).innerHTML=items.map(fn).join('')}
 function courseCard(c,bn){var T=bn&&c.bt?c.bt:c.title,X=bn&&c.bx?c.bx:c.text,D=bn&&c.bd?c.bd:c.details;var L=bn?{g:'কী কী পাবেন',i:'ইনস্ট্রাক্টর:',e:'ভর্তি হন',v:'বিস্তারিত দেখুন'}:{g:'What you will get',i:'Instructor:',e:'Enroll',v:'View details'};var d=D?'<details open><summary>'+L.g+'</summary><ul>'+D.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></details>':'';return '<div class="course"'+(c.price?' data-c="'+c.title+'" data-p="'+c.price+'"':'')+'>'+(c.image?'<img class="thumb" src="'+c.image+'" alt="'+T+'" loading="lazy">':'')+'<h3>'+T+'</h3><p>'+X+'</p>'+(c.teacher?'<p class="inst">'+L.i+' <a href="#" class="tlink" data-t="'+c.teacher+'"><strong>'+c.teacher+'</strong></a></p>':'')+(c.meta?'<p class="meta">'+c.meta+'</p>':'')+d+(c.price?'<p class="price">'+c.price+'</p>':'')+(c.link?'<a href="'+c.link+'">'+L.v+'</a> &nbsp; ':'')+(c.price?'<a class="enroll" href="#pay">'+L.e+'</a>':'')+'</div>'}
 put('freeList',FREE,function(f){var v=f.id?'<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/'+f.id+'" title="'+f.title+'" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>':'';return '<div class="course"><span class="tag">'+f.level+'</span><h3>'+f.title+'</h3>'+v+(f.link?'<a href="'+f.link+'" target="_blank" rel="noopener">Open on YouTube</a>':'')+'</div>'});
 put('teacherList',TEACHERS,function(t){var pic=t.photo?'<img class="avatar" src="'+t.photo+'" alt="'+t.name+'">':'<div class="avatar">'+t.name.charAt(0)+'</div>';return '<div class="course">'+pic+'<h3>'+t.name+'</h3><span class="tag">'+t.subject+'</span><p>'+t.bio+'</p></div>'});
@@ -445,7 +446,7 @@ document.getElementById('tclose').addEventListener('click',closeT);
 document.getElementById('tmodal').addEventListener('click',function(e){if(e.target.id==='tmodal')closeT()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeT()});
 if(NOTICE){var nt=document.getElementById('notice');nt.textContent=NOTICE;nt.hidden=false}
- var curCat='all';
+var curCat='all';
 document.getElementById('courseTabs').addEventListener('click',function(e){var b=e.target.closest('.tab');if(!b)return;curCat=b.getAttribute('data-k');renderDyn(document.documentElement.lang==='bn'?'bn':'en')});
 function renderDyn(l){var bn=l==='bn';
 var cats=[];COURSES.forEach(function(c){var k=c.cat||'SSC';if(cats.indexOf(k)<0)cats.push(k)});
