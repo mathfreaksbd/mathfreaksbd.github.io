@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exams – Math Freaks</title>
+<link rel="icon" type="image/png" href="Math freaks logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#eef3f8;--ink:#14233b;--grid:#cfdceb;--gold:#ffb400;--teal:#0e8a7d;--white:#fff}
+[data-theme="dark"]{--paper:#0c1424;--ink:#e8eef7;--grid:#1c2943;--white:#16213a}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Hind Siliguri',sans-serif;color:var(--ink);line-height:1.7;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+h1,h3{font-family:'Bricolage Grotesque','Hind Siliguri',sans-serif;line-height:1.2;margin:0 0 .5em}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px 40px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:12px;flex-wrap:wrap}
+a{color:var(--teal);font-weight:600}
+.top button{font:inherit;font-weight:600;background:var(--white);color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:4px 12px;cursor:pointer}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--white);border:2px solid var(--ink);border-radius:10px;padding:20px}
+.tag{display:inline-block;background:var(--gold);color:#14233b;padding:0 10px;border-radius:99px;font-size:.85rem;font-weight:600;margin-bottom:6px}
+.meta{font-size:.9rem;font-weight:600;background:var(--paper);border-radius:6px;padding:4px 10px;display:inline-block;margin:0 0 10px}
+.start{font:inherit;font-weight:700;background:var(--gold);color:#14233b;border:0;border-radius:6px;padding:8px 16px;cursor:pointer}
+.card.soon{opacity:.65}
+.start:disabled{background:var(--paper);color:var(--ink);border:2px dashed var(--ink);cursor:not-allowed}
+.view{position:fixed;inset:0;z-index:20;background:var(--paper);display:flex;flex-direction:column}
+.view[hidden]{display:none}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 14px;background:var(--ink);color:var(--paper)}
+.bar a{color:var(--gold);margin-right:12px}
+.bar button{font-size:1.3rem;line-height:1;width:36px;height:36px;border-radius:8px;border:2px solid var(--paper);background:transparent;color:var(--paper);cursor:pointer}
+.view iframe{flex:1;width:100%;border:0;background:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><a href="index.html" id="back">← Math Freaks</a><span><button id="lb" type="button">বাং</button> <button id="tb" type="button">🌙</button></span></div>
+<h1 id="h">Exams</h1>
+<p id="intro">Test yourself with our online exams. Click Start exam and answer inside the page.</p>
+<div class="grid" id="list"></div>
+</div>
+
+<div class="view" id="view" hidden><div class="bar"><strong id="vt"></strong><span><a id="vn" href="#" target="_blank" rel="noopener">Open in new tab</a><button id="vc" type="button" aria-label="Close exam">×</button></span></div><iframe id="vf" title="Exam"></iframe></div>
+
+<script>
+/* ====== EDIT HERE. To add an exam, copy one line, paste it below and change it ====== */
+/* title, level, meta = English. bt, bm = Bangla title and meta.
+   An exam with no file and no form shows "Coming soon" automatically.
+   To switch one on: change title, add meta and add file:"your-exam.html" (or form:"https://forms.gle/..."). No comma after the last line */
+var EXAMS=[
+ {title:"Sample Exam", bt:"নমুনা পরীক্ষা", meta:"5 minutes · 4 questions", bm:"৫ মিনিট · ৪টি প্রশ্ন", file:"exam-sample.html"},
+ {title:"Exam 2", bt:"পরীক্ষা ২"},
+ {title:"Exam 3", bt:"পরীক্ষা ৩"},
+ {title:"Exam 4", bt:"পরীক্ষা ৪"},
+ {title:"Exam 5", bt:"পরীক্ষা ৫"},
+ {title:"Exam 6", bt:"পরীক্ষা ৬"},
+ {title:"Exam 7", bt:"পরীক্ষা ৭"},
+ {title:"Exam 8", bt:"পরীক্ষা ৮"},
+ {title:"Exam 9", bt:"পরীক্ষা ৯"},
+ {title:"Exam 10", bt:"পরীক্ষা ১০"}
+];
+/* Google Analytics ID (same as the main site). Leave "" to turn off */
+var GA_ID="G-H17KCG48MQ";
+/* ====== END OF EDIT AREA ====== */
+if(GA_ID){var gs=document.createElement('script');gs.async=true;gs.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(gs);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config',GA_ID)}
+function track(n,p){if(window.gtag&&GA_ID)gtag('event',n,p||{})}
+(function(){
+var R=document.documentElement;
+function ld(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function sv(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function $(id){return document.getElementById(id)}
+function render(){var bn=R.lang==='bn';
+$('back').textContent=bn?'← Math Freaks হোম':'← Math Freaks';
+$('h').textContent=bn?'অনলাইন পরীক্ষা':'Exams';
+$('intro').textContent=bn?'আমাদের অনলাইন পরীক্ষায় নিজেকে যাচাই করুন। পরীক্ষা শুরু করুন চাপলে এই পেজের ভেতরেই উত্তর দিতে পারবেন।':'Test yourself with our online exams. Click Start exam and answer inside the page.';
+$('vn').textContent=bn?'নতুন ট্যাবে খুলুন':'Open in new tab';
+$('list').innerHTML=EXAMS.length?EXAMS.map(function(x,i){var m=bn&&x.bm?x.bm:x.meta;var soon=!x.file&&!x.form;return '<div class="card'+(soon?' soon':'')+'">'+(x.level?'<span class="tag">'+x.level+'</span>':'')+'<h3>'+(bn&&x.bt?x.bt:x.title)+'</h3>'+(m?'<p class="meta">'+m+'</p>':'')+'<p><button type="button" class="start" data-i="'+i+'"'+(soon?' disabled':'')+'>'+(soon?(bn?'শীঘ্রই আসছে':'Coming soon'):(bn?'পরীক্ষা শুরু করুন':'Start exam'))+'</button></p></div>'}).join(''):'<p>'+(bn?'শীঘ্রই আসছে':'Coming soon')+'</p>'}
+function setL(l){R.lang=l;$('lb').textContent=l==='bn'?'EN':'বাং';sv('mf-lang',l);render()}
+function setT(t){R.setAttribute('data-theme',t);$('tb').textContent=t==='dark'?'☀️':'🌙';sv('mf-theme',t)}
+$('lb').addEventListener('click',function(){setL(R.lang==='bn'?'en':'bn')});
+$('tb').addEventListener('click',function(){setT(R.getAttribute('data-theme')==='dark'?'light':'dark')});
+function openE(i){var x=EXAMS[i];if(!x||(!x.file&&!x.form))return;track('start_exam',{exam:x.title});if(!x.file&&x.form){window.open(x.form,'_blank','noopener');return}$('vt').textContent=x.title;$('vn').href=x.file;$('vf').src=x.file;$('view').hidden=false;document.body.style.overflow='hidden'}
+function closeE(){$('view').hidden=true;$('vf').src='about:blank';document.body.style.overflow=''}
+$('list').addEventListener('click',function(e){var b=e.target.closest('.start');if(b)openE(+b.getAttribute('data-i'))});
+$('vc').addEventListener('click',closeE);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('view').hidden)closeE()});
+setT(ld('mf-theme')==='dark'?'dark':'light');setL(ld('mf-lang')==='bn'?'bn':'en');
+})();
+</script>
+</body>
+</html>
