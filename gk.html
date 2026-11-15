@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আন্তর্জাতিক বিষয়াবলী - ১০০ প্রশ্ন ইন্টারেক্টিভ মডেল টেস্ট</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Container -->
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-purple-600 to-indigo-700 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">আন্তর্জাতিক বিষয়াবলী - সাম্প্রতিক ক্যাপসুল</h1>
+            <p class="text-sm text-purple-100 mt-1">সময়: ৩০ মিনিট | পূর্ণমান: ১০০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>মোট প্রশ্ন: ১০০টি MCQ (প্রতিটিতে ৪টি অপশন)।</li>
+                        <li>সময় বরাদ্দ: ৩০ মিনিট।</li>
+                        <li>সঠিক উত্তরের জন্য: +১.০০ নম্বর।</li>
+                        <li>ভুল উত্তরের জন্য কাটা যাবে: -০.২৫ নম্বর।</li>
+                        <li>জমা দেওয়ার পর আলাদা ট্যাবে সঠিক, ভুল ও স্কিপ করা প্রশ্ন দেখতে পাবেন।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    কুইজ শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <!-- Top Bar -->
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">100</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 30:00
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed">
+                    <!-- Question goes here -->
+                </h2>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Options go here -->
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <!-- Question Palette (Grid) -->
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700">
+                    <!-- Palette numbers go here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p class="text-slate-300">আপনার সার্বিক ফলাফল নিচে দেওয়া হলো:</p>
+            </div>
+
+            <!-- Score Summary Card -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <!-- Review Tabs Navigation -->
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <!-- Tab Content Containers -->
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700">
+                <!-- Dynamic content -->
+            </div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script -->
+    <script>
+        const questions = [
+            { id: 1, q: "নেপাল-তিব্বত সীমান্তে অবস্থিত কোন পর্বত থেকে হিমবাহ ও পাথরের স্তর ধসে পড়েছিল?", options: ["মাকালু পর্বত", "লাংতাং লিরুং পর্বত", "অন্নপূর্ণা পর্বত", "কাঞ্চনজঙ্ঘা"], correct: 1 },
+            { id: 2, q: "নেপাল-তিব্বত সীমান্তে ধসের ফলে কোন নদীর পথ সাময়িকভাবে আটকে কৃত্রিম বাঁধ তৈরি হয়?", options: ["ত্রিশূলী নদী", "ভোতেকোশি নদী", "লেন্দে খোলা", "বাগমতি নদী"], correct: 2 },
+            { id: 3, q: "নেপাল-তিব্বত সীমান্তের বন্যায় কোন স্থল সীমান্তবন্দরটি সম্পূর্ণ ধ্বংস হয়ে যায়?", options: ["রসুয়া বন্দর", "গিরং বন্দর", "ঝাংমু বন্দর", "তাতোপানি বন্দর"], correct: 1 },
+            { id: 4, q: "নেপাল-তিব্বত সীমান্তে ভয়াবহ বন্যাটি কবে আঘাত হানে?", options: ["২৬ জুলাই, ২০২৬", "২৬ আগস্ট, ২০২৬", "১৬ আগস্ট, ২০২৬", "৬ সেপ্টেম্বর, ২০২৬"], correct: 1 },
+            { id: 5, q: "নেপাল-তিব্বত বন্যার ধরন কী ছিল?", options: ["ঘূর্ণিঝড় ও জলোচ্ছ্বাস", "আকস্মিক বন্যা বা হড়পা বান (Flash Flood)", "নদীভাঙন", "মহাসমুদ্রের সুনামি"], correct: 1 },
+            { id: 6, q: "নেপালের কোন প্রধানমন্ত্রী এই দুর্যোগকে 'জলবায়ু অন্যায়' (Climate Injustice) হিসেবে আখ্যায়িত করেন?", options: ["কে পি শর্মা অলি", "পুষ্পকমল দাহাল প্রচণ্ড", "বালেন্দ্র শাহ", "শের বাহাদুর দেউবা"], correct: 2 },
+            { id: 7, q: "নেপাল দুর্যোগ মোকাবেলায় নিচের কোন দেশটির বিশেষজ্ঞদের উদ্ধারকাজে যুক্ত করেনি?", options: ["বাংলাদেশ", "যুক্তরাষ্ট্র", "ভারত", "অস্ট্রেলিয়া"], correct: 1 },
+            { id: 8, q: "ICIMOD-এর সদর দপ্তর কোথায় অবস্থিত?", options: ["নয়াদিল্লি, ভারত", "বেইজিং, চীন", "ললিতপুর, কাঠমান্ডু, নেপাল", "ঢাকা, বাংলাদেশ"], correct: 2 },
+            { id: 9, q: "ICIMOD কত সালে প্রতিষ্ঠিত হয়?", options: ["১৯৭১ সালে", "১৯৮৩ সালে", "১৯৯০ সালে", "২০০০ সালে"], correct: 1 },
+            { id: 10, q: "হিন্দুকুশ-হিমালয় অঞ্চলের ICIMOD-এর সদস্য দেশ কতটি?", options: ["৬টি", "৮টি", "১০টি", "১২টি"], correct: 1 },
+            { id: 11, q: "নিচের কোনটি ICIMOD-এর সদস্য দেশ নয়?", options: ["বাংলাদেশ", "মিয়ানমার", "শ্রীলংকা", "ভুটান"], correct: 2 },
+            { id: 12, q: "'ইকুয়াল আর্থ প্রজেকশন' (সমান-আয়তন মানচিত্র অভিক্ষেপ) কী প্রদর্শন করে?", options: ["কেবল মেরু অঞ্চলের সঠিক আকৃতি", "দেশ ও মহাদেশের প্রকৃত আয়তনের অনুপাত", "সমুদ্রের গভীরতা ও উচ্চতা", "বায়ুমণ্ডলের তাপমাত্রা"], correct: 1 },
+            { id: 13, q: "বর্তমানে সচরাচর ব্যবহৃত কোন মানচিত্রের কারণে গ্রিনল্যান্ডকে আফ্রিকার চেয়ে অনেক বড় দেখায়?", options: ["রবিনসন প্রজেকশন", "মারকেটর প্রজেকশন", "ইকুয়াল আর্থ প্রজেকশন", "গ্যাল-পিটার প্রজেকশন"], correct: 1 },
+            { id: 14, q: "আফ্রিকা মহাদেশ গ্রিনল্যান্ডের চেয়ে প্রায় কতগুণ বড়?", ops: ["প্রায় ৫ গুণ", "প্রায় ১০ গুণ", "প্রায় ১৪ গুণ", "প্রায় ২০ গুণ"], correct: 2 },
+            { id: 15, q: "'ইকুয়াল আর্থ মানচিত্র' কত সালে প্রথম প্রকাশ করা হয়?", options: ["২০১৫ সালে", "২০১৮ সালে", "২০২০ সালে", "২০২৩ সালে"], correct: 1 },
+            { id: 16, q: "ইকুয়াল আর্থ প্রজেকশন কতজন মানচিত্রবিদ মিলে তৈরি করেন?", options: ["২ জন", "৩ জন", "৪ জন", "৫ জন"], correct: 1 },
+            { id: 17, q: "ইকুয়াল আর্থ প্রজেকশনের ধরন কী?", options: ["নলাকার (Cylindrical)", "ছদ্ম-বেলনাকার (Pseudocylindrical)", "শঙ্কু আকৃতির", "সমতলীয়"], correct: 1 },
+            { id: 18, q: "মারকেটর মানচিত্র কত সালে প্রকাশিত হয়?", options: ["১৫৬৯ সালে", "১৬৫০ সালে", "১৭৮৯ সালে", "১৮৫-০ সালে"], correct: 0 },
+            { id: 19, q: "মারকেটর মানচিত্র কে তৈরি করেন?", options: ["গেরার্জুস মারকেটর", "বোজন সাভরিচ", "টম প্যাটারসন", "বার্নহার্ড জেনি"], correct: 0 },
+            { id: 20, q: "সমুদ্র বা আকাশপথে চলাচলের জন্য এখনও কোন মানচিত্র ব্যবহৃত হয়?", options: ["ইকুয়াল আর্থ প্রজেকশন", "রবিনসন প্রজেকশন", "মারকেটর প্রজেকশন", "মোলার প্রজেকশন"], correct: 2 },
+            { id: 21, q: "জাতিসংঘের সাধারণ পরিষদে 'ইকুয়াল আর্থ প্রজেকশন' সংক্রান্ত প্রস্তাব কবে গৃহীত ও পাস হয়?", options: ["৪ সেপ্টেম্বর, ২০২৬", "৪ মার্চ, ২০২৬", "২০ সেপ্টেম্বর, ২০২৫", "১৫ জানুয়ারি, ২০২৬"], correct: 0 },
+            { id: 22, q: "জাতিসংঘের সাধারণ পরিষদে এই প্রস্তাব উত্থাপনে নেতৃত্ব দেয় কোন দেশ?", options: ["দক্ষিণ আফ্রিকা", "টোগো", "নাইজেরিয়া", "ব্রাজিল"], correct: 1 },
+            { id: 23, q: "ইকুয়াল আর্থ প্রজেকশন প্রস্তাবের বিপক্ষে ভোট দেয় মাত্র কোন দেশ?", options: ["যুক্তরাষ্ট্র", "যুক্তরাজ্য", "ফ্রান্স", "রাশিয়া"], correct: 0 },
+            { id: 24, q: "নাসার চাঁদে মানুষ পাঠানোর নতুন মিশনের নাম কী?", options: ["অ্যাপোলো", "আর্টেমিস", "ভোয়েজার", "ক্যুরিয়োসিটি"], correct: 1 },
+            { id: 25, q: "আর্টেমিস মিশন পরিচালনার জন্য নাসার শক্তিশালী রকেটের নাম কী?", options: ["Falcon Heavy", "Space Launch System (SLS)", "Saturn V", "Starship"], correct: 1 },
+            { id: 26, q: "আর্টেমিস রকেটের মাথায় বসানো মূল মহাকাশযানের নাম কী?", options: ["ওরিয়ন (Orion)", "কলম্বিয়া", "ডিসকভারি", "চ্যালেঞ্জার"], correct: 0 },
+            { id: 27, q: "চাঁদের নিকটবর্তী অঞ্চলে ভ্রমণ করা প্রথম কৃষ্ণাঙ্গ নভোচারী কে?", options: ["রেইড ওয়াইজম্যান", "ভিক্টর গ্লোভার", "জেরেমি হ্যানসেন", "ক্রিস্টিনা কোচ"], correct: 1 },
+            { id: 28, q: "চন্দ্রাভিযানে যাওয়া প্রথম নারী কে?", options: ["স্যালি রাইড", "ক্রিস্টিনা কোচ", "পেগি হুইটসন", "সুনিতা উইলিয়ামস"], correct: 1 },
+            { id: 29, q: "আর্টেমিস-২ মিশন কবে পৃথিবীতে অবতরণ করে?", options: ["১ এপ্রিল, ২০২৬", "১০ এপ্রিল, ২০২৬", "৩০ এপ্রিল, ২০২৬", "১৫ মে, ২০২৬"], correct: 1 },
+            { id: 30, q: "দক্ষিণ প্রশান্ত মহাসাগরের দ্বীপ দেশ 'নাউরু'-র নতুন আনুষ্ঠানিক নাম কী?", options: ["নাওয়েরো প্রজাতন্ত্র (Republic of Naoero)", "টুভ্যালু প্রজাতন্ত্র", "কিরিবাতি প্রজাতন্ত্র", "সামোয়া প্রজাতন্ত্র"], correct: 0 },
+            { id: 31, q: "নাওয়েরো দেশের রাজধানী কোথায়?", options: ["আপিয়া", "সুভা", "ইয়ারেন", "হোনিয়ারা"], correct: 2 },
+            { id: 32, q: "নাওয়েরো দেশের নাগরিকদের এখন থেকে কী বলা হবে?", options: ["দেই-নাওয়েরো", "নাউরীয়", "প্রশান্তবাসী", "আইল্যান্ডার"], correct: 0 },
+            { id: 33, q: "'তুর্কিয়ে' দেশটির পূর্বনাম কী ছিল?", options: ["পারস্য", "তুর্কি বা টার্কি", "মেসেডোনিয়া", "সোয়াজিল্যান্ড"], correct: 1 },
+            { id: 34, q: "'ইসওয়াতিনি' দেশটির পূর্বনাম কী ছিল?", options: ["চেক", "কেপ ভার্দে", "সোয়াজিল্যান্ড", "পূর্ব তিমুর"], correct: 2 },
+            { id: 35, q: "কুখ্যাত 'এপস্টেইন ফাইল' কবে প্রকাশিত হয়?", options: ["৩০ জানুয়ারি, ২০২৬", "১৫ ফেব্রুয়ারি, ২০২৬", "১ জানুয়ারি, ২০২৬", "১০ মার্চ, ২০২৬"], correct: 0 },
+            { id: 36, q: "এপস্টেইন ফাইলের সাথে জড়িত ক্যারিবিয়ান সাগরের দ্বীপটির নাম কী?", options: ["নিঝুম দ্বীপ", "লিটল সেন্ট জেমস", "বোরা বোরা", "ভার্জিন দ্বীপ"], correct: 1 },
+            { id: 37, q: "দক্ষিণ আফ্রিকার প্রেসিডেন্ট সিরিল রামাফোসাকে নিয়ে সৃষ্ট 'ফার্মগেট কেলেঙ্কারি' বা 'ফালা ফালা ডাকাতি' কত সালে ঘটেছিল?", options: ["২০২১ সালে", "২০২০ সালে", "২০২৩ সালে", "২০২৫ সালে"], correct: 1 },
+            { id: 38, q: "মক্কা যৌথ প্রতিরক্ষা চুক্তি বা 'মক্কা চুক্তি' কবে স্বাক্ষরিত হয়?", options: ["৭ আগস্ট, ২০২৬", "১৭ আগস্ট, ২০২৬", "৩০ জুলাই, ২০২৬", "৩১ আগস্ট, ২০২৬"], correct: 0 },
+            { id: 39, q: "মক্কা চুক্তি স্বাক্ষরকারী দেশ কয়টি?", options: ["২টি", "৩টি", "৪টি", "৫টি"], correct: 1 },
+            { id: 40, q: "মক্কা প্রতিরক্ষা জোটকে কী হিসেবে অভিহিত করা হয়?", options: ["আরব ন্যাটো", "মুসলিম ন্যাটো", "এশীয় ন্যাটো", "মধ্যপ্রাচ্য জোট"], correct: 1 },
+            { id: 41, q: "মক্কা চুক্তির তিন দেশের প্রথম উচ্চপর্যায়ের বৈঠক কোথায় অনুষ্ঠিত হয়?", options: ["রিয়াদ, সৌদি আরব", "ইসলামাবাদ, পাকিস্তান", "ইস্তাম্বুলে, তুরস্ক", "মক্কা, সৌদি আরব"], correct: 2 },
+            { id: 42, q: "সৌদি আরবের নেতৃত্বে গঠিত 'বহুজাতিক সামুদ্রিক প্রতিরক্ষা জোট'-এর সদস্য দেশ কয়টি?", options: ["১০টি", "১২টি", "১৪টি", "১৬টি"], correct: 2 },
+            { id: 43, q: "লোহিত সাগর তীরবর্তী দেশ মোট কতটি?", options: ["৪টি", "৫টি", "৬টি", "৭টি"], correct: 2 },
+            { id: 44, q: "এডেন উপসাগর তীরবর্তী দেশ কয়টি?", options: ["২টি", "৩টি", "৪টি", "৫টি"], correct: 1 },
+            { id: 45, q: "কোন প্রণালি লোহিত সাগর ও এডেন উপসাগরকে যুক্ত করেছে?", options: ["হরমুজ প্রণালি", "বাব আল-মান্দেব প্রণালি", "মালাক্কা প্রণালি", "সাসেক্স প্রণালি"], correct: 1 },
+            { id: 46, q: "উন্মুক্ত সমুদ্র চুক্তি বা High Seas Treaty কবে কার্যকর হয়?", options: ["১৭ জানুয়ারি, ২০২৬", "২০ সেপ্টেম্বর, ২০২৫", "৪ মার্চ, ২০২৩", "১ জুলাই, ২০২৬"], correct: 0 },
+            { id: 47, q: "৬০তম দেশ হিসেবে উন্মুক্ত সমুদ্র চুক্তি অনুসমর্থন করে কোন দেশ?", options: ["বাংলাদেশ", "মরক্কো", "মিশর", "দক্ষিণ আফ্রিকা"], correct: 1 },
+            { id: 48, q: "উন্মুক্ত সমুদ্র চুক্তির লক্ষ্য কী?", options: ["২০৩০ সালের মধ্যে উন্মুক্ত সমুদ্রের ৩০% এলাকা সংরক্ষণ", "২০৫০ সালের মধ্যে মাছ ধরা সম্পূর্ণ নিষিদ্ধ করা", "সমুদ্রের পানি দূষণ শূন্যে নামিয়ে আনা", "গভীর সমুদ্রে খনিজ উত্তোলন নিয়ন্ত্রণ করা"], correct: 0 },
+            { id: 49, q: "উপকূল থেকে সমুদ্রের দিকে কত নটিক্যাল মাইল পর্যন্ত এলাকাকে বিশেষ অর্থনৈতিক অঞ্চল (EEZ) বলা হয়?", options: ["১২ নটিক্যাল মাইল", "২৪ নটিক্যাল মাইল", "২০০ নটিক্যাল মাইল", "৩০০ নটিক্যাল মাইল"], correct: 2 },
+            { id: 50, q: "বাংলাদেশ কতটি সামুদ্রিক কনভেনশনে ৫ জুলাই, ২০২৬ যোগ দেয়?", options: ["২টি", "৩টি", "৪টি", "৫টি"], correct: 1 },
+            { id: 51, q: "২৩তম বিশ্বকাপ ফুটবল ২০২৬-এর স্লোগান (Motto) কী?", options: ["Live The Game", "WE ARE 26", "Football Unite", "Feel The Passion"], correct: 1 },
+            { id: 52, q: "২৩তম বিশ্বকাপ ফুটবল ২০২৬ যৌথভাবে কয়টি দেশ আয়োজন করে?", options: ["২টি", "৩টি", "৪টি", "৫টি"], correct: 1 },
+            { id: 53, q: "২০২৬ বিশ্বকাপে মোট কতটি দল অংশগ্রহণ করে?", options: ["৩২টি", "৩৬টি", "৪০টি", "৪৮টি"], correct: 3 },
+            { id: 54, q: "২০২৬ বিশ্বকাপের ৩টি মাসকটের নাম কী কী?", options: ["ম্যাপল, ক্লাচ ও জায়ু", "জাকমি, ফুটি ও স্টার", "টাইগার, লায়ন ও বিয়ার", "রোজ, লিলি ও তুলিপ"], correct: 0 },
+            { id: 55, q: "২৩তম বিশ্বকাপ ফুটবলে চ্যাম্পিয়ন হয় কোন দেশ?", options: ["আর্জেন্টিনা", "ফ্রান্স", "স্পেন", "ব্রাজিল"], correct: 2 },
+            { id: 56, q: "২৩তম বিশ্বকাপ ফুটবলে রানার্সআপ হয় কোন দেশ?", options: ["আর্জেন্টিনা", "নেদারল্যান্ডস", "জার্মানি", "পর্তুগাল"], correct: 0 },
+            { id: 57, q: "২০২৬ বিশ্বকাপে গোল্ডেন বল (সেরা খেলোয়াড়) লাভ করেন কে?", options: ["লিওনেল মেসি", "রদ্রি", "কিলিয়ান এমবাপ্পে", "উনাই সিমন"], correct: 1 },
+            { id: 58, q: "২০২৬ বিশ্বকাপে গোল্ডেন বুট (সর্বোচ্চ গোলদাতা) কে হন?", options: ["লিওনেল মেসি", "হ্যারি কেইন", "কিলিয়ান এমবাপ্পে", "রদ্রি"], correct: 2 },
+            { id: 59, q: "২০২৬ বিশ্বকাপে ফেয়ার প্লে ট্রফি লাভ করে কোন দেশ?", options: ["আর্জেন্টিনা", "নেদারল্যান্ডস", "স্পেন", "ফ্রান্স"], correct: 1 },
+            { id: 60, q: "বিশ্বকাপ ইতিহাসের ৩ হাজারতম গোলটি করেন কে?", options: ["লিওনেল মেসি", "এনজো ফার্নান্দেজ", "কিলিয়ান এমবাপ্পে", "বুকায়ো সাকা"], correct: 1 },
+            { id: 61, q: "২৪তম বিশ্বকাপ ফুটবল ২০৩০ কোথায় অনুষ্ঠিত হবে?", options: ["মরক্কো, পর্তুগাল ও স্পেন", "সৌদি আরব ও কাতার", "অস্ট্রেলিয়া ও নিউজিল্যান্ড", "আর্জেন্টিনা ও ব্রাজিল"], correct: 0 },
+            { id: 62, q: "শতবর্ষ উদ্যাপন উপলক্ষ্যে ২০৩০ বিশ্বকাপের কয়টি উদ্বোধনী গ্রুপ ম্যাচ দক্ষিণ আমেরিকার ৩টি দেশে অনুষ্ঠিত হবে?", options: ["১টি করে ম্যাচ", "২টি করে ম্যাচ", "৩টি করে ম্যাচ", "কোনো ম্যাচ নয়"], correct: 0 },
+            { id: 63, q: "মধ্যপ্রাচ্যের প্রথম দেশ হিসেবে মৃত্যুদণ্ড বাতিল করে কোনটি?", options: ["সংযুক্ত আরব আমিরাত", "লেবানন", "কাতার", "ওমান"], correct: 1 },
+            { id: 64, q: "বিশ্বে সর্বপ্রথম 'কার্বন ট্যাক্স' চালু করে কোন দেশ?", options: ["সুইডেন", "ফিনল্যান্ড", "নরওয়ে", "ডেনমার্ক"], correct: 1 },
+            { id: 65, q: "বিশ্বের প্রথম ডিজিটাল রাষ্ট্র কোনটি?", options: ["টুভ্যালু", "নাউরু", "মালদ্বীপ", "আইসল্যান্ড"], correct: 0 },
+            { id: 66, q: "কোন দেশ বিশ্বে প্রথম হাইড্রোজেন ট্রেন চালু করে?", options: ["জাপান", "জার্মানি", "ফ্রান্স", "চীন"], correct: 1 },
+            { id: 67, q: "বিরল খনিজ মজুদে ও উৎপাদনে বিশ্বে শীর্ষ দেশ কোনটি?", options: ["যুক্তরাষ্ট্র", "রাশিয়া", "চীন", "অস্ট্রেলিয়া"], correct: 2 },
+            { id: 68, q: "আফগানিস্তান তালেবান সরকার নিচের কোন খেলাটি নিষিদ্ধ করেছে?", options: ["ক্রিকেট", "ফুটবল", "দাবা", "হকি"], correct: 2 },
+            { id: 69, q: "বেলুচ লিবারেশন আর্মি (BLA) কোন দেশের সশস্ত্র সংগঠন?", options: ["আফগানিস্তান", "পাকিস্তান", "ইরান", "ইরাক"], correct: 1 },
+            { id: 70, q: "ভারত সরকার বাংলা ভাষাকে কী হিসেবে স্বীকৃতি দেয়?", options: ["দাপ্তরিক ভাষা", "আদি বা ধ্রুপদী ভাষা", "আঞ্চলিক ভাষা", "সহযোগী ভাষা"], correct: 1 },
+            { id: 71, q: "টাইম সাময়িকী'র বর্ষসেরা ২০২৫ ব্যক্তিত্ব কে/কারা নির্বাচিত হন?", options: ["এআইয়ের স্থপতিরা", "এলন মাস্ক", "পোপ ফ্রান্সিস", "জলবায়ু কর্মীরা"], correct: 0 },
+            { id: 72, q: "চীন বিশ্বের কতটি দেশের বৃহত্তম বাণিজ্য অংশীদার?", options: ["১০০টি", "১২০টি", "১৩৫টি", "১৫১টি"], correct: 3 },
+            { id: 73, q: "জাতিসংঘের প্রথম বৈশ্বিক শান্তির দূত (Global Advocate for Peace) কে?", options: ["মরিয়ম বুকার হাসান", "মালালা ইউসুফজাই", "গ্রেটা থুনবার্গ", "ন্যান্সি পলিসি"], correct: 0 },
+            { id: 74, q: "সিরিয়ার আদালত সাবেক সিরীয় প্রেসিডেন্ট বাশার আল আসাদকে কবে মৃত্যুদণ্ড দেয়?", options: ["১১ জুলাই, ২০২৬", "১১ আগস্ট, ২০২৬", "১ সেপ্টেম্বর, ২০২৬", "২১ জুন, ২০২৬"], correct: 1 },
+            { id: 75, q: "বিশ্বের প্রথম দেশ হিসেবে আফগানিস্তানের বর্তমান তালেবান সরকারকে স্বীকৃতি দেয় কোন দেশ?", options: ["চীন", "পাকিস্তান", "রাশিয়া", "সৌদি আরব"], correct: 2 },
+            { id: 76, q: "প্রকৃতিকে (মাউন্ট তারানাকি পর্বতকে) আইনিভাবে ব্যক্তি হিসেবে স্বীকৃতি দেওয়া প্রথম দেশ কোনটি?", options: ["নিউজিল্যান্ড", "ইকুয়েডর", "কানাডা", "অস্ট্রেলিয়া"], correct: 0 },
+            { id: 77, q: "জাতিসংঘের প্রথম ও একমাত্র সদস্য দেশ হিসেবে 'সোমালিল্যান্ড প্রজাতন্ত্র'কে স্বীকৃতি দেয় কোন দেশ?", options: ["যুক্তরাষ্ট্র", "ইসরায়েল", "যুক্তরাজ্য", "তুরস্ক"], correct: 1 },
+            { id: 78, q: "১ জুলাই, ২০২৬ সার্কভুক্ত কোন দেশটি উচ্চ মধ্যম আয়ের দেশের তালিকায় উন্নীত হয়?", options: ["বাংলাদেশ", "নেপাল", "শ্রীলংকা", "পাকিস্তান"], correct: 2 },
+            { id: 79, q: "বিশ্বের বৃহত্তম পারমাণবিক বিদ্যুৎকেন্দ্র কোনটি?", options: ["জাপোরিজিয়া পারমাণবিক বিদ্যুৎকেন্দ্র", "কাশিওয়াজাকি-কারিওয়া বিদ্যুৎকেন্দ্র", "ফুসুকো পারমাণবিক কেন্দ্র", "রোস্তভ পারমাণবিক কেন্দ্র"], correct: 1 },
+            { id: 80, q: "ইসলামিক সাংস্কৃতিক কেন্দ্র 'সেন্টার ফর ইসলামিক সিভিলাইজেশন (CISC)' কোথায় অবস্থিত?", options: ["সমরকন্দ, উজবেকিস্তান", "তাসখন্দ, উজবেকিস্তান", "বুখারা, উজবেকিস্তান", "বাকু, আজারবাইজান"], correct: 1 },
+            { id: 81, q: "বিশ্বের প্রথম দেশ হিসেবে প্রথম প্রজন্মভিত্তিক ধূমপান নিষেধাজ্ঞা কার্যকর হয়েছে কোথায়?", options: ["মালদ্বীপ", "সিঙ্গাপুর", "নিউজিল্যান্ড", "ভুটান"], correct: 0 },
+            { id: 82, q: "আম উৎপাদনে বিশ্বের শীর্ষ দেশ কোনটি?", options: ["চীন", "মেক্সিকো", "ভারত", "ব্রাজিল"], correct: 2 },
+            { id: 83, q: "আম আমদানিতে বিশ্বের শীর্ষ দেশ কোনটি?", options: ["যুক্তরাষ্ট্র", "চীন", "যুক্তরাজ্য", "জার্মানি"], correct: 1 },
+            { id: 84, q: "আম রপ্তানিতে বিশ্বের শীর্ষ দেশ কোনটি?", options: ["ভারত", "মেক্সিকো", "ব্রাজিল", "ফিলিপাইন"], correct: 1 },
+            { id: 85, q: "ইউরোপের কোন দেশটি প্রথমবারের মতো ১৫ বছরের কম বয়সিদের জন্য সামাজিক যোগাযোগ মাধ্যম নিষিদ্ধ করে?", options: ["ফ্রান্স", "জার্মানি", "ইটালি", "সুইডেন"], correct: 0 },
+            { id: 86, q: "বিশ্বের প্রথম দেশ হিসেবে ১৬ বছরের কম বয়সিদের জন্য সামাজিক যোগাযোগ মাধ্যম নিষিদ্ধ করে কোনটি?", options: ["অস্ট্রেলিয়া", "নিউজিল্যান্ড", "কানাডা", "যুক্তরাজ্য"], correct: 0 },
+            { id: 87, q: "যুক্তরাষ্ট্রের ন্যাটো-বহির্ভূত 'প্রধান মিত্র' (Major Non-NATO Ally) দেশ হিসেবে স্বীকৃতি পায় কোনটি?", options: ["সংযুক্ত আরব আমিরাত", "সৌদি আরব", "কাতার", "মিশর"], correct: 1 },
+            { id: 88, q: "ICIMOD কত সালে প্রতিষ্ঠিত হয়? (পুনরাবৃত্তি যাচাই)", options: ["১৯৭১", "১৯৭৫", "১৯৮৩", "১৯৯৫"], correct: 2 },
+            { id: 89, q: "নাওয়েরো প্রজাতন্ত্রের রাজধানী কোথায়?", options: ["ইয়ারেন", "সুভা", "আপিয়া", "পোর্ট মায়োবি"], correct: 0 },
+            { id: 90, q: "বহুজাতিক সামুদ্রিক প্রতিরক্ষা জোট (Multinational Maritime Defense Coalition) কবে গঠিত হয়?", options: ["২০ জুন, ২০২৬", "৩০ জুলাই, ২০২৬", "১৫ আগস্ট, ২০২৬", "৭ আগস্ট, ২০২৬"], correct: 1 },
+            { id: 91, q: "আন্তর্জাতিক তেল দূষণজনিত ক্ষতির দায়বদ্ধতা বিষয়ক ১৯৯২ প্রটোকল কী নামে পরিচিত?", options: ["CLC Protocol", "Bunker Convention", "Wreck Removal Convention", "MARPOL"], correct: 0 },
+            { id: 92, q: "২০২৬ বিশ্বকাপে মোট কতটি ম্যাচ অনুষ্ঠিত হয়?", options: ["৬৪টি", "৮০টি", "৯৬টি", "১০৪টি"], correct: 3 },
+            { id: 93, q: "২০২৬ বিশ্বকাপের ফাইনাল ম্যাচ কোথায় অনুষ্ঠিত হয়?", options: ["এস্তাদিও আজটেকা, মেক্সিকো সিটি", "মেটলাইফ স্টেডিয়াম, নিউ জার্সি", "কেনেডি স্পেস সেন্টার", "মিয়ামি স্টেডিয়াম"], correct: 1 },
+            { id: 94, q: "কোন দেশ একমাত্র দেশ হিসেবে তিনবার পুরুষদের ফুটবল বিশ্বকাপ আয়োজন করে?", options: ["ব্রাজিল", "জার্মানি", "মেক্সিকো", "ইতালি"], correct: 2 },
+            { id: 95, q: "প্রথমবারের মতো ফিফা বিশ্বকাপ ফুটবলে অংশগ্রহণকারী দেশ নিচের কোনটি নয়?", options: ["জর্ডান", "কুরাসাও", "উজবেকিস্তান", "মরক্কো"], correct: 3 },
+            { id: 96, q: "ফিফার সেরা একাদশে নির্বাচিত সেরা গোলরক্ষক ভজিনিয়া (জোসিমার হোসে এভোরা দিয়াস) কোন দেশের খেলোয়াড়?", options: ["কবো ভার্দে", "আর্জেন্টিনা", "স্পেন", "মরক্কো"], correct: 0 },
+            { id: 97, q: "২০২০ সালে দক্ষিণ আফ্রিকার রাষ্ট্রপতির কোন বাগানবাড়ি থেকে অর্থ চুরি হয়েছিল?", options: ["ফালা ফালা বাগানবাড়ি", "কেপটাউন ফার্ম", "প্রিটোরিয়া গার্ডেন", "জোহানেসবার্গ এস্টেট"], correct: 0 },
+            { id: 98, q: "আর্টেমিস-১ মিশন কবে পরীক্ষামূলকভাবে উৎক্ষেপণ করা হয়?", options: ["২০২০ সালে", "২০২২ সালে", "২০২৪ সালে", "২০২৫ সালে"], correct: 1 },
+            { id: 99, q: "ইউনেস্কোর ইনট্যানজিবল কালচারাল হেরিটেজ কনভেনশন কত সালে স্বাক্ষরিত হয়?", options: ["১৯৯.২ সালে", "২০০১ সালে", "২০০৩ সালে", "২০০৮ সালে"], correct: 2 },
+            { id: 100, q: "বিশ্বের দীর্ঘতম বা বৃহত্তম পারমাণবিক বিদ্যুৎকেন্দ্রের নাম কী?", options: ["কাশিওয়াজাকি-কারিওয়া বিদ্যুৎকেন্দ্র", "ঝাপোরিজিয়া বিদ্যুৎকেন্দ্র", "ফুকুশিমা প্ল্যান্ট", "চেরনোবিল প্ল্যান্ট"], correct: 0 }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let timeLeft = 1800; // 30 minutes in seconds
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-purple-600 text-white border border-purple-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-purple-600/30 border-purple-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-purple-500 border-purple-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Update tab button styles
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx, index) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let html = `<p class="font-semibold text-slate-200 text-sm md:text-base">${index + 1}. ${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1800;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

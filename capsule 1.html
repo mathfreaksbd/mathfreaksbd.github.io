@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মিক্সড মডেল টেস্ট - বাংলাদেশ ও আন্তর্জাতিক বিষয়াবলী</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Container -->
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">মিক্সড মডেল টেস্ট: বাংলাদেশ ও আন্তর্জাতিক</h1>
+            <p class="text-sm text-blue-100 mt-1">সময়: ৩০ মিনিট | পূর্ণমান: ১০০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>মোট প্রশ্ন: ১০০টি (বাংলাদেশ ও আন্তর্জাতিক মিক্সড, ৪টি করে অপশন)।</li>
+                        <li>সময় বরাদ্দ: ৩০ মিনিট।</li>
+                        <li>সঠিক উত্তরের জন্য: +১.০০ নম্বর।</li>
+                        <li>ভুল উত্তরের জন্য কাটা যাবে: -০.২৫ নম্বর।</li>
+                        <li>জমা দেওয়ার পর কত সময়ে শেষ করেছেন এবং সঠিক, ভুল ও স্কিপ করা প্রশ্নের বিস্তারিত দেখতে পাবেন।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    মডেল টেস্ট শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <!-- Top Bar -->
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">100</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-blue-900 text-blue-200 border border-blue-700">বাংলাদেশ অংশ</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 30:00
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed">
+                    <!-- Question goes here -->
+                </h2>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Options go here -->
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <!-- Question Palette (Grid) -->
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700">
+                    <!-- Palette numbers go here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <!-- Score Summary Card -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <!-- Review Tabs Navigation -->
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <!-- Tab Content Containers -->
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700">
+                <!-- Dynamic content -->
+            </div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script -->
+    <script>
+        const questions = [
+            // --- বাংলাদেশ অংশ (১ থেকে ৫০) ---
+            { id: 1, section: "বাংলাদেশ অংশ", q: "১৪তম বাংলাদেশি হিসেবে রামোন ম্যাগসেসে পুরস্কার লাভ করেন কে?", options: ["ড. মোহাম্মদ ইউনুস", "রুনা খান", "ব্রাত্য রাইসু", "তমি কোহ"], correct: 1 },
+            { id: 2, section: "বাংলাদেশ অংশ", q: "বেসরকারি সংস্থা 'ফ্রেন্ডশিপ' কত সালে প্রতিষ্ঠিত হয়?", options: ["২০০০ সালে", "২০০২ সালে", "২০০৫ সালে", "২০১০ সালে"], correct: 1 },
+            { id: 3, section: "বাংলাদেশ অংশ", q: "প্রথম বাংলাদেশি সংস্থা হিসেবে ২০২৫ সালে কোন বিভাগে 'আর্থশট পুরস্কার' লাভ করে ফ্রেন্ডশিপ?", options: ["Clean Our Air", "Protect and Restore Nature", "Fix Our Climate", "Build a Waste-Free World"], correct: 2 },
+            { id: 4, section: "বাংলাদেশ অংশ", q: "'ইনভেস্ট বাংলাদেশ কর্তৃপক্ষ' কবে প্রতিষ্ঠিত হয়?", options: ["১০ আগস্ট, ২০২৬", "২০ আগস্ট, ২০২৬", "১ জুলাই, ২০২৬", "১১ জুন, ২০২৬"], correct: 1 },
+            { id: 5, section: "বাংলাদেশ অংশ", q: "২০২৬-২৭ অর্থবছরের জাতীয় বাজেটের প্রতিপাদ্য কী?", options: ["স্মার্ট বাংলাদেশ বিনির্মাণের বাজেট", "গণতান্ত্রিক, মানবিক ও অন্তর্ভুক্তিমূলক অর্থনীতির অভিযাত্রা", "টেকসই অর্থনীতি ও সুশাসন", "উৎপাদমুখী অর্থনীতি ও কর্মসংস্থান"], correct: 1 },
+            { id: 6, section: "বাংলাদেশ অংশ", q: "২০২৬-২৭ অর্থবছরের মোট বাজেটের পরিমাণ কত?", options: ["৭ লাখ ৬১ হাজার কোটি টাকা", "৮ লাখ ৫০ হাজার কোটি টাকা", "৯ লাখ ৩৮ হাজার কোটি টাকা", "১০ লাখ কোটি টাকা"], correct: 2 },
+            { id: 7, section: "বাংলাদেশ অংশ", q: "২০২৬-২৭ অর্থবছরের বাজেটে ঘাটতির পরিমাণ কত?", options: ["১ লাখ ৮০ হাজার কোটি টাকা", "২ লাখ ৪৩ হাজার কোটি টাকা", "৩ লাখ কোটি টাকা", "১ লাখ ৫০ হাজার কোটি টাকা"], correct: 1 },
+            { id: 8, section: "বাংলাদেশ অংশ", q: "২০২৬-২৭ অর্থবছরের বার্ষিক উন্নয়ন কর্মসূচি (ADP)-এর আকার কত?", options: ["২ লাখ ৫০ হাজার কোটি টাকা", "৩ লাখ কোটি টাকা", "৩ লাখ ১৬ হাজার কোটি টাকা", "৪ লাখ কোটি টাকা"], correct: 1 },
+            { id: 9, section: "বাংলাদেশ অংশ", q: "3R কৌশলের আওতায় আগামী ৫ বছরে প্লাস্টিক বর্জ্য কত শতাংশ হ্রাস করা হবে?", options: ["১০%", "২০%", "৩০%", "৫০%"], correct: 2 },
+            { id: 10, section: "বাংলাদেশ অংশ", q: "দেশের প্রথম সামুদ্রিক সংরক্ষিত এলাকা কোনটি?", options: ["নিঝুম দ্বীপ", "সোয়াচ অব নো-গ্রাউন্ড", "সেন্টমার্টিন", "কুয়াকাটা"], correct: 1 },
+            { id: 11, section: "বাংলাদেশ অংশ", q: "দেশের বৃহত্তম সামুদ্রিক সংরক্ষিত এলাকা কোনটি?", options: ["সোয়াচ অব নো-গ্রাউন্ড", "নাফ মোহনা", "কুয়াকাটা", "সলিমপুর"], correct: 2 },
+            { id: 12, section: "বাংলাদেশ অংশ", q: "টাঙ্গাইল শাড়ি বুননশিল্প কত সালে ইউনেস্কোর অধরা সাংস্কৃতিক ঐতিহ্যের স্বীকৃতি পায়?", options: ["২০২৩ সালে", "২০২৪ সালে", "২০২৫ সালে", "২০২৬ সালে"], correct: 2 },
+            { id: 13, section: "বাংলাদেশ অংশ", q: "বাংলাদেশ ব্যাংক কবে 'বাংলা কিউআর' (Bangla QR) কোড ব্যবহার বাধ্যতামূলক ও সর্বজনীন করে?", options: ["১ জানুয়ারি, ২০২৬", "২৬ মার্চ, ২০২৬", "১ জুলাই, ২০২৬", "১ নভেম্বর, ২০২৬"], correct: 2 },
+            { id: 14, section: "বাংলাদেশ অংশ", q: "ভূমি সেবায় দেশের প্রথম ক্যাশলেস জেলা কোনটি?", options: ["ঢাকা", "মুন্সিগঞ্জ", "ঝালকাঠি", "গাজীপুর"], correct: 2 },
+            { id: 15, section: "বাংলাদেশ অংশ", q: "দেশের প্রথম 'ক্যাশলেস জেলা কারাগার' কোনটি?", options: ["ঢাকা কেন্দ্রীয় কারাগার", "কাশিমপুর কারাগার", "মুন্সিগঞ্জ জেলা কারাগার", "রাজশাহী কেন্দ্রীয় কারাগার"], correct: 2 },
+            { id: 16, section: "বাংলাদেশ অংশ", q: "ধান উৎপাদনে শীর্ষ জেলা কোনটি?", options: ["রংপুর", "ময়মনসিংহ", "দিনাজপুর", "রাজশাহী"], correct: 1 },
+            { id: 17, section: "বাংলাদেশ অংশ", q: "আলু উৎপাদনে শীর্ষ জেলা কোনটি?", options: ["রংপুর", "বগুড়া", "রাজশাহী", "ঢাকা"], correct: 0 },
+            { id: 18, section: "বাংলাদেশ অংশ", q: "সর্বাধিক রাষ্ট্রীয় বনভূমি রয়েছে কোন জেলায়?", options: ["বান্দরবান", "রাঙ্গামাটি", "খাগড়াছড়ি", "সুন্দরবন"], correct: 1 },
+            { id: 19, section: "বাংলাদেশ অংশ", q: "ত্রয়োদশ জাতীয় সংসদ নির্বাচনে ভোট পড়ার হার কত ছিল?", options: ["৪৫.৫০%", "৫২.১৩%", "৫৯.৪৪%", "৬৩.৮০%"], correct: 2 },
+            { id: 20, section: "বাংলাদেশ অংশ", q: "চতুর্থ গণভোটে প্রদত্ত ভোটের হার কত ছিল?", options: ["৬০.৮৪%", "৬৮.২৬%", "৫৫.১২%", "৭২.৪০%"], correct: 0 },
+            { id: 21, section: "বাংলাদেশ অংশ", q: "Postal Vote BD-তে সর্বাধিক আবেদন কোন দেশ থেকে এসেছে?", options: ["সংযুক্ত আরব আমিরাত", "মালয়েশিয়া", "সৌদি আরব", "যুক্তরাজ্য"], correct: 2 },
+            { id: 22, section: "বাংলাদেশ অংশ", q: "ত্রয়োদশ জাতীয় সংসদের স্পিকার কে?", options: ["ব্যরিস্টার কায়সার কামাল", "হাফিজ উদ্দিন আহমদ (বীর বিক্রম)", "খন্দকার মোশাররফ হোসেন", "নুরুল ইসলাম মনি"], correct: 1 },
+            { id: 23, section: "বাংলাদেশ অংশ", q: "ত্রয়োদশ জাতীয় সংসদের ডেপুটি স্পিকার কে?", options: ["নাহিদ ইসলাম", "ব্যারিস্টার কায়সার কামাল", "শফিকুর রহমান", "আহমেদ আযম খান"], correct: 1 },
+            { id: 24, section: "বাংলাদেশ অংশ", q: "ত্রয়োদশ জাতীয় সংসদের সংসদ নেতা কে?", options: ["তারেক রহমান", "মির্জা ফখরুল ইসলাম আলমগীর", "শফিকুর রহমান", "খন্দকার মোশাররফ হোসেন"], correct: 0 },
+            { id: 25, section: "বাংলাদেশ অংশ", q: "ত্রয়োদশ জাতীয় সংসদের বিরোধীদলীয় নেতা কে?", options: ["নাহিদ ইসলাম", "শফিকুর রহমান", "নুরুল ইসলাম মনি", "আমির খসরু মাহমুদ চৌধুরী"], correct: 1 },
+            { id: 26, section: "বাংলাদেশ অংশ", q: "ত্রয়োদশ জাতীয় সংসদের নারী সংসদ সদস্যের মোট সংখ্যা কত?", options: ["৫০ জন", "৫৪ জন", "৫৭ জন", "৬০ জন"], correct: 2 },
+            { id: 27, section: "বাংলাদেশ অংশ", q: "প্রধানমন্ত্রী তারেক রহমানের নেতৃত্বাধীন মন্ত্রিসভায় বর্তমানে মোট মন্ত্রী কতজন?", options: ["৫১ জন", "৫০ জন", "৪৭ জন", "৫৫ জন"], correct: 1 },
+            { id: 28, section: "বাংলাদেশ অংশ", q: "মন্ত্রিসভায় নারী মন্ত্রী কতজন?", options: ["২ জন", "৩ জন", "৪ জন", "৫ জন"], correct: 1 },
+            { id: 29, section: "বাংলাদেশ অংশ", q: "মন্ত্রিসভায় টেকনোক্র্যাট মন্ত্রী কতজন?", options: ["২ জন", "৩ জন", "৪ জন", "৫ জন"], correct: 2 },
+            { id: 30, section: "বাংলাদেশ অংশ", q: "ফ্যামিলি কার্ডের আনুষ্ঠানিক উদ্বোধন কোথায় করা হয়?", options: ["ঢাকা", "কিশোরগঞ্জের লতিফাবাদ", "টাঙ্গাইল", "বগুড়া"], correct: 1 },
+            { id: 31, section: "বাংলাদেশ অংশ", q: "ফ্যামিলি কার্ডধারী পরিবার প্রতি মাসে কত টাকা পাবে?", options: ["১,০০০ টাকা", "১,৫০০ টাকা", "২,০০০ টাকা", "২,৫০০ টাকা"], correct: 3 },
+            { id: 32, section: "বাংলাদেশ অংশ", q: "কৃষক কার্ডের পরীক্ষামূলক উদ্বোধন কোথায় করা হয়?", options: ["কিশোরগঞ্জ", "টাঙ্গাইলের শহীদ মারুফ স্টেডিয়াম", "ঢাকা", "কক্সবাজার"], correct: 1 },
+            { id: 33, section: "বাংলাদেশ অংশ", q: "কৃষক কার্ডের পরীক্ষামূলক উদ্বোধন কবে হয়?", options: ["১৪ এপ্রিল, ২০২৬", "১০ মার্চ, ২০২৬", "৩০ মার্চ, ২০২৬", "২৩ জুলাই, ২০২৬"], correct: 0 },
+            { id: 34, section: "বাংলাদেশ অংশ", q: "বন্যপ্রাণী সুরক্ষার জন্য কবে 'ওয়াইল্ডলাইফ কমিশন' গঠন করা হয়?", options: ["৭ মে, ২০২৬", "১৬ মার্চ, ২০২৬", "১ আগস্ট, ২০২৬", "১৮ আগস্ট, ২০২৬"], correct: 2 },
+            { id: 35, section: "বাংলাদেশ অংশ", q: "কৃত্রিম বুদ্ধিমত্তার (AI) সহায়তায় কোথায় ট্রাফিক নিয়ন্ত্রণ শুরু হয়?", options: ["চট্টগ্রাম", "সিলেট", "ঢাকা", "রাজশাহী"], correct: 2 },
+            { id: 36, section: "বাংলাদেশ অংশ", q: "বাংলাদেশের ১৩তম প্রধানমন্ত্রী কে?", options: ["খালেদা জিয়া", "শেখ হাসিনা", "তারেক রহমান", "তাজউদ্দীন আহমদ"], correct: 2 },
+            { id: 37, section: "বাংলাদেশ অংশ", q: "টাইম সাময়িকীর 'লিডারস' ক্যাটাগরিতে ২০২৬ সালে প্রধানমন্ত্রী তারেক রহমানের অবস্থান কততম?", options: ["১০ম", "১২তম", "১৬তম", "২০তম"], correct: 2 },
+            { id: 38, section: "বাংলাদেশ অংশ", q: "প্রধানমন্ত্রী তারেক রহমানের গুলশানের কত নম্বর বাসভবনকে 'বিশেষ শ্রেণির' গুরুত্বপূর্ণ স্থাপনা (KPI) ঘোষণা করা হয়?", options: ["১৫৫ নম্বর", "১৯৬ নম্বর", "২০0 নম্বর", "২১০ নম্বর"], correct: 1 },
+            { id: 39, section: "বাংলাদেশ অংশ", q: "প্রধানমন্ত্রী তারেক রহমান চীন সফর করেন কবে?", options: ["২১-২২ জুন, ২০২৬", "২৩-২৬ জুন, ২০২৬", "১-৫ জুলাই, ২০২৬", "১০-১৫ আগস্ট, ২০২৬"], correct: 1 },
+            { id: 40, section: "বাংলাদেশ অংশ", q: "চীনা অর্থনৈতিক ও শিল্প অঞ্চল (CEIZ) কোথায় নির্মিত হচ্ছে?", options: ["মোংলা, বাগেরহাট", "আনোয়ারা, চট্টগ্রাম", "পতেঙ্গা, চট্টগ্রাম", "মিরসরাই, চট্টগ্রাম"], correct: 1 },
+            { id: 41, section: "বাংলাদেশ অংশ", q: "বাংলাদেশের রাষ্ট্রপতি নির্বাচন ২০২৬ কবে অনুষ্ঠিত হয়?", options: ["২০ আগস্ট, ২০২৬", "১২ আগস্ট, ২০২৬", "৩০ আগস্ট, ২০২৬", "১ সেপ্টেম্বর, ২০২৬"], correct: 0 },
+            { id: 42, section: "বাংলাদেশ অংশ", q: "মির্জা ফখরুল ইসলাম আলমগীর কততম রাষ্ট্রপতি?", options: ["২১তম", "২২তম", "২৩তম", "২৪তম"], correct: 2 },
+            { id: 43, section: "বাংলাদেশ অংশ", q: "নতুন কুঁড়ি স্পোর্টস ২০২৬ এ কতটি খেলা অন্তর্ভুক্ত রয়েছে?", options: ["৬টি", "৮টি", "১০টি", "১২টি"], correct: 1 },
+            { id: 44, section: "বাংলাদেশ অংশ", q: "পদ্মা ব্যারাজ কোথায় নির্মিত হবে?", options: ["গোয়ালন্দ, রাজবাড়ী", "পাংশা, রাজবাড়ী", "ভেড়ামারা, কুষ্টিয়া", "শিবচর, মাদারীপুর"], correct: 1 },
+            { id: 45, section: "বাংলাদেশ অংশ", q: "পদ্মা ব্যারাজের দৈর্ঘ্য কত?", options: ["১.৫ কিলোমিটার", "২.১ কিলোমিটার", "৩.৫ কিলোমিটার", "৫.০ কিলোমিটার"], correct: 1 },
+            { id: 46, section: "বাংলাদেশ অংশ", q: "পদ্মা ব্যারাজে স্পিলওয়ে (পানিনিষ্কাশন কপাট) কয়টি?", options: ["১৮টি", "৫২টি", "৭৮টি", "৯০টি"], correct: 2 },
+            { id: 47, section: "বাংলাদেশ অংশ", q: "একনেক কবে পদ্মা ব্যারাজ প্রকল্প অনুমোদন দেয়?", options: ["১৩ মে, ২০২৬", "২০ জুন, ২০২৬", "১ জুলাই, ২০২৬", "১৬ আগস্ট, ২০২৬"], correct: 0 },
+            { id: 48, section: "বাংলাদেশ অংশ", q: "পদ্মা ব্যারাজ নির্মাণের প্রাথমিক লক্ষ্য দেশের দক্ষিণ-পশ্চিমাঞ্চলের কয়টি নদীকে পুনর্জীবিত করা?", options: ["৩টি", "৪টি", "৫টি", "৭টি"], correct: 2 },
+            { id: 49, section: "বাংলাদেশ অংশ", q: "পদ্মা ব্যারাজ প্রকল্পে কত মেগাওয়াট জলবিদ্যুৎ উৎপাদনের পরিকল্পনা রয়েছে?", options: ["৫০ মেগাওয়াট", "১০০ মেগাওয়াট", "১১৩ মেগাওয়াট", "১৫০ মেগাওয়াট"], correct: 2 },
+            { id: 50, section: "বাংলাদেশ অংশ", q: "দেশের প্রথম ব্যারাজ কোথায় নির্মিত হয়েছিল?", options: ["তিস্তা নদীর ওপর", "মনু নদীর ওপর (মৌলভীবাজার)", "গড়াই নদীর ওপর", "বরেন্দ্র অঞ্চলে"], correct: 1 },
+
+            // --- আন্তর্জাতিক অংশ (৫১ থেকে ১০০) ---
+            { id: 51, section: "আন্তর্জাতিক অংশ", q: "নেপাল-তিব্বত সীমান্তে অবস্থিত কোন পর্বত থেকে হিমবাহ ও পাথরের স্তর ধসে পড়েছিল?", options: ["মাকালু পর্বত", "লাংতাং লিরুং পর্বত", "অন্নপূর্ণা পর্বত", "কাঞ্চনজঙ্ঘা"], correct: 1 },
+            { id: 52, section: "আন্তর্জাতিক অংশ", q: "নেপাল-তিব্বত সীমান্তে ধসের ফলে কোন নদীর পথ সাময়িকভাবে আটকে কৃত্রিম বাঁধ তৈরি হয়?", options: ["ত্রিশূলী নদী", "ভোতেকোশি নদী", "লেন্দে খোলা", "বাগমতি নদী"], correct: 2 },
+            { id: 53, section: "আন্তর্জাতিক অংশ", q: "নেপাল-তিব্বত সীমান্তের বন্যায় কোন স্থল সীমান্তবন্দরটি সম্পূর্ণ ধ্বংস হয়ে যায়?", options: ["রসুয়া বন্দর", "গিরং বন্দর", "ঝাংমু বন্দর", "তাতোপানি বন্দর"], correct: 1 },
+            { id: 54, section: "আন্তর্জাতিক অংশ", q: "ICIMOD কত সালে প্রতিষ্ঠিত হয়?", options: ["১৯৭১ সালে", "১৯৮৩ সালে", "১৯৯০ সালে", "২০০০ সালে"], correct: 1 },
+            { id: 55, section: "আন্তর্জাতিক অংশ", q: "হিন্দুকুশ-হিমালয় অঞ্চলের ICIMOD-এর সদস্য দেশ কতটি?", options: ["৬টি", "৮টি", "১০টি", "১২টি"], correct: 1 },
+            { id: 56, section: "আন্তর্জাতিক অংশ", q: "'ইকুয়াল আর্থ প্রজেকশন' (সমান-আয়তন মানচিত্র অভিক্ষেপ) কী প্রদর্শন করে?", options: ["কেবল মেরু অঞ্চলের সঠিক আকৃতি", "দেশ ও মহাদেশের প্রকৃত আয়তনের অনুপাত", "সমুদ্রের গভীরতা ও উচ্চতা", "বায়ুমণ্ডলের তাপমাত্রা"], correct: 1 },
+            { id: 57, section: "আন্তর্জাতিক অংশ", q: "আফ্রিকা মহাদেশ গ্রিনল্যান্ডের চেয়ে প্রায় কতগুণ বড়?", options: ["প্রায় ৫ গুণ", "প্রায় ১০ গুণ", "প্রায় ১৪ গুণ", "প্রায় ২০ গুণ"], correct: 2 },
+            { id: 58, section: "আন্তর্জাতিক অংশ", q: "'ইকুয়াল আর্থ মানচিত্র' কত সালে প্রথম প্রকাশ করা হয়?", options: ["২০১৫ সালে", "২০১৮ সালে", "২০২০ সালে", "২০২৩ সালে"], correct: 1 },
+            { id: 59, section: "আন্তর্জাতিক অংশ", q: "মারকেটর মানচিত্র কে তৈরি করেন?", options: ["গেরার্জুস মারকেটর", "বোজন সাভরিচ", "টম প্যাটারসন", "বার্নহার্ড জেনি"], correct: 0 },
+            { id: 60, section: "আন্তর্জাতিক অংশ", q: "জাতিসংঘের সাধারণ পরিষদে 'ইকুয়াল আর্থ প্রজেকশন' প্রস্তাব উত্থাপনে নেতৃত্ব দেয় কোন দেশ?", options: ["দক্ষিণ আফ্রিকা", "টোগো", "নাইজেরিয়া", "ব্রাজিল"], correct: 1 },
+            { id: 61, section: "আন্তর্জাতিক অংশ", q: "নাসার চাঁদে মানুষ পাঠানোর নতুন মিশনের নাম কী?", options: ["অ্যাপোলো", "আর্টেমিস", "ভোয়েজার", "ক্যুরিয়োসিটি"], correct: 1 },
+            { id: 62, section: "আন্তর্জাতিক অংশ", q: "আর্টেমিস মিশন পরিচালনার জন্য নাসার শক্তিশালী রকেটের নাম কী?", options: ["Falcon Heavy", "Space Launch System (SLS)", "Saturn V", "Starship"], correct: 1 },
+            { id: 63, section: "আন্তর্জাতিক অংশ", q: "চাঁদের নিকটবর্তী অঞ্চলে ভ্রমণ করা প্রথম কৃষ্ণাঙ্গ নভোচারী কে?", options: ["রেইড ওয়াইজম্যান", "ভিক্টর গ্লোভার", "জেরেমি হ্যানসেন", "ক্রিস্টিনা কোচ"], correct: 1 },
+            { id: 64, section: "আন্তর্জাতিক অংশ", q: "দক্ষিণ প্রশান্ত মহাসাগরের দ্বীপ দেশ 'নাউরু'-র নতুন আনুষ্ঠানিক নাম কী?", options: ["নাওয়েরো প্রজাতন্ত্র (Republic of Naoero)", "টুভ্যালু প্রজাতন্ত্র", "কিরিবাতি প্রজাতন্ত্র", "সামোয়া প্রজাতন্ত্র"], correct: 0 },
+            { id: 65, section: "আন্তর্জাতিক অংশ", q: "নাওয়েরো দেশের রাজধানী কোথায়?", options: ["আপিয়া", "সুভা", "ইয়ারেন", "হোনিয়ারা"], correct: 2 },
+            { id: 66, section: "আন্তর্জাতিক অংশ", q: "কুখ্যাত 'এপস্টেইন ফাইল' কবে প্রকাশিত হয়?", options: ["৩০ জানুয়ারি, ২০২৬", "১৫ ফেব্রুয়ারি, ২০২৬", "১ জানুয়ারি, ২০২৬", "১০ মার্চ, ২০২৬"], correct: 0 },
+            { id: 67, section: "আন্তর্জাতিক অংশ", q: "এপস্টেইন ফাইলের সাথে জড়িত ক্যারিবিয়ান সাগরের দ্বীপটির নাম কী?", options: ["নিঝুম দ্বীপ", "লিটল সেন্ট জেমস", "বোরা বোরা", "ভার্জিন দ্বীপ"], correct: 1 },
+            { id: 68, section: "আন্তর্জাতিক অংশ", q: "মক্কা যৌথ প্রতিরক্ষা চুক্তি বা 'মক্কা চুক্তি' কবে স্বাক্ষরিত হয়?", options: ["৭ আগস্ট, ২০২৬", "১৭ আগস্ট, ২০২৬", "৩০ জুলাই, ২০২৬", "৩১ আগস্ট, ২০২৬"], correct: 0 },
+            { id: 69, section: "আন্তর্জাতিক অংশ", q: "মক্কা প্রতিরক্ষা জোটকে কী হিসেবে অভিহিত করা হয়?", options: ["আরব ন্যাটো", "মুসলিম ন্যাটো", "এশীয় ন্যাটো", "মধ্যপ্রাচ্য জোট"], correct: 1 },
+            { id: 70, section: "আন্তর্জাতিক অংশ", q: "সৌদি আরবের নেতৃত্বে গঠিত 'বহুজাতিক সামুদ্রিক প্রতিরক্ষা জোট'-এর সদস্য দেশ কয়টি?", options: ["১০টি", "১২টি", "১৪টি", "১৬টি"], correct: 2 },
+            { id: 71, section: "আন্তর্জাতিক অংশ", q: "লোহিত সাগর তীরবর্তী দেশ মোট কতটি?", options: ["৪টি", "৫টি", "৬টি", "৭টি"], correct: 2 },
+            { id: 72, section: "আন্তর্জাতিক অংশ", q: "কোন প্রণালি লোহিত সাগর ও এডেন উপসাগরকে যুক্ত করেছে?", options: ["হরমুজ প্রণালি", "বাব আল-মান্দেব প্রণালি", "মালাক্কা প্রণালি", "সাসেক্স প্রণালি"], correct: 1 },
+            { id: 73, section: "আন্তর্জাতিক অংশ", q: "উন্মুক্ত সমুদ্র চুক্তি বা High Seas Treaty কবে কার্যকর হয়?", options: ["১৭ জানুয়ারি, ২০২৬", "২০ সেপ্টেম্বর, ২০২৫", "৪ মার্চ, ২০২৩", "১ জুলাই, ২০২৬"], correct: 0 },
+            { id: 74, section: "আন্তর্জাতিক অংশ", q: "৬০তম দেশ হিসেবে উন্মুক্ত সমুদ্র চুক্তি অনুসমর্থন করে কোন দেশ?", options: ["বাংলাদেশ", "মরক্কো", "মিশর", "দক্ষিণ আফ্রিকা"], correct: 1 },
+            { id: 75, section: "আন্তর্জাতিক অংশ", q: "উন্মুক্ত সমুদ্র চুক্তির লক্ষ্য কী?", options: ["২০৩০ সালের মধ্যে উন্মুক্ত সমুদ্রের ৩০% এলাকা সংরক্ষণ", "২০৫০ সালের মধ্যে মাছ ধরা সম্পূর্ণ নিষিদ্ধ করা", "সমুদ্রের পানি দূষণ শূন্যে নামিয়ে আনা", "গভীর সমুদ্রে খনিজ উত্তোলন নিয়ন্ত্রণ করা"], correct: 0 },
+            { id: 76, section: "আন্তর্জাতিক অংশ", q: "উপকূল থেকে সমুদ্রের দিকে কত নটিক্যাল মাইল পর্যন্ত এলাকাকে বিশেষ অর্থনৈতিক অঞ্চল (EEZ) বলা হয়?", options: ["১২ নটিক্যাল মাইল", "২৪ নটিক্যাল মাইল", "২০০ নটিক্যাল মাইল", "৩০০ নটিক্যাল মাইল"], correct: 2 },
+            { id: 77, section: "আন্তর্জাতিক অংশ", q: "বাংলাদেশ কতটি সামুদ্রিক কনভেনশনে ৫ জুলাই, ২০২৬ যোগ দেয়?", options: ["২টি", "৩টি", "৪টি", "৫টি"], correct: 1 },
+            { id: 78, section: "আন্তর্জাতিক অংশ", q: "২৩তম বিশ্বকাপ ফুটবল ২০২৬-এর স্লোগান (Motto) কী?", options: ["Live The Game", "WE ARE 26", "Football Unite", "Feel The Passion"], correct: 1 },
+            { id: 79, section: "আন্তর্জাতিক অংশ", q: "২০২৬ বিশ্বকাপে মোট কতটি দল অংশগ্রহণ করে?", options: ["৩২টি", "৩৬টি", "৪০টি", "৪৮টি"], correct: 3 },
+            { id: 80, section: "আন্তর্জাতিক অংশ", q: "২০২৬ বিশ্বকাপের ৩টি মাসকটের নাম কী কী?", options: ["ম্যাপল, ক্লাচ ও জায়ু", "জাকমি, ফুটি ও স্টার", "টাইগার, লায়ন ও বিয়ার", "রোজ, লিলি ও তুলিপ"], correct: 0 },
+            { id: 81, section: "আন্তর্জাতিক অংশ", q: "২৩তম বিশ্বকাপ ফুটবলে চ্যাম্পিয়ন হয় কোন দেশ?", options: ["আর্জেন্টিনা", "ফ্রান্স", "স্পেন", "ব্রাজিল"], correct: 2 },
+            { id: 82, section: "আন্তর্জাতিক অংশ", q: "২০২৬ বিশ্বকাপে গোল্ডেন বল (সেরা খেলোয়াড়) লাভ করেন কে?", options: ["লিওনেল মেসি", "রদ্রি", "কিলিয়ান এমবাপ্পে", "উনাই সিমন"], correct: 1 },
+            { id: 83, section: "আন্তর্জাতিক অংশ", q: "২০২৬ বিশ্বকাপে গোল্ডেন বুট (সর্বোচ্চ গোলদাতা) কে হন?", options: ["লিওনেল মেসি", "হ্যারি কেইন", "কিলিয়ান এমবাপ্পে", "রদ্রি"], correct: 2 },
+            { id: 84, section: "আন্তর্জাতিক অংশ", q: "বিশ্বকাপ ইতিহাসের ৩ হাজারতম গোলটি করেন কে?", options: ["লিওনেল মেসি", "এনজো ফার্নান্দেজ", "কিলিয়ান এমবাপ্পে", "বুকায়ো সাকা"], correct: 1 },
+            { id: 85, section: "আন্তর্জাতিক অংশ", q: "২৪তম বিশ্বকাপ ফুটবল ২০৩০ কোথায় অনুষ্ঠিত হবে?", options: ["মরক্কো, পর্তুগাল ও স্পেন", "সৌদি আরব ও কাতার", "অস্ট্রেলিয়া ও নিউজিল্যান্ড", "আর্জেন্টিনা ও ব্রাজিল"], correct: 0 },
+            { id: 86, section: "আন্তর্জাতিক অংশ", q: "মধ্যপ্রাচ্যের প্রথম দেশ হিসেবে মৃত্যুদণ্ড বাতিল করে কোনটি?", options: ["সংযুক্ত আরব আমিরাত", "লেবানন", "কাতার", "ওমান"], correct: 1 },
+            { id: 87, section: "আন্তর্জাতিক অংশ", q: "বিশ্বে সর্বপ্রথম 'কার্বন ট্যাক্স' চালু করে কোন দেশ?", options: ["সুইডেন", "ফিনল্যান্ড", "নরওয়ে", "ডেনমার্ক"], correct: 1 },
+            { id: 88, section: "আন্তর্জাতিক অংশ", q: "বিশ্বের প্রথম ডিজিটাল রাষ্ট্র কোনটি?", options: ["টুভ্যালু", "নাউরু", "মালদ্বীপ", "আইসল্যান্ড"], correct: 0 },
+            { id: 89, section: "আন্তর্জাতিক অংশ", q: "কোন দেশ বিশ্বে প্রথম হাইড্রোজেন ট্রেন চালু করে?", options: ["জাপান", "জার্মানি", "ফ্রান্স", "চীন"], correct: 1 },
+            { id: 90, section: "আন্তর্জাতিক অংশ", q: "আফগানিস্তান তালেবান সরকার নিচের কোন খেলাটি নিষিদ্ধ করেছে?", options: ["ক্রিকেট", "ফুটবল", "দাবা", "হকি"], correct: 2 },
+            { id: 91, section: "আন্তর্জাতিক অংশ", q: "ভারত সরকার বাংলা ভাষাকে কী হিসেবে স্বীকৃতি দেয়?", options: ["দাপ্তরিক ভাষা", "আদি বা ধ্রুপদী ভাষা", "আঞ্চলিক ভাষা", "সহযোগী ভাষা"], correct: 1 },
+            { id: 92, section: "আন্তর্জাতিক অংশ", q: "টাইম সাময়িকী'র বর্ষসেরা ২০২৫ ব্যক্তিত্ব কে/কারা নির্বাচিত হন?", options: ["এআইয়ের স্থপতিরা", "এলন মাস্ক", "পোপ ফ্রান্সিস", "জলবায়ু কর্মীরা"], correct: 0 },
+            { id: 93, section: "আন্তর্জাতিক অংশ", q: "জাতিসংঘের প্রথম বৈশ্বিক শান্তির দূত (Global Advocate for Peace) কে?", options: ["মরিয়ম বুকার হাসান", "মালালা ইউসুফজাই", "গ্রেটা থুনবার্গ", "ন্যান্সি পলিসি"], correct: 0 },
+            { id: 94, section: "আন্তর্জাতিক অংশ", q: "সিরিয়ার আদালত সাবেক সিরীয় প্রেসিডেন্ট বাশার আল আসাদকে কবে মৃত্যুদণ্ড দেয়?", options: ["১১ জুলাই, ২০২৬", "১১ আগস্ট, ২০২৬", "১ সেপ্টেম্বর, ২০২৬", "২১ জুন, ২০২৬"], correct: 1 },
+            { id: 95, section: "আন্তর্জাতিক অংশ", q: "বিশ্বের প্রথম দেশ হিসেবে আফগানিস্তানের বর্তমান তালেবান সরকারকে স্বীকৃতি দেয় কোন দেশ?", options: ["চীন", "পাকিস্তান", "রাশিয়া", "সৌদি আরব"], correct: 2 },
+            { id: 96, section: "আন্তর্জাতিক অংশ", q: "প্রকৃতিকে (মাউন্ট তারানাকি পর্বতকে) আইনিভাবে ব্যক্তি হিসেবে স্বীকৃতি দেওয়া প্রথম দেশ কোনটি?", options: ["নিউজিল্যান্ড", "ইকুয়েডর", "কানাডা", "অস্ট্রেলিয়া"], correct: 0 },
+            { id: 97, section: "আন্তর্জাতিক অংশ", q: "১ জুলাই, ২০২৬ সার্কভুক্ত কোন দেশটি উচ্চ মধ্যম আয়ের দেশের তালিকায় উন্নীত হয়?", options: ["বাংলাদেশ", "নেপাল", "শ্রীলংকা", "পাকিস্তান"], correct: 2 },
+            { id: 98, section: "আন্তর্জাতিক অংশ", q: "বিশ্বের বৃহত্তম পারমাণবিক বিদ্যুৎকেন্দ্র কোনটি?", options: ["জাপোরিজিয়া পারমাণবিক বিদ্যুৎকেন্দ্র", "কাশিওয়াজাকি-কারিওয়া বিদ্যুৎকেন্দ্র", "ফুসুকো পারমাণবিক কেন্দ্র", "রোস্তভ পারমাণবিক কেন্দ্র"], correct: 1 },
+            { id: 99, section: "আন্তর্জাতিক অংশ", q: "বিশ্বের প্রথম দেশ হিসেবে প্রথম প্রজন্মভিত্তিক ধূমপান নিষেধাজ্ঞা কার্যকর হয়েছে কোথায়?", options: ["মালদ্বীপ", "সিঙ্গাপুর", "নিউজিল্যান্ড", "ভুটান"], correct: 0 },
+            { id: 100, section: "আন্তর্জাতিক অংশ", q: "যুক্তরাষ্ট্রের ন্যাটো-বহির্ভূত 'প্রধান মিত্র' (Major Non-NATO Ally) দেশ হিসেবে স্বীকৃতি পায় কোনটি?", options: ["সংযুক্ত আরব আমিরাত", "সৌদি আরব", "কাতার", "মিশর"], correct: 1 }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let totalTimeSeconds = 1800; // 30 minutes
+        let timeLeft = 1800; 
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-indigo-600 text-white border border-indigo-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const badge = document.getElementById('section-badge');
+            badge.innerText = q.section;
+            if (q.section === "বাংলাদেশ অংশ") {
+                badge.className = "ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-blue-900 text-blue-200 border border-blue-700";
+            } else {
+                badge.className = "ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-purple-900 text-purple-200 border border-purple-700";
+            }
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-indigo-600/30 border-indigo-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-indigo-500 border-indigo-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let timeSpent = totalTimeSeconds - timeLeft;
+            let spentMins = Math.floor(timeSpent / 60);
+            let spentSecs = timeSpent % 60;
+            document.getElementById('time-taken-text').innerText = `সময় লেগেছে: ${spentMins} মিনিট ${spentSecs} সেকেন্ড`;
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let sectionBadgeClass = q.section === "বাংলাদেশ অংশ" ? "bg-blue-900 text-blue-200 border-blue-700" : "bg-purple-900 text-purple-200 border-purple-700";
+                
+                let html = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400">প্রশ্ন #${qIdx + 1}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold rounded border ${sectionBadgeClass}">${q.section}</span>
+                </div>`;
+                html += `<p class="font-semibold text-slate-200 text-sm md:text-base">${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1800;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
