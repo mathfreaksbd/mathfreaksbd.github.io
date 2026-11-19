@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাংলার প্রাচীন ও মধ্যযুগের ইতিহাস - DU B-Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Container -->
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-emerald-700 via-teal-700 to-indigo-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">বাংলার প্রাচীন ও মধ্যযুগের ইতিহাস</h1>
+            <p class="text-sm text-emerald-100 mt-1">বাংলাদেশ বিষয়াবলি | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>অধ্যায়: বাংলার প্রাচীন ও মধ্যযুগের ইতিহাস।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের নিচে ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <!-- Top Bar -->
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-emerald-900 text-emerald-200 border border-emerald-700">প্রাচীন ও মধ্যযুগ</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 25:00
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed">
+                    <!-- Question goes here -->
+                </h2>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Options go here -->
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <!-- Question Palette (Grid) -->
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700">
+                    <!-- Palette numbers go here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <!-- Score Summary Card -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <!-- Review Tabs Navigation -->
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <!-- Tab Content Containers -->
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700">
+                <!-- Dynamic content -->
+            </div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script -->
+    <script>
+        const questions = [
+            { id: 1, section: "প্রাচীন জনপদ", q: "বাঙালি জাতির প্রধান অংশ গঠিত হয়েছে কোন জনগোষ্ঠী থেকে?", options: ["দ্রাবিড়", "অস্ট্রিক", "মঙ্গোলয়েড", "আর্য"], correct: 1, exp: "বাঙালি জাতির গঠনে প্রধান ভূমিকা রেখেছে অস্ট্রিক জনগোষ্ঠী।" },
+            { id: 2, section: "মধ্যযুগের ইতিহাস", q: "'বাঙ্গালাহ' নামের প্রচলন করেন কে?", options: ["ফখরুদ্দিন মুবারক শাহ", "শামসুদ্দিন ইলিয়াস শাহ", "আলাউদ্দিন হুসেন শাহ", "সম্রাট আকবর"], correct: 1, exp: "সুলতান শামসুদ্দিন ইলিয়াস শাহ সমগ্র বাংলাকে একত্র করে 'বাঙ্গালাহ' নামের প্রচলন করেন।" },
+            { id: 3, section: "প্রাচীন জনপদ", q: "'বঙ্গ' নামের প্রথম উল্লেখ পাওয়া যায় কোন গ্রন্থে?", options: ["অর্থশাস্ত্র", "ঐতরেয় আরণ্যক", "আইন-ই-আকবরী", "ইন্ডিকা"], correct: 1, exp: "বৈদিক গ্রন্থ 'ঐতরেয় আরণ্যক'-এ সর্বপ্রথম 'বঙ্গ' নামের উল্লেখ পাওয়া যায়।" },
+            { id: 4, section: "মধ্যযুগের ইতিহাস", q: "ইখতিয়ার উদ্দিন মুহাম্মদ বিন বখতিয়ার খলজি কত সালে এবং কাকে পরাজিত করে বাংলা দখল করেন?", options: ["১২০২ সালে, বল্লাল সেন", "১২০৪ সালে, লক্ষণ সেন", "১২০৬ সালে, হেমন্ত সেন", "১৫৭৬ সালে, দাউদ কররানী"], correct: 1, exp: "১২০৪ সালে বখতিয়ার খলজি সেন শাসক লক্ষণ সেনকে পরাজিত করে নদীয়া ও বাংলায় মুসলিম শাসনের সূচনা করেন।" },
+            { id: 5, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "ষাট গম্বুজ মসজিদে গম্বুজের সংখ্যা মোট কয়টি?", options: ["৬০টি", "৭৭টি", "৮১টি", "৮৫টি"], correct: 2, exp: "নাম 'ষাট গম্বুজ' হলেও খান জাহান আলীর নির্মিত এই মসজিদে মোট গম্বুজ রয়েছে ৮১টি।" },
+            { id: 6, section: "প্রাচীন রাজবংশ", q: "মাৎস্যন্যায় বলতে কী বোঝায়?", options: ["মৎস্য চাষের নিয়ম", "সমাজের আইন-শৃঙ্খলাবিহীন অরাজক অবস্থা", "নদী শাসনের প্রাচীন রীতি", "কর আদায়ের বিশেষ ব্যবস্থা"], correct: 1, exp: "পাল যুগের পূর্বে ৭ম-৮ম শতকে বাংলায় যে চরম অরাজকতা ও বিশৃঙ্খলা চলেছিল, তাকে মাৎস্যন্যায় বলে।" },
+            { id: 7, section: "মোগল আমল", q: "বাংলায় পহেলা বৈশাখে বাংলা নববর্ষ চালু করেন কে?", options: ["সম্রাট বাবর", "সম্রাট হুমায়ুন", "সম্রাট আকবর", "সম্রাট জাহাঙ্গীর"], correct: 2, exp: "খাজনা আদায়ের সুবিধার্থে মোগল সম্রাট আকবর বাংলা সন ও পহেলা বৈশাখ প্রবর্তন করেন।" },
+            { id: 8, section: "প্রাচীন জনপদ", q: "প্রাচীন বাংলার সবচেয়ে প্রাচীন জনপদ কোনটি?", options: ["গৌড়", "পুণ্ড্র", "সমতট", "হরিকেল"], correct: 1, exp: "পুণ্ড্র হলো বাংলার প্রাচীনতম জনপদ, যার রাজধানী পুণ্ড্রনগর বা বর্তমান মহাস্থানগড়।" },
+            { id: 9, section: "মধ্যযুগের ইতিহাস", q: "মরক্কোর পরিব্রাজক ইবনে বতুতা কার শাসনামলে বাংলায় আগমন করেন?", options: ["ইলিয়াস শাহ", "ফখরুদ্দিন মুবারক শাহ", "গিয়াসউদ্দিন আজম শাহ", "হুসেন শাহ"], correct: 1, exp: "ইবনে বতুতা ১৩৪৫ সালে সোনারগাঁওয়ের শাসক ফখরুদ্দিন মুবারক শাহের আমলে বাংলায় আসেন।" },
+            { id: 10, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "লালবাগ কেল্লার আদি নাম কী?", options: ["জাহাঙ্গীরনগর দুর্গ", "আওরঙ্গবাদ দুর্গ", "ইদ্রাকপুর দুর্গ", "সোনারগাঁও দুর্গ"], correct: 1, exp: "মোগল আমলে নির্মিত ঢাকার লালবাগ কেল্লার আদি নাম ছিল আওরঙ্গবাদ দুর্গ।" },
+            { id: 11, section: "প্রাচীন রাজবংশ", q: "বাংলায় প্রথম বংশানুক্রমিক শাসন শুরু হয় কোন বংশের মাধ্যমে?", options: ["মৌর্য বংশ", "গুপ্ত বংশ", "পাল বংশ", "সেন বংশ"], correct: 2, exp: "গোপালের মাধ্যমে পাল বংশ বাংলায় দীর্ঘস্থায়ী ও বংশানুক্রমিক শাসনের সূচনা করে।" },
+            { id: 12, section: "মোগল আমল", q: "পলাশির যুদ্ধ কত সালে ও কোন নদীর তীরে সংঘটিত হয়?", options: ["১৭৫৬ সালে, পদ্মা", "১৭৫৭ সালে, ভাগীরথী", "১৭৬১ সালে, যমুনা", "১৭৬৪ সালে, গঙ্গা"], correct: 1, exp: "২৩ জুন ১৭৫৭ সালে নবাব সিরাজউদ্দৌলা ও ইংরেজদের মধ্যে ভাগীরথী নদীর তীরে পলাশির যুদ্ধ হয়।" },
+            { id: 13, section: "প্রাচীন জনপদ", q: "সর্বপ্রথম দেশবাচক 'বাংলা' বা 'বাঙ্গালা' শব্দের ব্যবহার হয় কোন গ্রন্থে?", options: ["চর্যাপদ", "রামচরিত", "আইন-ই-আকবরী", "ইন্ডিকা"], correct: 2, exp: "আবুল ফজল রচিত 'আইন-ই-আকবরী' গ্রন্থে সর্বপ্রথম দেশবাচক 'বাঙ্গালা' শব্দের ব্যবহার দেখা যায়।" },
+            { id: 14, section: "প্রাচীন রাজবংশ", q: "প্রাচীন বাংলার প্রথম স্বাধীন ও সার্বভৌম রাজা কে ছিলেন?", options: ["ধর্মপাল", "শশাঙ্ক", "বিজয় সেন", "গোপাল"], correct: 1, exp: "গৌড়ের রাজা শশাঙ্ক ছিলেন প্রাচীন বাংলার প্রথম স্বাধীন ও সার্বভৌম শাসক; তাঁর রাজধানী ছিল কর্ণসুবর্ণ।" },
+            { id: 15, section: "মধ্যযুগের ইতিহাস", q: "কার শাসনামলকে বাংলার মুসলমান শাসনের ইতিহাসে 'স্বর্ণযুগ' বলা হয়?", options: ["ইলিয়াস শাহ", "আলাউদ্দিন হুসেন শাহ", "শের শাহ", "ইসলাম খান"], correct: 1, exp: "আলাউদ্দিন হুসেন শাহের আমলে বাংলায় শান্তি, শৃঙ্খলা এবং ভাষা ও সাহিত্যের ব্যাপক সমৃদ্ধি ঘটে।" },
+            { id: 16, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "পাহাড়পুর বৌদ্ধ বিহারকে ইউনেস্কো কত সালে বিশ্ব ঐতিহ্যের স্বীকৃতি দেয়?", options: ["১৯৭১", "১৯৮০", "১৯৮৫", "১৯৯৭"], correct: 2, exp: "১৯৮৫ সালে নওগাঁর পাহাড়পুর বৌদ্ধ বিহার (সোমপুর বিহার) ও বাগেরহাটের ষাট গম্বুজ মসজিদ ইউনেস্কো স্বীকৃতি পায়।" },
+            { id: 17, section: "প্রাচীন রাজবংশ", q: "'অর্থশাস্ত্র' গ্রন্থের রচয়িতা কে?", options: ["মেগাস্থিনিস", "কৌটিল্য (চাণক্য)", "বাণভট্ট", "সন্ধ্যাকর নন্দী"], correct: 1, exp: "মৌর্য শাসনামলের প্রেক্ষাপটে রাষ্ট্রনীতি ও অর্থনীতি নিয়ে কৌটিল্য বা চাণক্য 'অর্থশাস্ত্র' রচনা করেন।" },
+            { id: 18, section: "মোগল আমল", q: "ঢাকা বাংলার প্রথম রাজধানী হয় কত সালে?", options: ["১৫৭৬", "১৬১০", "১৬৬০", "১৭০৪"], correct: 1, exp: "সুবাদার ইসলাম খান ১৬১০ সালে রাজমহল থেকে বাংলার রাজধানী ঢাকায় স্থানান্তর করেন।" },
+            { id: 19, section: "প্রাচীন জনপদ", q: "আয়তনে বাংলার বৃহত্তম জনপদ কোনটি?", options: ["পুণ্ড্র", "বরেন্দ্র", "বঙ্গ", "সমতট"], correct: 2, exp: "ঢাকা, ময়মনসিংহ, যশোর ও খুলনা অঞ্চলজুড়ে বিস্তৃত 'বঙ্গ' ছিল আয়তনে সবচেয়ে বড় জনপদ।" },
+            { id: 20, section: "মধ্যযুগের ইতিহাস", q: "দিল্লির সিংহাসনে আরোহণকারী প্রথম ও একমাত্র নারী শাসক কে ছিলেন?", options: ["গুলবদন বেগম", "সুলতানা রাজিয়া", "নূরজাহান", "মমতাজ মহল"], correct: 1, exp: "ইলতুৎমিশের কন্যা সুলতানা রাজিয়া ছিলেন দিল্লির সালতানাতের প্রথম ও একমাত্র নারী শাসক।" },
+            { id: 21, section: "প্রাচীন রাজবংশ", q: "নালন্দা বিশ্ববিদ্যালয়ের সর্বাধ্যক্ষ বাঙালি পণ্ডিত কে ছিলেন?", options: ["অতীশ দীপঙ্কর", "শীলভদ্র", "হিউয়েন সাং", "ধর্মপাল"], correct: 1, exp: "বৌদ্ধ পণ্ডিত শীলভদ্র নালন্দা মহাবিহারের আচার্য ছিলেন এবং চীনা পরিব্রাজক হিউয়েন সাং তাঁর কাছে পড়েন।" },
+            { id: 22, section: "মোগল আমল", q: "বাংলার প্রথম নবাব কে ছিলেন?", options: ["সিরাজউদ্দৌলা", "মুর্শিদকুলি খান", "আলীবর্দী খান", "শায়েস্তা খান"], correct: 1, exp: "মুর্শিদকুলি খান বাংলার শেষ সুবাদার ও প্রথম নবাব হিসেবে পরিচিত এবং তিনি রাজধানী মুর্শিদাবাদে নেন।" },
+            { id: 23, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "ময়নামতির পূর্ব নাম কী ছিল?", options: ["রোহিতগিরি", "ভবদেব বিহার", "বাকলা", "কর্ণসুবর্ণ"], correct: 0, exp: "কুমিল্লায় অবস্থিত ময়নামতির প্রাচীন ও পূর্ব নাম ছিল রোহিতগিরি।" },
+            { id: 24, section: "প্রাচীন জনপদ", q: "বাংলার প্রাচীনতম বন্দরের নাম কী?", options: ["চট্টগ্রাম", "তাম্রলিপ্ত / তাম্রলিপ্তি", "সপ্তগ্রাম", "হুগলি"], correct: 1, exp: "প্রাচীন বাংলার অন্যতম প্রধান ও প্রাচীনতম বন্দর ছিল তাম্রলিপ্ত।" },
+            { id: 25, section: "মধ্যযুগের ইতিহাস", q: "'ইউসুফ জুলেখা' কাব্যের রচয়িতা কে?", options: ["দৌলত কাজী", "শাহ মুহম্মদ সগীর", "আলাওল", "চণ্ডীদাস"], correct: 1, exp: "মধ্যযুগের বাংলা সাহিত্যের অন্যতম প্রাচীন প্রণয়োপাখ্যান 'ইউসুফ জুলেখা' রচনা করেন শাহ মুহম্মদ সগীর।" },
+            { id: 26, section: "প্রাচীন রাজবংশ", q: "'প্রাচীন ভারতের নেপোলিয়ন' বলা হয় কাকে?", options: ["চন্দ্রগুপ্ত মৌর্য", "অশোক", "সমুদ্রগুপ্ত", "দ্বিতীয় চন্দ্রগুপ্ত"], correct: 2, exp: "গুপ্ত সম্রাট সমুদ্রগুপ্ত তাঁর সামরিক অভিযান ও রাজ্যজয়ের কারণে 'ভারতের নেপোলিয়ন' নামে পরিচিত।" },
+            { id: 27, section: "মোগল আমল", q: "বারো ভূঁইয়াদের প্রধান নেতা কে ছিলেন এবং তাঁর উপাধি কী ছিল?", options: ["মুসা খান - বারো ভূঁইয়া", "ঈসা খান - মসনদ-ই-আলা", "কেদার রায় - বিক্রমাদিত্য", "প্রতাপাদিত্য - মহারাজ"], correct: 1, exp: "বারো ভূঁইয়াদের নেতৃত্বে ছিলেন ঈসা খান এবং তিনি 'মসনদ-ই-আলা' উপাধি গ্রহণ করেন।" },
+            { id: 28, section: "প্রাচীন জনপদ", q: "বরিশালের প্রাচীন নাম কী ছিল?", options: ["সমতট", "বাকলা / চন্দ্রদ্বীপ", "হরিকেল", "গৌড়"], correct: 1, exp: "বরিশাল অঞ্চল প্রাচীনকালে চন্দ্রদ্বীপ এবং পরবর্তীতে বাকলা নামে পরিচিত ছিল।" },
+            { id: 29, section: "প্রাচীন রাজবংশ", q: "বাংলা সাহিত্যের প্রাচীনতম নিদর্শন কোনটি?", options: ["শ্রীকৃষ্ণকীর্তন", "চর্যাপদ", "মঙ্গলকাব্য", "রামচরিত"], correct: 1, exp: "পাল আমলে রচিত 'চর্যাপদ' বাংলা ভাষা ও সাহিত্যের আদি ও প্রাচীনতম নিদর্শন।" },
+            { id: 30, section: "মধ্যযুগের ইতিহাস", q: "'শাহ-ই-বাঙ্গালাহ' উপাধিটি শামসুদ্দিন ইলিয়াস শাহকে কে দিয়েছিলেন?", options: ["ইবনে বতুতা", "শামস-ই-সিরাজ আফিফ", "আবুল ফজল", "বখতিয়ার খলজি"], correct: 1, exp: "দিল্লির ইতিহাসবিদ শামস-ই-সিরাজ আফিফ ইলিয়াস শাহকে 'শাহ-ই-বাঙ্গালাহ' উপাধিতে ভূষিত করেন।" },
+            { id: 31, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "উয়ারী-বটেশ্বরের সভ্যতা কত বছরের প্রাচীন বলে ধারণা করা হয়?", options: ["১০০০ বছর", "১৫০০ বছর", "২৫০০ বছর", "৪০০০ বছর"], correct: 2, exp: "নরসিংদীর উয়ারী-বটেশ্বরে প্রাপ্ত প্রত্নতাত্ত্বিক নিদর্শন প্রায় ২৫০০ বছরের পুরনো সভ্যতার ইঙ্গিত দেয়।" },
+            { id: 32, section: "প্রাচীন রাজবংশ", q: "কৌলীন্য প্রথা চালু করেন কোন সেন শাসক?", options: ["হেমন্ত সেন", "বিজয় সেন", "বল্লাল সেন", "লক্ষণ সেন"], correct: 2, exp: "সেন বংশের রাজা বল্লাল সেন সমাজে কৌলীন্য প্রথা প্রবর্তন করেন এবং ঢাকেশ্বরী মন্দিরের সাথেও তাঁর নাম জড়িত।" },
+            { id: 33, section: "মোগল আমল", q: "পানিপথের প্রথম যুদ্ধ কত সালে এবং কাদের মধ্যে সংঘটিত হয়?", options: ["১৫২৬ সালে, বাবর ও ইব্রাহিম লোদি", "১৫৫৬ সালে, আকবর ও হিমু", "১৭৫৭ সালে, সিরাজ ও ক্লাইভ", "১৭৬১ সালে, আবদালি ও মারাঠা"], correct: 0, exp: "১৫২৬ সালে বাবর ইব্রাহিম লোদিকে পরাজিত করে পানিপথের প্রথম যুদ্ধে জয়ী হন এবং ভারতে মোগল সাম্রাজ্য প্রতিষ্ঠা করেন।" },
+            { id: 34, section: "প্রাচীন জনপদ", q: "শালবন বিহার কোন জনপদে অবস্থিত এবং এর আদি নাম কী?", options: ["বরেন্দ্র - সোমপুর বিহার", "সমতট - ভবদেব বিহার", "পুণ্ড্র - আনন্দ বিহার", "গৌড় - হলুদ বিহার"], correct: 1, exp: "কুমিল্লার শালবন বিহার প্রাচীন সমতট জনপদে অবস্থিত এবং এর আদি নাম ভবদেব বিহার।" },
+            { id: 35, section: "মধ্যযুগের ইতিহাস", q: "তুর্কি শাসনামলে রাজনৈতিক অস্থিরতার কারণে বাংলা কী নামে পরিচিত ছিল?", options: ["জান্নাতাবাদ", "বুলগাকপুর", "ইসলামাবাদ", "কর্ণসুবর্ণ"], correct: 1, exp: "বারবার বিদ্রোহ ও অস্থিরতার কারণে ঐতিহাসিক বয়ানে বাংলাকে 'বুলগাকপুর' বা বিদ্রোহের নগরী বলা হতো।" },
+            { id: 36, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "মহাস্থানগড় কোন নদীর তীরে অবস্থিত এবং এটি কে আবিষ্কার করেন?", options: ["যমুনা - কানিংহাম", "করতোয়া - অ্যালেকজান্ডার কানিংহাম", "পদ্মা - রাখালদাস বন্দ্যোপাধ্যায়", "তিস্তা - জন মার্শাল"], correct: 1, exp: "বগুড়ার মহাস্থানগড় করতোয়া নদীর তীরে অবস্থিত এবং ১৮৭৯ সালে স্যার অ্যালেকজান্ডার কানিংহাম এটি আবিষ্কার করেন।" },
+            { id: 37, section: "প্রাচীন রাজবংশ", q: "কৈবর্ত বিদ্রোহের নায়ক কে ছিলেন?", options: ["ধর্মপাল", "দিব্য বা দিবোক", "মদনপাল", "গোপাল"], correct: 1, exp: "পাল আমলে দ্বিতীয় মহীপালের শাসনামলে দিব্য বা দিবোকের নেতৃত্বে কৈবর্ত বিদ্রোহ সংঘটিত হয়।" },
+            { id: 38, section: "মোগল আমল", q: "গ্র্যান্ড ট্রাংক রোড নির্মাণ এবং 'পাট্টা ও কবুলিয়ত' প্রথা চালুর কৃতিত্ব কার?", options: ["সম্রাট আকবর", "শের শাহ", "শায়েস্তা খান", "মুর্শিদকুলি খান"], correct: 1, exp: "সুর বংশের শাসক শের শাহ যোগাযোগ ব্যবস্থায় গ্র্যান্ড ট্রাংক রোড ও ভূমি ব্যবস্থায় পাট্টা-কবুলিয়ত চালু করেন।" },
+            { id: 39, section: "প্রাচীন জনপদ", q: "আর্যরা কত খ্রিষ্টপূর্বাব্দে ভারতে আগমন করে এবং তাদের ধর্মগ্রন্থের নাম কী?", options: ["২৫০০ খ্রি.পূ. - পুরাণ", "১৫০০ খ্রি.পূ. - বেদ", "১০০০ খ্রি.পূ. - উপনিষদ", "৫০০ খ্রি.পূ. - ত্রিপিটক"], correct: 1, exp: "আনুমানিক ১৫০০ খ্রিষ্টপূর্বাব্দে আর্যরা ভারতে আসে এবং তাদের প্রধান ধর্মগ্রন্থ হলো বেদ।" },
+            { id: 40, section: "মধ্যযুগের ইতিহাস", q: "পারস্যের বিখ্যাত কবি হাফিজের সাথে বাংলার কোন সুলতানের পত্রালাপ হয়েছিল?", options: ["ইলিয়াস শাহ", "গিয়াসউদ্দিন আজম শাহ", "আলাউদ্দিন হুসেন শাহ", "ফখরুদ্দিন মুবারক শাহ"], correct: 1, exp: "সুলতান গিয়াসউদ্দিন আজম শাহের সাথে পারস্যের কবি হাফিজের কবিতা ও পত্র বিনিময়ের ইতিহাস প্রসিদ্ধ।" },
+            { id: 41, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "আহসান মঞ্জিল কোন নদীর তীরে অবস্থিত এবং নিখিল ভারত মুসলিম লীগ প্রতিষ্ঠার সিদ্ধান্ত কোথায় হয়?", options: ["পদ্মা - ঢাকা গেট", "বুড়িগঙ্গা - আহসান মঞ্জিল", "মেঘনা - লালবাগ কেল্লা", "ধলেশ্বরী - বড় কাটরা"], correct: 1, exp: "বুড়িগঙ্গার তীরে অবস্থিত আহসান মঞ্জিলে ১৯০৬ সালে নিখিল ভারত মুসলিম লীগ গঠনের সিদ্ধান্ত হয়।" },
+            { id: 42, section: "প্রাচীন রাজবংশ", q: "মৌর্য সাম্রাজ্যের প্রতিষ্ঠাতা কে এবং বাংলার প্রাদেশিক রাজধানী কোথায় ছিল?", options: ["অশোক - তাম্রলিপ্ত", "চন্দ্রগুপ্ত মৌর্য - পুণ্ড্রনগর", "বৃহদ্রথ - কর্ণসুবর্ণ", "কৌটিল্য - পাটালিপুত্র"], correct: 1, exp: "চন্দ্রগুপ্ত মৌর্য মৌর্য সাম্রাজ্য প্রতিষ্ঠা করেন এবং মৌর্য আমলে বাংলার প্রাদেশিক রাজধানী ছিল পুণ্ড্রনগর।" },
+            { id: 43, section: "মোগল আমল", q: "চট্টগ্রামের নাম 'ইসলামাবাদ' রাখেন কোন সুবাদার?", options: ["ইসলাম খান", "শায়েস্তা খান", "মীর জুমলা", "শাহ সুজা"], correct: 1, exp: "১৬৬৬ সালে চট্টগ্রাম জয়ের পর সুবাদার শায়েস্তা খান এর নাম রাখেন ইসলামাবাদ।" },
+            { id: 44, section: "প্রাচীন জনপদ", q: "গারো ও চাকমারা কোন নৃগোষ্ঠীর উত্তরপুরুষ?", options: ["অস্ট্রিক", "দ্রাবিড়", "মঙ্গোলয়েড", "নেগ্রিটো"], correct: 2, exp: "পার্বত্য ও উত্তর-পূর্বাঞ্চলের গারো, চাকমাসহ অনেক ক্ষুদ্র নৃগোষ্ঠী মঙ্গোলয়েড শাখার অন্তর্ভুক্ত।" },
+            { id: 45, section: "মধ্যযুগের ইতিহাস", q: "ইবনে বতুতা রচিত বিখ্যাত ভ্রমণকাহিনির নাম কী?", options: ["তুজক-ই-বাবরী", "কিতাব-উল-রেহালা", "হুমায়ুননামা", "আকবরনামা"], correct: 1, exp: "মরক্কোর পরিব্রাজক ইবনে বতুতার ভ্রমণবৃত্তান্ত সংকলিত হয়েছে 'কিতাব-উল-রেহালা' গ্রন্থে।" },
+            { id: 46, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "অতীশ দীপঙ্কর শ্রীজ্ঞানের জন্মস্থান কোথায়?", options: ["বিক্রমপুর (বজ্রযোগিনী, মুন্সীগঞ্জ)", "মহাস্থানগড়, বগুড়া", "ময়নামতি, কুমিল্লা", "পানাম নগর, নারায়ণগঞ্জ"], correct: 0, exp: "প্রখ্যাত বৌদ্ধ পণ্ডিত অতীশ দীপঙ্কর শ্রীজ্ঞান মুন্সীগঞ্জের বজ্রযোগিনীতে জন্মগ্রহণ করেন।" },
+            { id: 47, section: "প্রাচীন রাজবংশ", q: "নওগাঁয় অবস্থিত সোমপুর মহাবিহার প্রতিষ্ঠা করেন কে?", options: ["গোপাল", "ধর্মপাল", "দেবপাল", "মহিপাল"], correct: 1, exp: "পাল বংশের শ্রেষ্ঠ শাসক ধর্মপাল নওগাঁর বদলগাছীতে সোমপুর মহাবিহার নির্মাণ করেন।" },
+            { id: 48, section: "মোগল আমল", q: "'তুযুক-ই-বাবরী' আত্মজীবনীটি কোন ভাষায় রচিত এবং এর লেখক কে?", options: ["ফারসি - আবুল ফজল", "তুর্কি - সম্রাট বাবর", "আরবি - গুলবদন বেগম", "উর্দু - জাহাঙ্গীর"], correct: 1, exp: "মোগল সাম্রাজ্যের প্রতিষ্ঠাতা সম্রাট বাবর নিজের আত্মজীবনী 'তুযুক-ই-বাবরী' তুর্কি ভাষায় লেখেন।" },
+            { id: 49, section: "প্রাচীন রাজবংশ", q: "'রামচরিত' কাব্যের রচয়িতা কে?", options: ["বাণভট্ট", "সন্ধ্যাকর নন্দী", "কালিদাস", "কৌটিল্য"], correct: 1, exp: "পাল যুগের কবি সন্ধ্যাকর নন্দী 'রামচরিত' কাব্য রচনা করেন।" },
+            { id: 50, section: "মোগল আমল", q: "বাংলার নাম 'জান্নাতাবাদ' রাখেন কে?", options: ["বাবর", "হুমায়ুন", "আকবর", "শাহজাহান"], correct: 1, exp: "গৌড় অভিযানের সময় সম্রাট হুমায়ুন বাংলার নাম দিয়েছিলেন 'জান্নাতাবাদ'।" },
+            { id: 51, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "টেরাকোটা বলতে কী বোঝায়?", options: ["পাথরের মূর্তি", "পোড়া মাটির ফলক", "তামার মুদ্রা", "স্বর্ণের অলংকার"], correct: 1, exp: "প্রাচীন ও মধ্যযুগের স্থাপত্যে অলংকরণের জন্য ব্যবহৃত পোড়া মাটির শিল্পকর্মকে টেরাকোটা বলা হয়।" },
+            { id: 52, section: "প্রাচীন রাজবংশ", q: "মহাকবি কালিদাস কার সভাকবি ছিলেন?", options: ["প্রথম চন্দ্রগুপ্ত", "সমুদ্রগুপ্ত", "দ্বিতীয় চন্দ্রগুপ্ত", "অশোক"], correct: 2, exp: "গুপ্ত সম্রাট দ্বিতীয় চন্দ্রগুপ্তের (বিক্রমাদিত্য) রাজসভার নবরত্নের অন্যতম ছিলেন কালিদাস।" },
+            { id: 53, section: "মধ্যযুগের ইতিহাস", q: "সোনা ও রূপার মুদ্রার পরিবর্তে প্রতীকী তামার মুদ্রা প্রচলন করেন কে?", options: ["কুতুবউদ্দিন আইবেক", "ইলতুৎমিশ", "মুহাম্মদ বিন তুঘলক", "আলাউদ্দিন খলজি"], correct: 2, exp: "দিল্লির সুলতান মুহাম্মদ বিন তুঘলক অর্থনৈতিক সংস্কারের অংশ হিসেবে প্রতীকী তামার মুদ্রা চালু করেন।" },
+            { id: 54, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "ঢাকার সবচেয়ে প্রাচীন মসজিদ কোনটি?", options: ["তারা মসজিদ", "বিনত বিবির মসজিদ", "হোসেনী দালান", "বড় কাটরা"], correct: 1, exp: "ঢাকার নারিন্দায় অবস্থিত বিনত বিবির মসজিদকে ঢাকার সবচেয়ে প্রাচীন মসজিদ হিসেবে গণ্য করা হয়।" },
+            { id: 55, section: "প্রাচীন রাজবংশ", q: "সেন বংশের আদি বাসস্থান কোথায় ছিল এবং সেন বংশের শেষ শাসক কে?", options: ["বগুড়া - লক্ষণ সেন", "কর্ণাটক - কেশব সেন", "মিথিলা - বিজয় সেন", "গৌড় - হেমন্ত সেন"], correct: 1, exp: "দক্ষিণ ভারতের কর্ণাটক থেকে আগত সেন বংশের শেষ শাসক হিসেবে কেশব সেনের নাম উল্লেখ করা হয়।" },
+            { id: 56, section: "মোগল আমল", q: "সমগ্র বাংলা বিজয়ী প্রথম মোগল সম্রাট কে ছিলেন?", options: ["আকবর", "জাহাঙ্গীর", "শাহজাহান", "বাবর"], correct: 1, exp: "সুবাদার ইসলাম খানের মাধ্যমে সম্রাট জাহাঙ্গীরের আমলে সমগ্র বাংলা মোগল অধিকারে আসে।" },
+            { id: 57, section: "প্রাচীন রাজবংশ", q: "'ইন্ডিকা' গ্রন্থের রচয়িতা কে এবং তিনি কার আমলে ভারতে আসেন?", options: ["কৌটিল্য - অশোক", "মেগাস্থিনিস - চন্দ্রগুপ্ত মৌর্য", "হিউয়েন সাং - হর্ষবর্ধন", "বাণভট্ট - শশাঙ্ক"], correct: 1, exp: "গ্রিক দূত মেগাস্থিনিস চন্দ্রগুপ্ত মৌর্যের রাজসভায় আসেন এবং মৌর্য ভারত নিয়ে 'ইন্ডিকা' লেখেন।" },
+            { id: 58, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "বাংলাদেশের কোথায় কমনওয়েলথ সমাধি রয়েছে?", options: ["ঢাকা ও খুলনা", "চট্টগ্রাম ও কুমিল্লা", "সিলেট ও রাজশাহী", "রংপুর ও ময়মনসিংহ"], correct: 1, exp: "দ্বিতীয় বিশ্বযুদ্ধে নিহত সৈন্যদের স্মরণে বাংলাদেশে চট্টগ্রাম ও কুমিল্লায় কমনওয়েলথ ওয়ার সিমেট্রি রয়েছে।" },
+            { id: 59, section: "মধ্যযুগের ইতিহাস", q: "সুলতানি আমলে মুদ্রা তৈরির প্রধান উপাদান কী ছিল?", options: ["স্বর্ণ", "রৌপ্য", "তামা", "ব্রোঞ্জ"], correct: 1, exp: "সুলতানি যুগে রৌপ্যমুদ্রা বা টঙ্কার প্রচলন ছিল অত্যন্ত প্রসিদ্ধ।" },
+            { id: 60, section: "ঐতিহাসিক স্থান ও স্থাপনা", q: "পানাম নগর ও বাংলাদেশের লোকশিল্প জাদুঘর কোথায় অবস্থিত?", options: ["বিক্রমপুর, মুন্সীগঞ্জ", "সোনারগাঁও, নারায়ণগঞ্জ", "মহাস্থানগড়, বগুড়া", "পাহাড়পুর, নওগাঁ"], correct: 1, exp: "প্রাচীন বাংলার রাজধানী সোনারগাঁওয়ে লোকশিল্প জাদুঘর এবং ঐতিহাসিক পানাম নগর অবস্থিত।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let totalTimeSeconds = 1500; // 25 minutes
+        let timeLeft = 1500; 
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-emerald-600 text-white border border-emerald-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const badge = document.getElementById('section-badge');
+            badge.innerText = q.section;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-emerald-600/30 border-emerald-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-emerald-500 border-emerald-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let timeSpent = totalTimeSeconds - timeLeft;
+            let spentMins = Math.floor(timeSpent / 60);
+            let spentSecs = timeSpent % 60;
+            document.getElementById('time-taken-text').innerText = `সময় লেগেছে: ${spentMins} মিনিট ${spentSecs} সেকেন্ড`;
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let html = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400">প্রশ্ন #${qIdx + 1}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold rounded border bg-emerald-900 text-emerald-200 border-emerald-700">${q.section}</span>
+                </div>`;
+                html += `<p class="font-semibold text-slate-200 text-sm md:text-base">${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                html += `<div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 text-xs text-slate-300">
+                    <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${q.exp}
+                </div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1500;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

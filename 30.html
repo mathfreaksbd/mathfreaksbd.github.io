@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পাকিস্তান আমলে পূর্ব বাংলা - DU B-Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Container -->
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-indigo-700 via-blue-700 to-teal-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">পাকিস্তান আমলে পূর্ব বাংলা</h1>
+            <p class="text-sm text-indigo-100 mt-1">বাংলাদেশ বিষয়াবলি | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>অধ্যায়: পাকিস্তান আমলে পূর্ব বাংলা।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের নিচে ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <!-- Top Bar -->
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-indigo-900 text-indigo-200 border border-indigo-700">পাকিস্তান আমল</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 25:00
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed">
+                    <!-- Question goes here -->
+                </h2>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Options go here -->
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <!-- Question Palette (Grid) -->
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700">
+                    <!-- Palette numbers go here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <!-- Score Summary Card -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <!-- Review Tabs Navigation -->
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <!-- Tab Content Containers -->
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700">
+                <!-- Dynamic content -->
+            </div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script -->
+    <script>
+        const questions = [
+            { id: 1, section: "দেশভাগ ও সূচনা", q: "ব্রিটিশ পার্লামেন্টে ভারত স্বাধীনতা আইন কবে পাশ হয় এবং দেশভাগের সময় ব্রিটেনের প্রধানমন্ত্রী কে ছিলেন?", options: ["১৫ আগস্ট, ১৯৪৭ - উইনস্টন চার্চিল", "১৮ জুলাই, ১৯৪৭ - ক্লেমেন্ট এটলি", "৩ জুন, ১৯৪৭ - লর্ড মাউন্টব্যাটেন", "২৬ জানুয়ারি, ১৯৫০ - রামসে ম্যাকডোনাল্ড"], correct: 1, exp: "১৮ জুলাই ১৯৪৭ সালে ভারত স্বাধীনতা আইন পাশ হয় এবং তখন ব্রিটেনের প্রধানমন্ত্রী ছিলেন ক্লেমেন্ট এটলি[cite: 30]।" },
+            { id: 2, section: "ভাষা আন্দোলন", q: "ভাষা আন্দোলনের আঁতুড়ঘর ও প্রথম সংগঠন কোনটি এবং এটি কবে গঠিত হয়?", options: ["রাষ্ট্রভাষা সংগ্রাম পরিষদ - ১১ মার্চ ১৯৪৮", "তমদ্দুন মজলিস - ২ সেপ্টেম্বর ১৯৪৭", "সর্বদলীয় সংগ্রাম পরিষদ - ২১ ফেব্রুয়ারি ১৯৫২", "ভাষা সংস্কার কমিটি - ১৯৪৯"], correct: 1, exp: "অধ্যাপক আবুল কাশেমের নেতৃত্বে ১৯৪৭ সালের ২ সেপ্টেম্বর সাংস্কৃতিক প্রতিষ্ঠান তমদ্দুন মজলিস গঠিত হয়[cite: 30]।" },
+            { id: 3, section: "যুক্তফ্রন্ট ও সংবিধান", q: "পূর্ব বাংলায় প্রথম প্রাদেশিক পরিষদ নির্বাচন কবে হয় এবং যুক্তফ্রন্ট নির্বাচনী জোট কবে গঠিত হয়?", options: ["১৯৫২ - ২৩ ফেব্রুয়ারি ১৯৫২", "১৯৫৪ - ০৪ ডিসেম্বর ১৯৫৩", "১৯৫৬ - ২৩ মার্চ ১৯৫৬", "১৯৭০ - ১৭ ডিসেম্বর ১৯৭০"], correct: 1, exp: "০৪ ডিসেম্বর ১৯৫৩ সালে যুক্তফ্রন্ট গঠিত হয় এবং ১৯৫৪ সালে প্রথম প্রাদেশিক পরিষদ নির্বাচন অনুষ্ঠিত হয়[cite: 32]।" },
+            { id: 4, section: "গণঅভ্যুত্থান ও নির্বাচন", q: "আগরতলা ষড়যন্ত্র মামলার মোট আসামি কতজন ছিলেন এবং সরকার মামলা কবে প্রত্যাহার করে নেয়?", options: ["২৮ জন - ২০ জানুয়ারি ১৯৬৯", "৩৫ জন - ২২ ফেব্রুয়ারি ১৯৬৯", "৪৪ জন - ২৪ জানুয়ারি ১৯৬৯", "১৬৯ জন - ১৭ ডিসেম্বর ১৯৭০"], correct: 1, exp: "আগরতলা ষড়যন্ত্র মামলায় ৩৫ জন আসামি ছিলেন এবং গণআন্দোলনের মুখে ২২ ফেব্রুয়ারি ১৯৬৯ মামলা প্রত্যাহার করা হয়[cite: 32]।" },
+            { id: 5, section: "দেশভাগ ও সূচনা", q: "পূর্ব বাংলার প্রথম প্রাদেশিক গভর্নর ও প্রথম প্রাদেশিক মুখ্যমন্ত্রী কে ছিলেন?", options: ["খাজা নাজিমুদ্দীন - ফ্রেডরিক বোর্ন", "স্যার ফ্রেডরিক চালমার্স বোর্ন - খাজা নাজিমুদ্দীন", "লর্ড মাউন্টব্যাটেন - লিয়াকত আলী খান", "ফিরোজ খান নূন - নুরুল আমিন"], correct: 1, exp: "১৯৪৭ সালে পূর্ব বাংলার প্রথম গভর্নর ছিলেন স্যার ফ্রেডরিক বোর্ন এবং প্রথম মুখ্যমন্ত্রী ছিলেন খাজা নাজিমুদ্দীন[cite: 30]।" },
+            { id: 6, section: "ভাষা আন্দোলন", q: "'পাকিস্তানের রাষ্ট্রভাষা বাংলা না উর্দু?' পুস্তিকাটি কে প্রকাশ করেন এবং কবে প্রকাশিত হয়?", options: ["ধীরেন্দ্রনাথ দত্ত - ২৩ ফেব্রুয়ারি ১৯৪৮", "তমদ্দুন মজলিস - ১৫ সেপ্টেম্বর ১৯৪৭", "আবুল হাশিম - ০২ সেপ্টেম্বর ১৯৪৭", "মুনীর চৌধুরী - ২১ ফেব্রুয়ারি ১৯৫৩"], correct: 1, exp: "তমদ্দুন মজলিস ১৫ সেপ্টেম্বর ১৯৪৭ সালে এই গুরুত্বপূর্ণ পুস্তিকা প্রকাশ করে এবং তাদের মুখপত্র ছিল সাপ্তাহিক সৈনিক[cite: 30]।" },
+            { id: 7, section: "যুক্তফ্রন্ট ও সংবিধান", q: "যুক্তফ্রন্টের ২১ দফা ইশতাহার অনুযায়ী কোন ভবনকে 'বাংলা একাডেমি' করার প্রস্তাব দেওয়া হয়েছিল?", options: ["কার্জন হল", "বর্ধমান হাউজ", "আহসান মঞ্জিল", "জগন্নাথ হল"], correct: 1, exp: "২১ দফা ইশতাহারে বর্ধমান হাউজকে বাংলা একাডেমিতে রূপান্তরের প্রস্তাব দেওয়া হয়েছিল[cite: 32]।" },
+            { id: 8, section: "গণঅভ্যুত্থান ও নির্বাচন", q: "ঢাবি ইতিহাস বিভাগের ছাত্র আসাদ পুলিশের গুলিতে কবে শহিদ হন এবং 'আইয়ুব গেট'-এর নাম কী রাখা হয়?", options: ["১৮ ফেব্রুয়ারি ১৯৬৯ - জোহা গেট", "২০ জানুয়ারি ১৯৬৯ - আসাদ গেট", "২৪ জানুয়ারি ১৯৬৯ - গণঅভ্যুত্থান গেট", "২২ ফেব্রুয়ারি ১৯৬৯ - শহীদ গেট"], correct: 1, exp: "২০ জানুয়ারি ১৯৬৯ সালে আসাদ শহিদ হওয়ার পর আইয়ুব গেটের নাম পরিবর্তন করে আসাদ গেট রাখা হয়[cite: 32]।" },
+            { id: 9, section: "দেশভাগ ও সূচনা", q: "'পাকিস্তান' শব্দটি সর্বপ্রথম প্রস্তাব করেন কে এবং 'Now Or Never' (১৯৩৩) পুস্তিকার রচয়িতা কে?", options: ["আল্লামা ইকবাল", "চৌধুরী রহমত আলী", "মোহাম্মদ আলী জিন্নাহ", "লিয়াকত আলী খান"], correct: 1, exp: "চৌধুরী রহমত আলী 'পাকিস্তান' শব্দটি প্রস্তাব করেন এবং ১৯৩৩ সালে 'Now Or Never' পুস্তিকা লেখেন[cite: 30]।" },
+            { id: 10, section: "ভাষা আন্দোলন", q: "২৩ ফেব্রুয়ারি ১৯৪৮ তারিখে পাকিস্তানের গণপরিষদে বাংলাকে অন্যতম রাষ্ট্রভাষা করার দাবি কে জানান?", options: ["আবুল কাশেম", "ধীরেন্দ্রনাথ দত্ত", "কাজী গোলাম মাহবুব", "আব্দুল মতিন"], correct: 1, exp: "গণপরিষদ সদস্য ধীরেন্দ্রনাথ দত্ত ২৩ ফেব্রুয়ারি ১৯৪৮ সালে বাংলাকে অন্যতম রাষ্ট্রভাষা করার প্রস্তাব তোলেন[cite: 31]।" },
+            { id: 11, section: "যুক্তফ্রন্ট ও সংবিধান", q: "যুক্তফ্রন্ট নির্বাচনে মুসলিম সংরক্ষিত ২৩৭টি আসনের মধ্যে যুক্তফ্রন্ট কয়টি আসনে জয় লাভ করে?", options: ["১৬৯টি", "২২৩টি", "২৩৭টি", "৫৬টি"], correct: 1, exp: "১৯৫৪ সালের নির্বাচনে মুসলিম সংরক্ষিত ২৩৭টি আসনের মধ্যে যুক্তফ্রন্ট ২২৩টি আসনে জয়ী হয়[cite: 32]।" },
+            { id: 12, section: "গণঅভ্যুত্থান ও নির্বাচন", q: "স্বাধীনতা সংগ্রামের প্রথম শহিদ ড. শামসুজ্জোহা কবে শহিদ হন এবং তিনি কোন বিভাগের শিক্ষক ছিলেন?", options: ["২০ জানুয়ারি ১৯৬৯ - ইতিহাস", "১৮ ফেব্রুয়ারি ১৯৬৯ - রসায়ন", "২২ ফেব্রুয়ারি ১৯৬৯ - পদার্থবিজ্ঞান", "২৪ জানুয়ারি ১৯৬৯ - রাষ্ট্রবিজ্ঞান"], correct: 1, exp: "রাজশাহী বিশ্ববিদ্যালয়ের রসায়ন বিভাগের শিক্ষক ড. শামসুজ্জোহা ১৮ ফেব্রুয়ারি ১৯৬৯ সালে শহিদ হন[cite: 32]।" },
+            { id: 13, section: "দেশভাগ ও সূচনা", q: "পাকিস্তানের প্রথম গণপরিষদে পূর্ব বাংলার প্রতিনিধি ছিলেন কতজন এবং প্রথম গণপরিষদ কবে গঠিত হয়?", options: ["৩৫ জন - ১৯৪৬", "৪৪ জন - ১৯৪৭", "৫৬ জন - ১৯৫৪", "১৬৯ জন - ১৯৫৫"], correct: 1, exp: "১৯৪৭ সালে গঠিত পাকিস্তানের প্রথম গণপরিষদে পূর্ব বাংলার প্রতিনিধি ছিলেন ৪৪ জন[cite: 30]।" },
+            { id: 14, section: "ভাষা আন্দোলন", q: "১৯৫২ সালের ভাষা আন্দোলনের সময় পাকিস্তানের প্রধানমন্ত্রী, পূর্ববাংলার মুখ্যমন্ত্রী ও গভর্নর যথাক্রমে কারা ছিলেন?", options: ["নাজিমুদ্দীন - নুরুল আমিন - ফিরোজ খান নূন", "লিয়াকত আলী - ফজলুল হক - বোর্ন", "সোহরাওয়ার্দী - আতাউর রহমান - ইস্কান্দার মির্জা", "আইয়ুব খান - মোনেম খান - আজম খান"], correct: 0, exp: "১৯৫২ সালে প্রধানমন্ত্রী ছিলেন খাজা নাজিমুদ্দীন, মুখ্যমন্ত্রী নুরুল আমিন এবং গভর্নর ফিরোজ খান নূন[cite: 31]।" },
+            { id: 15, section: "যুক্তফ্রন্ট ও সংবিধান", q: "যুক্তফ্রন্ট মন্ত্রিসভার শাসনকাল কত দিন ছিল এবং কে মন্ত্রিসভা ভেঙে দেয়?", options: ["২১ দিন - ইস্কান্দার মির্জা", "৫৬ দিন - গোলাম মোহাম্মদ", "৯০ দিন - আইয়ুব খান", "১২০ দিন - খাজা নাজিমুদ্দীন"], correct: 1, exp: "যুক্তফ্রন্ট মন্ত্রিসভা মাত্র ৫৬ দিন স্থায়ী ছিল এবং গভর্নর জেনারেল গোলাম মোহাম্মদ তা ভেঙে দেন[cite: 32]।" },
+            { id: 16, section: "গণঅভ্যুত্থান ও নির্বাচন", q: "১৯৭০ সালের নির্বাচনে জাতীয় পরিষদে পূর্ব পাকিস্তানের মোট আসন কতটি ছিল এবং প্রাদেশিক নির্বাচন কবে হয়?", options: ["১৪৪টি - ০৭ ডিসেম্বর ১৯৭০", "১৬৯টি - ১৭ ডিসেম্বর ১৯৭০", "২২৩টি - ২৩ মার্চ ১৯৭০", "৩০০টি - ০৪ ডিসেম্বর ১৯৭০"], correct: 1, exp: "১৯৭০ সালে জাতীয় পরিষদে পূর্ব পাকিস্তানের আসন ছিল ১৬৯টি এবং প্রাদেশিক নির্বাচন হয় ১৭ ডিসেম্বর ১৯৭০[cite: 32]।" },
+            { id: 17, section: "দেশভাগ ও সূচনা", q: "পাকিস্তান রাষ্ট্রের রূপরেখা কে দেন এবং ভারত-পাকিস্তান সীমানা নির্ধারণী কমিশনের প্রধান কে ছিলেন?", options: ["চৌধুরী রহমত আলী - লর্ড মাউন্টব্যাটেন", "আল্লামা ইকবাল - স্যার সিরিল র‍্যাডক্লিফ", "জিন্নাহ - ক্লেমেন্ট এটলি", "লিয়াকত আলী - ফ্রেডরিক বোর্ন"], correct: 1, exp: "পাকিস্তানের রূপরেখা দেন আল্লামা ইকবাল এবং র‍্যাডক্লিফ কমিশনের প্রধান ছিলেন স্যার সিরিল র‍্যাডক্লিফ[cite: 30]।" },
+            { id: 18, section: "ভাষা আন্দোলন", q: "মোহাম্মদ আলী জিন্নাহ রেসকোর্স ময়দান ও ঢাকা বিশ্ববিদ্যালয়ের সমাবর্তনে উর্দুর পক্ষে কবে ঘোষণা দেন?", options: ["১১ মার্চ ও ২৩ মার্চ ১৯৪৮", "২১ মার্চ ও ২৪ মার্চ ১৯৪৮", "২৩ ফেব্রুয়ারি ও ২১ ফেব্রুয়ারি ১৯৫২", "১৬ ফেব্রুয়ারি ও ২৯ ফেব্রুয়ারি ১৯৫৬"], correct: 1, exp: "জিন্নাহ ২১ মার্চ ১৯৪৮ রেসকোর্স ময়দানে এবং ২৪ মার্চ ১৯৪৮ ঢাকা বিশ্ববিদ্যালয়ের সমাবর্তনে উর্দুকে রাষ্ট্রভাষা করার ঘোষণা দেন[cite: 31]।" },
+            { id: 19, section: "যুক্তফ্রন্ট ও সংবিধান", q: "কোন চুক্তির মাধ্যমে এক ইউনিট প্রথা চালু হয় এবং পূর্ব বাংলার নাম পরিবর্তন করে বাংলা রাখা হয়?", options: ["লাহোর প্রস্তাব (১৯৪০)", "মারি চুক্তি (১৯৫৫)", "তাসখন্দ চুক্তি (১৯৬৬)", "দিল্লি চুক্তি (১৯৫০)"], correct: 1, exp: "১৯৫৫ সালের মারি চুক্তির মাধ্যমে এক ইউনিট প্রথা ও পূর্ব বাংলার নাম বাংলা করার বিষয় যুক্ত ছিল[cite: 32]।" },
+            { id: 20, section: "গণঅভ্যুত্থান ও নির্বাচন", q: "উনসত্তরের গণঅভ্যুত্থানের প্রেক্ষাপটে রচিত 'ওঙ্কার' ও 'চিলেকোঠার সেপাই' উপন্যাসের রচয়িতা যথাক্রমে কারা?", options: ["আখতারুজ্জামান ইলিয়াস ও আহমদ ছফা", "আহমদ ছফা ও আখতারুজ্জামান ইলিয়াস", "জহির রায়হান ও শওকত ওসমান", "শওকত ওসমান ও আলাউদ্দিন আল আজাদ"], correct: 1, exp: "'ওঙ্কার' লিখেছেন আহমদ ছফা এবং 'চিলেকোঠার সেপাই' লিখেছেন আখতারুজ্জামান ইলিয়াস[cite: 32]।" },
+            { id: 21, section: "ভাষা আন্দোলন", q: "পাকিস্তানে বাংলা ভাষা ব্যবহারকারীর হার কত ছিল এবং পাকিস্তান সৃষ্টির সময় উর্দুভাষী ছিলেন কত শতাংশ?", options: ["৫৪.৬০% - ৫.২৭%", "৫৬.৪০% - ৩.২৭%", "৬০.০০% - ২.৫০%", "৫০.০০% - ৪.০০%"], correct: 1, exp: "তৎকালীন পরিসংখ্যান অনুযায়ী বাংলাভাষী ছিলেন ৫৬.৪০% এবং উর্দুভাষী ছিলেন ৩.২৭%[cite: 31]।" },
+            { id: 22, section: "ভাষা আন্দোলন", q: "ঢাকায় প্রথম শহিদ মিনার কবে নির্মিত হয় এবং এর নকশাকার কে ছিলেন?", options: ["২১ ফেব্রুয়ারি ১৯৫২ - হামিদুর রহমান", "২৩ ফেব্রুয়ারি ১৯৫২ - ডা. বদরুল আলম", "২১ ফেব্রুয়ারি ১৯৫৩ - নভেরা আহমেদ", "১৬ ফেব্রুয়ারি ১৯৫৬ - মুর্তজা বশির"], correct: 1, exp: "২৩ ফেব্রুয়ারি ১৯৫২ সালে প্রথম শহিদ মিনার নির্মিত হয় এবং এর নকশাকার ছিলেন ডা. বদরুল আলম[cite: 31]।" },
+            { id: 23, section: "যুক্তফ্রন্ট ও সংবিধান", q: "১৯৫৮ সালে পাকিস্তানে প্রথম সামরিক শাসন কে জারি করেন এবং আইয়ুব খান 'মৌলিক গণতন্ত্র অধ্যাদেশ' কবে জারি করেন?", options: ["গোলাম মোহাম্মদ - ১৯৫৬", "ইস্কান্দার মির্জা - ১৯৫৯", "আইয়ুব খান - ১৯৫৮", "ইয়াহিয়া খান - ১৯৬৯"], correct: 1, exp: "১৯৫৮ সালে ইস্কান্দার মির্জা সামরিক শাসন জারি করেন এবং ১৯৫৯ সালে আইয়ুব খান মৌলিক গণতন্ত্র অধ্যাদেশ দেন[cite: 32]।" },
+            { id: 24, section: "গণঅভ্যুত্থান ও নির্বাচন", q: "আইয়ুব খানের আত্মজীবনীর নাম কী এবং ভারত-পাকিস্তানের মধ্যে তাসখন্দ চুক্তি কবে স্বাক্ষরিত হয়?", options: ["দ্য ব্লাড টেলিগ্রাম - ২৩ মার্চ ১৯৬৫", "Friends, Not Masters - ১০ জানুয়ারি ১৯৬৬", "মুক্তিযুদ্ধের দিনলিপি - ১৬ ডিসেম্বর ১৯৭১", "রাইজিং সান - ১০ জানুয়ারি ১৯৬৫"], correct: 1, exp: "আইয়ুব খানের আত্মজীবনী 'Friends, Not Masters' এবং তাসখন্দ চুক্তি স্বাক্ষরিত হয় ১০ জানুয়ারি ১৯৬৬[cite: 32]।" },
+            { id: 25, section: "ভাষা আন্দোলন", q: "ভাষা আন্দোলনের সময় ঢাকা বিশ্ববিদ্যালয়ের উপাচার্য কে ছিলেন এবং সর্বকনিষ্ঠ শহিদ কে ছিলেন?", options: ["ড. মুহাম্মদ শহীদুল্লাহ - রফিক", "ড. সৈয়দ মোয়াজ্জেম হোসেন - অহিউল্লাহ", "ড. আবুল কাশেম - বরকত", "ড. এনামুল হক - সালাম"], correct: 1, exp: "তৎকালীন উপাচার্য ছিলেন ড. সৈয়দ মোয়াজ্জেম হোসেন এবং সর্বকনিষ্ঠ শহিদ ছিলেন বালক অহিউল্লাহ[cite: 31]।" },
+            { id: 26, section: "ভাষা আন্দোলন", q: "কেন্দ্রীয় শহিদ মিনারের মূল স্থপতি কে এবং সহযোগী স্থপতি কে ছিলেন?", options: ["ড. বদরুল আলম - হামিদুর রহমান", "হামিদুর রহমান - নভেরা আহমেদ", "মুর্তজা বশির - অখিল পাল", "মৃণাল হক - জাহানারা পারভীন"], correct: 1, exp: "বর্তমান কেন্দ্রীয় শহিদ মিনারের মূল স্থপতি হামিদুর রহমান এবং সহযোগী স্থপতি ছিলেন নভেরা আহমেদ[cite: 31]।" },
+            { id: 27, section: "যুক্তফ্রন্ট ও সংবিধান", q: "কাগমারী সম্মেলন কবে ও কোথায় অনুষ্ঠিত হয় এবং এর সভাপতি কে ছিলেন?", options: ["১৯৫৪ ঢাকায় - এ. কে. ফজলুল হক", "১৯৫৭ সালে টাঙ্গাইলে - মওলানা আব্দুল হামিদ খান ভাসানী", "১৯৫৯ ময়মনসিংহে - সোহরাওয়ার্দী", "১৯৫৬ লাহোরে - নাজিমুদ্দীন"], correct: 1, exp: "১৯৫৭ সালে টাঙ্গাইলের কাগমারীতে মওলানা ভাসানীর সভাপতিত্বে পাকিস্তান শিক্ষা ও সাংস্কৃতিক সম্মেলন অনুষ্ঠিত হয়[cite: 32]।" },
+            { id: 28, section: "গণঅভ্যুত্থান ও নির্বাচন", q: "আগরতলা ষড়যন্ত্র মামলায় সেনা হেফাজতে কে শহিদ হন এবং 'গণঅভ্যুত্থান দিবস' কবে পালিত হয়?", options: ["আসাদ - ২০ জানুয়ারি", "সার্জেন্ট জহুরুল হক - ২৪ জানুয়ারি", "মতিউর রহমান - ১৮ ফেব্রুয়ারি", "ড. জোহা - ২২ ফেব্রুয়ারি"], correct: 1, exp: "আগরতলা ষড়যন্ত্র মামলায় সার্জেন্ট জহুরুল হক শহিদ হন এবং ২৪ জানুয়ারি গণঅভ্যুত্থান দিবস পালিত হয়[cite: 32]।" },
+            { id: 29, section: "ভাষা আন্দোলন", q: "ভাষা শহিদদের মধ্যে সর্বশেষ শহিদ হন কে এবং কবে?", options: ["আবুল বরকত - ২১ ফেব্রুয়ারি ১৯৫২", "আবদুস সালাম - ০৭ এপ্রিল ১৯৫২", "শফিউর রহমান - ২২ ফেব্রুয়ারি ১৯৫২", "রফিকউদ্দিন আহমদ - ২১ ফেব্রুয়ারি ১৯৫২"], correct: 1, exp: "আহত আবদুস সালাম চিকিৎসাধীন অবস্থায় ০৭ এপ্রিল ১৯৫২ সালে মৃত্যুবরণ করে সর্বশেষ শহিদ হন[cite: 31]।" },
+            { id: 30, section: "ভাষা আন্দোলন", q: "ইউনেস্কো কবে একুশে ফেব্রুয়ারিকে আন্তর্জাতিক মাতৃভাষা দিবসের স্বীকৃতি দেয় এবং সর্বপ্রথম কবে পালিত হয়?", options: ["১৯ নভেম্বর ১৯৯৮ - ১৯৯৯", "১৭ নভেম্বর ১৯৯৯ - ২০০০", "২১ ফেব্রুয়ারি ২০০০ - ২০০১", "১৭ নভেম্বর ২০০০ - ২০০১"], correct: 1, exp: "ইউনেস্কোর ৩০তম সম্মেলনে ১৭ নভেম্বর ১৯৯৯ স্বীকৃতি দেওয়া হয় এবং ২০০০ সালে প্রথম দিবসটি পালিত হয়[cite: 31]।" },
+            { id: 31, section: "যুক্তফ্রন্ট ও সংবিধান", q: "বাষট্টির শিক্ষা আন্দোলন কোন কমিশনের বিরুদ্ধে হয়েছিল এবং কোন দিনটি শিক্ষা দিবস হিসেবে পালিত হয়?", options: ["হান্টার কমিশন - ২১ ফেব্রুয়ারি", "শরীফ শিক্ষা কমিশন - ১৭ সেপ্টেম্বর", "নাথান কমিশন - ২৪ জানুয়ারি", "র‍্যাডক্লিফ কমিশন - ১৮ জুলাই"], correct: 1, exp: "শরীফ শিক্ষা কমিশনের বিরুদ্ধে ১৯৬২ সালে শিক্ষা আন্দোলন হয় এবং ১৭ সেপ্টেম্বর শিক্ষা দিবস পালিত হয়[cite: 32]।" },
+            { id: 32, section: "গণঅভ্যুত্থান ও নির্বাচন", q: "ঐতিহাসিক 'ছয় দফা'-র প্রথম দফা কোনটি ছিল?", options: ["স্বাধীন বৈদেশিক নীতি", "প্রাদেশিক স্বায়ত্তশাসন", "আধা-সামরিক বাহিনী গঠন", "পৃথক মুদ্রা ব্যবস্থা"], correct: 1, exp: "১৯৬৬ সালে উপস্থাপিত ছয় দফার প্রথম দফা ছিল প্রাদেশিক স্বায়ত্তশাসন[cite: 32]।" },
+            { id: 33, section: "ভাষা আন্দোলন", q: "একুশের প্রথম নাটক 'কবর' কার লেখা এবং এটি প্রথম কোথায় ও কবে মঞ্চস্থ হয়?", options: ["আলাউদ্দিন আল আজাদ - বাংলা একাডেমি ১৯৫৪", "মুনীর চৌধুরী - ঢাকা কেন্দ্রীয় কারাগার ২১ ফেব্রুয়ারি ১৯৫৩", "জহির রায়হান - জগন্নাথ হল ১৯৫২", "শওকত ওসমান - কার্জন হল ১৯৫৫"], correct: 1, exp: "মুনীর চৌধুরী কারাগারে বসে 'কবর' নাটক লেখেন এবং তা ২১ ফেব্রুয়ারি ১৯৫৩ ঢাকা কেন্দ্রীয় কারাগারে মঞ্চস্থ হয়[cite: 31]।" },
+            { id: 34, section: "ভাষা আন্দোলন", q: "একুশের প্রথম উপন্যাস ও প্রথম চলচ্চিত্র কোনটি এবং উভয়ের রচয়িতা/পরিচালক কে?", options: ["আরেক ফাল্গুন ও জীবন থেকে নেয়া - জহির রায়হান", "চিলেকোঠার সেপাই ও ফাগুন হাওয়ায় - তৌকির আহমেদ", "ওঙ্কার ও রক্তাক্ত ২১ - মুর্তজা বশির", "মৌন নয় ও কবর - মুনীর চৌধুরী"], correct: 0, exp: "জহির রায়হান রচিত 'আরেক ফাল্গুন' একুশের প্রথম উপন্যাস এবং তাঁর নির্মিত 'জীবন থেকে নেয়া' প্রথম চলচ্চিত্র[cite: 31, 32]।" },
+            { id: 35, section: "ভাষা আন্দোলন", q: "'আমার ভাইয়ের রক্তে রাঙানো' গানের গীতিকার কে, প্রথম সুরকার কে এবং বর্তমান সুরকার কে?", options: ["আব্দুল লতিফ - আলতাফ মাহমুদ - গাফফার চৌধুরী", "আব্দুল গাফফার চৌধুরী - আব্দুল লতিফ - আলতাফ মাহমুদ", "মাহবুব-উল-আলম - আলতাফ মাহমুদ - আব্দুল লতিফ", "হাসান হাফিজুর - আব্দুল লতিফ - শহীদুল্লাহ"], correct: 1, exp: "গীতিকার আব্দুল গাফফার চৌধুরী, প্রথম সুরকার আব্দুল লতিফ এবং বর্তমান প্রচলিত সুরকার আলতাফ মাহমুদ[cite: 32]।" },
+            { id: 36, section: "ভাষা আন্দোলন", q: "ভাষা আন্দোলনের প্রথম চিত্রকর্ম 'রক্তাক্ত ২১' কার আঁকা এবং একুশের প্রথম কবিতা কোনটি?", options: ["মুর্তজা বশির - কাঁদতে আসিনি ফাঁসির দাবি নিয়ে এসেছি", "হামিদুর রহমান - স্মৃতিস্তম্ভ", "নভেরা আহমেদ - কোনো এক মাকে", "অখিল পাল - একুশে ফেব্রুয়ারি"], correct: 0, exp: "'রক্তাক্ত ২১' মুর্তজা বশিরের আঁকা এবং মাহবুব-উল-আলম চৌধুরীর 'কাঁদতে আসিনি ফাঁসির দাবি নিয়ে এসেছি' একুশের প্রথম কবিতা[cite: 32]।" },
+            { id: 37, section: "ভাষা আন্দোলন", q: "বাংলা ভাষাকে দ্বিতীয় রাষ্ট্রভাষার মর্যাদা দিয়েছে কোন দেশ এবং পাকিস্তানের সংবিধানে বাংলা কবে অন্তর্ভুক্ত হয়?", options: ["কানাডা - ২৩ মার্চ ১৯৫৬", "সিয়েরা লিওন - ২৯ ফেব্রুয়ারি ১৯৫৬", "নেপাল - ১৬ ফেব্রুয়ারি ১৯৫৬", "মালয়েশিয়া - ০৭ মে ১৯৫৪"], correct: 1, exp: "সিয়েরা লিওন বাংলাকে দ্বিতীয় রাষ্ট্রভাষার স্বীকৃতি দেয় এবং ২৯ ফেব্রুয়ারি ১৯৫৬ পাকিস্তানের সংবিধানে বাংলা অন্তর্ভুক্ত হয়[cite: 31]।" },
+            { id: 38, section: "ভাষা আন্দোলন", q: "বিদেশের মাটিতে নির্মিত প্রথম শহিদ মিনার কোথায় অবস্থিত এবং মুসলিম দেশে প্রথম কোথায় নির্মিত হয়?", options: ["জাপান - সৌদি আরব", "ওল্ডহ্যাম, ম্যানচেস্টার (ব্রিটেন) - ওমান", "টোকিও - কাতার", "লন্ডন - সংযুক্ত আরব আমিরাত"], correct: 1, exp: "ব্রিটেনের ম্যানচেস্টারের ওল্ডহ্যামে প্রথম প্রবাসী শহিদ মিনার এবং মুসলিম দেশে প্রথম ওমানে শহিদ মিনার নির্মিত হয়[cite: 31]।" },
+            { id: 39, section: "ভাষা আন্দোলন", q: "বাংলাদেশের উচ্চতম শহিদ মিনার কোথায় অবস্থিত এবং এর উচ্চতা কত ফুট?", options: ["ঢাকা বিশ্ববিদ্যালয় - ৬৫ ফুট", "জাহাঙ্গীরনগর বিশ্ববিদ্যালয় - ৭১ ফুট", "রাজশাহী বিশ্ববিদ্যালয় - ৫২ ফুট", "চট্টগ্রাম বিশ্ববিদ্যালয় - ৬৯ ফুট"], correct: 1, exp: "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়ে অবস্থিত শহিদ মিনারের উচ্চতা ৭১ ফুট এবং স্থপতি রবিউল হুসাইন[cite: 31]।" },
+            { id: 40, section: "ভাষা আন্দোলন", q: "স্বাধীন বাংলাদেশের ১ম স্মারক ডাকটিকেটে কিসের ছবি ছিল এবং অমর একুশে বইমেলা আনুষ্ঠানিকভাবে কবে চালু হয়?", options: ["শহীদ আসাদ - ১৯৭২", "শহিদ মিনার - ১৯৮৪", "বর্ণমালা - ১৯৭৮", "কেন্দ্রীয় গ্রন্থাগার - ১৯৮০"], correct: 1, exp: "প্রথম স্মারক ডাকটিকেটে শহিদ মিনারের ছবি ছিল এবং ১৯৮৪ সালে আনুষ্ঠানিকভাবে অমর একুশে বইমেলা চালু হয়[cite: 31]।" },
+            { id: 41, section: "দেশভাগ ও সূচনা", q: "ব্রিটিশ ভারতের শেষ ভাইসরয় এবং পাকিস্তানের প্রথম প্রধানমন্ত্রী কে ছিলেন?", options: ["লর্ড মাউন্টব্যাটেন - লিয়াকত আলী খান", "ক্লেমেন্ট এটলি - খাজা নাজিমুদ্দীন", "সিরিল র‍্যাডক্লিফ - জিন্নাহ", "ফ্রেডরিক বোর্ন - সোহরাওয়ার্দী"], correct: 0, exp: "লর্ড মাউন্টব্যাটেন ছিলেন ব্রিটিশ ভারতের শেষ ভাইসরয় এবং লিয়াকত আলী খান ছিলেন পাকিস্তানের প্রথম প্রধানমন্ত্রী[cite: 30]।" },
+            { id: 42, section: "দেশভাগ ও সূচনা", q: "পাকিস্তান প্রজাতন্ত্রের প্রথম সংবিধান কবে কার্যকর হয় এবং প্রথম গণপরিষদ কবে বাতিল হয়?", options: ["১৬ ফেব্রুয়ারি ১৯৫৬ - ১৯৫২", "২৩ মার্চ ১৯৫৬ - ১৯৫৪", "২৯ ফেব্রুয়ারি ১৯৫৬ - ১৯৫৫", "০৪ ডিসেম্বর ১৯৫৩ - ১৯৫৬"], correct: 1, exp: "১৯৫৪ সালে প্রথম গণপরিষদ বাতিল হয় এবং ২৩ মার্চ ১৯৫৬ সালে পাকিস্তানের প্রথম সংবিধান কার্যকর হয়[cite: 30]।" },
+            { id: 43, section: "দেশভাগ ও সূচনা", q: "অখণ্ড বাংলা আন্দোলনের নেতৃত্বে কারা ছিলেন এবং পাকিস্তানের দ্বিতীয় গণপরিষদ কবে গঠিত হয়?", options: ["ফজলুল হক ও নাজিমুদ্দীন - ১৯৫৪", "হোসেন শহীদ সোহরাওয়ার্দী ও শরৎ বসু - ১৯৫৫", "আবুল কাশেম ও ধীরেন্দ্রনাথ দত্ত - ১৯৫৬", "ভাসানী ও গোলাম মাহবুব - ১৯৫৭"], correct: 1, exp: "সোহরাওয়ার্দী ও শরৎ বসু অখণ্ড বাংলা আন্দোলনের নেতৃত্ব দেন এবং ১৯৫৫ সালে দ্বিতীয় গণপরিষদ গঠিত হয়[cite: 30]।" },
+            { id: 44, section: "ভাষা আন্দোলন", q: "প্রথম রাষ্ট্রভাষা সংগ্রাম পরিষদের আহ্বায়ক কে ছিলেন এবং ১৯৫০ সালে ঢাবি সংগ্রাম পরিষদের আহ্বায়ক কে ছিলেন?", options: ["আব্দুল মতিন - এএসএম নুরুল হক ভূঁইয়া", "এএসএম নুরুল হক ভূঁইয়া - আব্দুল মতিন", "কাজী গোলাম মাহবুব - আবুল কাশেম", "ধীরেন্দ্রনাথ দত্ত - মাওলানা ভাসানী"], correct: 1, exp: "প্রথম পরিষদের আহ্বায়ক ছিলেন অধ্যাপক এএসএম নুরুল হক ভূঁইয়া এবং ১৯৫০ সালে ঢাবি পরিষদের আহ্বায়ক ছিলেন আব্দুল মতিন[cite: 31]।" },
+            { id: 45, section: "ভাষা আন্দোলন", q: "'পূর্ব বাংলা ভাষা সংস্কার কমিটি' কবে গঠিত হয় এবং এর সভাপতি কে ছিলেন?", options: ["১৯৪৭ - আবুল কাশেম", "১৯৪৯ - মাওলানা আকরম খাঁ", "১৯৫২ - সৈয়দ মোয়াজ্জেম হোসেন", "১৯৫৪ - এ. কে. ফজলুল হক"], correct: 1, exp: "১৯৪৯ সালে মাওলানা আকরম খাঁর সভাপতিত্বে পূর্ব বাংলা ভাষা সংস্কার কমিটি গঠিত হয়[cite: 31]।" },
+            { id: 46, section: "ভাষা আন্দোলন", q: "'সর্বদলীয় কেন্দ্রীয় রাষ্ট্রভাষা সংগ্রাম পরিষদ'-এর সভাপতি, আহ্বায়ক ও সদস্য সংখ্যা যথাক্রমে কী ছিল?", options: ["আবুল কাশেম - মতিন - ৩৫ জন", "মাওলানা ভাসানী - কাজী গোলাম মাহবুব - ৪০ জন", "আকরম খাঁ - রফিক - ৪৪ জন", "সোহরাওয়ার্দী - বরকত - ৫৬ জন"], correct: 1, exp: "সর্বদলীয় পরিষদের সভাপতি ছিলেন মাওলানা ভাসানী, আহ্বায়ক কাজী গোলাম মাহবুব এবং সদস্য ছিলেন ৪০ জন[cite: 31]।" },
+            { id: 47, section: "ভাষা আন্দোলন", q: "বাংলা সন অনুযায়ী কত তারিখে ভাষা আন্দোলন সংঘটিত হয় এবং বাংলা ভাষাকে রাষ্ট্রভাষার দাবিতে প্রথম ধর্মঘট কবে হয়?", options: ["২১ ফাল্গুন ১৩৫৮ - ২১ ফেব্রুয়ারি ১৯৫২", "৮ ফাল্গুন ১৩৫৮ - ১১ মার্চ ১৯৪৮", "৮ ফাল্গুন ১৩৫৯ - ১১ মার্চ ১৯৪৮", "১ বৈশাখ ১৩৫৯ - ২৪ মার্চ ১৯৪৮"], correct: 1, exp: "বাংলা ৮ ফাল্গুন ১৩৫৮ বঙ্গাব্দ (বৃহস্পতিবার) এবং প্রথম ধর্মঘট হয়েছিল ১১ মার্চ ১৯৪৮ সালে[cite: 31]।" },
+            { id: 48, section: "ভাষা আন্দোলন", q: "ভাষা আন্দোলনের সময় পূর্ব বাংলার আইনসভা কোথায় ছিল এবং শহিদ রফিক কোন প্রতিষ্ঠানের ছাত্র ছিলেন?", options: ["বর্ধমান হাউজ - ঢাকা বিশ্ববিদ্যালয়", "জগন্নাথ হল - জগন্নাথ কলেজ", "কার্জন হল - ঢাকা মেডিকেল কলেজ", "আহসান মঞ্জিল - নটর ডেম কলেজ"], correct: 1, exp: "তৎকালীন আইনসভা ছিল জগন্নাথ হলে এবং শহিদ রফিকউদ্দিন আহমদ ছিলেন জগন্নাথ কলেজের ছাত্র[cite: 31]।" },
+            { id: 49, section: "ভাষা আন্দোলন", q: "ভাষা শহিদ আবুল বরকত ঢাবির কোন বিভাগের ছাত্র ছিলেন, তাঁর ডাক নাম কী এবং স্মৃতি জাদুঘর কোথায়?", options: ["ইতিহাস - রফিক - জগন্নাথ হল", "রাষ্ট্রবিজ্ঞান - আবাই - সার্জেন্ট জহুরুল হক হল", "বাংলা - সালাম - বাংলা একাডেমি", "অর্থনীতি - জব্বার - ঢাকা মেডিকেল"], correct: 1, exp: "আবুল বরকত ছিলেন রাষ্ট্রবিজ্ঞান বিভাগের ছাত্র, তাঁর ডাক নাম আবাই এবং স্মৃতি জাদুঘর সার্জেন্ট জহুরুল হক হলে[cite: 31]।" },
+            { id: 50, section: "ভাষা আন্দোলন", q: "কেন্দ্রীয় শহিদ মিনার পূর্বের নকশা অনুযায়ী স্বাধীনতার পর কত সালে পুনরায় নির্মিত হয়?", options: ["১৯৭১", "১৯৭২", "১৯৭৩", "১৯৭৫"], correct: 2, exp: "১৯৭১ সালে ধ্বংসপ্রাপ্ত শহিদ মিনার ১৯৭৩ সালে পূর্বের নকশা অনুযায়ী পুনরায় নির্মিত হয়[cite: 31]।" },
+            { id: 51, section: "ভাষা আন্দোলন", q: "একুশের প্রথম সংকলন বা সম্পাদিত গ্রন্থ 'একুশে ফেব্রুয়ারি' কার সম্পাদনায় প্রকাশিত হয়?", options: ["জহির রায়হান", "হাসান হাফিজুর রহমান", "মুনীর চৌধুরী", "শওকত ওসমান"], correct: 1, exp: "হাসান হাফিজুর রহমান সম্পাদিত 'একুশে ফেব্রুয়ারি' একুশের প্রথম সংকলন গ্রন্থ হিসেবে পরিচিত[cite: 31, 32]।" },
+            { id: 52, section: "ভাষা আন্দোলন", q: "বাংলা একাডেমি প্রাঙ্গণে অবস্থিত 'মোদের গরব' ভাস্কর্যের স্থপতি কে?", options: ["হামিদুর রহমান", "অখিল পাল", "মৃণাল হক", "জাহানারা পারভীন"], correct: 1, exp: "বাংলা একাডেমি প্রাঙ্গণে অবস্থিত 'মোদের গরব' ভাস্কর্যের স্থপতি হলেন অখিল পাল[cite: 32]।" },
+            { id: 53, section: "ভাষা আন্দোলন", q: "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়ের 'অমর একুশে' ও রাজশাহী বিশ্ববিদ্যালয়ের 'শহিদ মিনার'-এর স্থপতি যথাক্রমে কারা?", options: ["অখিল পাল ও মৃণাল হক", "জাহানারা পারভীন ও খায়রুল এনাম", "হামিদুর রহমান ও বদরুল আলম", "রবিউল হুসাইন ও নভেরা আহমেদ"], correct: 1, exp: "জাবির 'অমর একুশে'-এর স্থপতি জাহানারা পারভীন এবং রাবির শহিদ মিনারের স্থপতি খায়রুল এনাম[cite: 32]।" },
+            { id: 54, section: "যুক্তফ্রন্ট ও সংবিধান", q: "যুক্তফ্রন্টের ২১ দফা ইশতাহারের প্রথম দফা কী ছিল এবং 'অবৈতনিক ও বাধ্যতামূলক প্রাথমিক শিক্ষা' কততম দফা?", options: ["প্রাদেশিক স্বায়ত্তশাসন - ৫ নং", "বাংলাকে রাষ্ট্রভাষা করা - ৯ নং", "বর্ধমান হাউজ - ১ নং", "গণতন্ত্র প্রতিষ্ঠা - ১২ নং"], correct: 1, exp: "২১ দফার প্রথম দফা ছিল বাংলাকে রাষ্ট্রভাষা করা এবং অবৈতনিক প্রাথমিক শিক্ষা ছিল ৯ নং দফা[cite: 32]।" },
+            { id: 55, section: "যুক্তফ্রন্ট ও সংবিধান", q: "যুক্তফ্রন্ট নির্বাচনের পর পূর্ব বাংলার মুখ্যমন্ত্রী কে হন এবং মন্ত্রিসভা বাতিলের পর গভর্নর কে নিযুক্ত হন?", options: ["সোহরাওয়ার্দী - গোলাম মোহাম্মদ", "এ. কে. ফজলুল হক - ইস্কান্দার মির্জা", "নাজিমুদ্দীন - ফিরোজ খান নূন", "নুরুল আমিন - ফ্রেডরিক বোর্ন"], correct: 1, exp: "নির্বাচনের পর এ. কে. ফজলুল হক মুখ্যমন্ত্রী হন এবং সরকার বাতিলের পর ইস্কান্দার মির্জা গভর্নর নিযুক্ত হন[cite: 32]।" },
+            { id: 56, section: "যুক্তফ্রন্ট ও সংবিধান", q: "পাকিস্তানের প্রথম সংবিধান প্রণয়নের মাধ্যমে কোন ধরনের শাসনব্যবস্থা প্রবর্তিত হয়?", options: ["সংসদীয় ও এককেন্দ্রিক", "রাষ্ট্রপতি শাসিত ও ফেডারেল বা যুক্তরাষ্ট্রীয়", "সামরিক ও রাজতান্ত্রিক", "সমাজতান্ত্রিক ও এককেন্দ্রিক"], correct: 1, exp: "১৯৫৬ সালের সংবিধানে রাষ্ট্রপতি শাসিত ও ফেডারেল বা যুক্তরাষ্ট্রীয় কাঠামোর প্রবর্তন করা হয়[cite: 32]।" },
+            { id: 57, section: "গণঅভ্যুত্থান ও নির্বাচন", q: "৬৯-এর গণঅভ্যুত্থানে শহিদ হওয়া মতিউর রহমান কোন প্রতিষ্ঠানের ছাত্র ছিলেন?", options: ["ঢাকা কলেজ", "নবকুমার ইনস্টিটিউট", "জগন্নাথ কলেজ", "সেন্ট গ্রেগরি স্কুল"], correct: 1, exp: "উনসত্তরের গণঅভ্যুত্থানে শহিদ কিশোর মতিউর রহমান ছিলেন নবকুমার ইনস্টিটিউটের ছাত্র[cite: 32]।" },
+            { id: 58, section: "গণঅভ্যুত্থান ও নির্বাচন", q: "পাকিস্তান রাষ্ট্রের ইতিহাসে প্রথম সাধারণ নির্বাচন কবে অনুষ্ঠিত হয়?", options: ["১৯৫৪ সালে", "১৯৫৬ সালে", "১৯৭০ সালে", "১৯৭১ সালে"], correct: 2, exp: "পাকিস্তানের ইতিহাসে প্রথম সাধারণ নির্বাচন ১৯৭০ সালে অনুষ্ঠিত হয়[cite: 32]।" },
+            { id: 59, section: "ভাষা আন্দোলন", q: "পাকিস্তানের প্রথম গণপরিষদে বাংলাকে 'অন্যতম রাষ্ট্রভাষা' হিসেবে স্বীকৃতি দেওয়া হয় কবে?", options: ["২১ ফেব্রুয়ারি ১৯৫২", "০৭ মে ১৯৫৪", "১৬ ফেব্রুয়ারি ১৯৫৬", "২৯ ফেব্রুয়ারি ১৯৫৬"], correct: 1, exp: "০৭ মে ১৯৫৪ সালে পাকিস্তানের প্রথম গণপরিষদে বাংলাকে অন্যতম রাষ্ট্রভাষা হিসেবে স্বীকৃতি দেওয়া হয়[cite: 31]।" },
+            { id: 60, section: "ভাষা আন্দোলন", q: "পাকিস্তানের অন্যতম রাষ্ট্রভাষা হিসেবে বাংলা কবে গৃহীত হয়?", options: ["০৭ মে ১৯৫৪", "১৬ ফেব্রুয়ারি ১৯৫৬", "২৯ ফেব্রুয়ারি ১৯৫৬", "২৩ মার্চ ১৯৫৬"], correct: 1, exp: "১৬ ফেব্রুয়ারি ১৯৫৬ সালে গণপরিষদে বাংলা পাকিস্তানের অন্যতম রাষ্ট্রভাষা হিসেবে গৃহীত হয়[cite: 31]।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let totalTimeSeconds = 1500; // 25 minutes
+        let timeLeft = 1500; 
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-indigo-600 text-white border border-indigo-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const badge = document.getElementById('section-badge');
+            badge.innerText = q.section;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-indigo-600/30 border-indigo-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-indigo-500 border-indigo-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let timeSpent = totalTimeSeconds - timeLeft;
+            let spentMins = Math.floor(timeSpent / 60);
+            let spentSecs = timeSpent % 60;
+            document.getElementById('time-taken-text').innerText = `সময় লেগেছে: ${spentMins} মিনিট ${spentSecs} সেকেন্ড`;
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let html = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400">প্রশ্ন #${qIdx + 1}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold rounded border bg-indigo-900 text-indigo-200 border-indigo-700">${q.section}</span>
+                </div>`;
+                html += `<p class="font-semibold text-slate-200 text-sm md:text-base">${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                html += `<div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 text-xs text-slate-300">
+                    <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${q.exp}
+                </div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1500;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

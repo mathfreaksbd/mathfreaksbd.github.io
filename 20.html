@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইউরোপীয়দের আগমন ও ব্রিটিশ শাসনকাল - DU B-Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Container -->
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-amber-700 via-orange-700 to-rose-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">ইউরোপীয়দের আগমন ও ব্রিটিশ শাসনকাল</h1>
+            <p class="text-sm text-amber-100 mt-1">বাংলাদেশ বিষয়াবলি | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>অধ্যায়: ইউরোপীয়দের আগমন ও ব্রিটিশ শাসনকাল।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের নিচে ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <!-- Top Bar -->
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-amber-900 text-amber-200 border border-amber-700">ইউরোপীয় ও ব্রিটিশ যুগ</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 25:00
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed">
+                    <!-- Question goes here -->
+                </h2>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Options go here -->
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <!-- Question Palette (Grid) -->
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700">
+                    <!-- Palette numbers go here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <!-- Score Summary Card -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <!-- Review Tabs Navigation -->
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <!-- Tab Content Containers -->
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700">
+                <!-- Dynamic content -->
+            </div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-amber-600 hover:bg-amber-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script -->
+    <script>
+        const questions = [
+            { id: 1, section: "ইউরোপীয়দের আগমন", q: "ইউরোপীয় জাতিসমূহের মধ্যে ভারতবর্ষে সর্বপ্রথম কারা আসে?", options: ["ওলন্দাজ", "পর্তুগিজ", "ইংরেজ", "ফরাসি"], correct: 1, exp: "ভাস্কো-দা-গামার নৌপথ আবিষ্কারের পর ইউরোপীয়দের মধ্যে পর্তুগিজরাই প্রথম ভারতবর্ষে আসে।" },
+            { id: 2, section: "কোম্পানি ও দেওয়ানি", q: "কোন চুক্তির মাধ্যমে ইস্ট ইন্ডিয়া কোম্পানি বাংলার দেওয়ানি লাভ করে এবং তখন মোগল সম্রাট কে ছিলেন?", options: ["আলিপুর চুক্তি - আকবর", "এলাহাবাদ চুক্তি - দ্বিতীয় শাহ আলম", "সুরাট চুক্তি - জাহাঙ্গীর", "কলকাতা চুক্তি - ফারুকশিয়ার"], correct: 1, exp: "বক্সারের যুদ্ধের পর ১৭৬৫ সালে এলাহাবাদ চুক্তির মাধ্যমে সম্রাট দ্বিতীয় শাহ আলমের কাছ থেকে দেওয়ানি লাভ হয়।" },
+            { id: 3, section: "প্রতিরোধ ও আন্দোলন", q: "বারাসাত বিদ্রোহ বা বাঁশের কেল্লা আন্দোলন কে পরিচালনা করেন এবং বাঁশের কেল্লা কোথায় নির্মিত হয়?", options: ["হাজী শরীয়তুল্লাহ - ফরিদপুর", "তিতুমীর - নারিকেলবাড়িয়া", "মজনু শাহ - বগুড়া", "কানু মুর্মু - বীরভূম"], correct: 1, exp: "তিতুমীর (সৈয়দ মীর নিসার আলী) বারাসাতের নারিকেলবাড়িয়ায় বাঁশের কেল্লা নির্মাণ করে ব্রিটিশ ও জমিদারদের বিরুদ্ধে লড়েন।" },
+            { id: 4, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "বঙ্গভঙ্গ কত সালে ও কার আমলে করা হয়?", options: ["১৯০৩ সালে - লর্ড কার্জন", "১৯০৫ সালে - লর্ড কার্জন", "১৯১১ সালে - লর্ড হার্ডিঞ্জ", "১৯১২ সালে - লর্ড মিন্টো"], correct: 1, exp: "লর্ড কার্জন ১৯০৫ সালে প্রশাসনিক সুবিধার অজুহাতে বাংলাকে বিভক্ত করে বঙ্গভঙ্গ করেন।" },
+            { id: 5, section: "সংস্কার ও আইন", q: "চিরস্থায়ী বন্দোবস্ত কে এবং কত সালে প্রবর্তন করেন?", options: ["ওয়ারেন হেস্টিংস - ১৭৭২", "লর্ড কর্নওয়ালিস - ১৭৯৩", "লর্ড বেন্টিঙ্ক - ১৮২৯", "লর্ড ডালহৌসি - ১৮৫৬"], correct: 1, exp: "১৭৯৩ সালে গভর্নর জেনারেল লর্ড কর্নওয়ালিস ভূমি রাজস্ব ব্যবস্থায় চিরস্থায়ী বন্দোবস্ত চালু করেন।" },
+            { id: 6, section: "ইউরোপীয়দের আগমন", q: "পর্তুগিজরা বাংলায় কী নামে পরিচিত ছিল এবং চট্টগ্রামের নাম কী রেখেছিল?", options: ["দিনেমার - পোর্টো-গ্র্যান্ডে", "ফিরিঙ্গি - পোর্টো-গ্র্যান্ডে", "হার্মাদ - পোর্টো-পেকেনো", "ওলন্দাজ - ইসলামাবাদ"], correct: 1, exp: "বাংলায় পর্তুগিজরা 'ফিরিঙ্গি' নামে পরিচিত ছিল এবং তারা চট্টগ্রামকে 'পোর্টো-গ্র্যান্ডে' বা মহান বন্দর বলত।" },
+            { id: 7, section: "প্রতিরোধ ও আন্দোলন", q: "ফকির-সন্ন্যাসী বিদ্রোহ কত সালে শুরু হয় এবং এর প্রধান নেতা কে ছিলেন?", options: ["১৭৫৭ সালে - তিতুমীর", "১৭৬০ সালে - মজনু শাহ", "১৭৭০ সালে - দুদু মিয়া", "১৮৫৭ সালে - মঙ্গল পাণ্ডে"], correct: 1, exp: "১৭৬০ সালে শুরু হওয়া ফকির-সন্ন্যাসী বিদ্রোহের অন্যতম প্রধান নেতা ছিলেন ফকির মজনু শাহ; এর পটভূমিতে 'আনন্দমঠ' রচিত হয়।" },
+            { id: 8, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "বঙ্গভঙ্গ রদ ঘোষণা করেন কে এবং কত সালে?", options: ["লর্ড কার্জন - ১৯০৫", "রাজা পঞ্চম জর্জ - ১৯১১", "লর্ড হার্ডিঞ্জ - ১৯১২", "লর্ড ক্যানিং - ১৯০৬"], correct: 1, exp: "১৯১১ সালে দিল্লি দরবারে রাজা পঞ্চম জর্জ বঙ্গভঙ্গ রদের ঘোষণা দেন এবং ১৯১২ সালে তা কার্যকর হয়।" },
+            { id: 9, section: "সংস্কার ও আইন", q: "সতীদাহ প্রথা কত সালে রহিত করা হয় এবং এতে কার প্রত্যক্ষ ভূমিকা ছিল?", options: ["১৮২৯ সালে - রাজা রামমোহন রায়", "১৮৪৩ সালে - ঈশ্বরচন্দ্র বিদ্যাসাগর", "১৮৫৬ সালে - ডিরোজিও", "১৮৮৫ সালে - এ. ও. হিউম"], correct: 0, exp: "রাজা রামমোহন রায়ের প্রচেষ্টায় ১৮২৯ সালে লর্ড উইলিয়াম বেন্টিঙ্ক আইন করে সতীদাহ প্রথা বিলুপ্ত করেন।" },
+            { id: 10, section: "কোম্পানি ও দেওয়ানি", q: "বাংলায় দ্বৈত শাসন কে শুরু করেন এবং কে বিলুপ্ত করেন?", options: ["লর্ড ক্লাইভ - ওয়ারেন হেস্টিংস", "ওয়ারেন হেস্টিংস - লর্ড ক্লাইভ", "লর্ড কর্নওয়ালিস - লর্ড ক্যানিং", "কার্টিয়ার - লর্ড ডালহৌসি"], correct: 0, exp: "১৭৬৫ সালে লর্ড ক্লাইভ দ্বৈত শাসন শুরু করেন এবং ১৭৭২ সালে ওয়ারেন হেস্টিংস তা বিলুপ্ত করেন।" },
+            { id: 11, section: "প্রতিরোধ ও আন্দোলন", q: "ফরায়েজী আন্দোলনের প্রতিষ্ঠাতা কে এবং উক্তিটি কার: 'জমি থেকে খাজনা আদায় আল্লাহর আইনের পরিপন্থী'?", options: ["তিতুমীর - হাজী শরীয়তুল্লাহ", "হাজী শরীয়তুল্লাহ - দুদু মিয়া", "দুদু মিয়া - মজনু শাহ", "ইলা মিত্র - হাজী দানেশ"], correct: 1, exp: "হাজী শরীয়তুল্লাহ ফরায়েজী আন্দোলন শুরু করেন এবং তাঁর পুত্র দুদু মিয়া খাজনা বিরোধী বলিষ্ঠ নেতৃত্ব দেন।" },
+            { id: 12, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "নিখিল ভারত মুসলিম লীগ কত সালে প্রতিষ্ঠিত হয় এবং এর মূল প্রতিষ্ঠাতা কে ছিলেন?", options: ["১৯০৫ সালে - এ. কে. ফজলুল হক", "১৯০৬ সালে - নবাব সলিমুল্লাহ", "১৯১১ সালে - খাজা নাজিমুদ্দিন", "১৯২০ সালে - সোহরাওয়ার্দী"], correct: 1, exp: "১৯০৬ সালের ৩০ ডিসেম্বর ঢাকায় নবাব সলিমুল্লাহর উদ্যোগে নিখিল ভারত মুসলিম লীগ গঠিত হয়।" },
+            { id: 13, section: "ইউরোপীয়দের আগমন", q: "উপমহাদেশে সর্বশেষে আগমনকারী ইউরোপীয় কারা এবং তাদের ইস্ট ইন্ডিয়া কোম্পানি কত সালে গঠিত হয়?", options: ["ওলন্দাজ - ১৬০২", "ফরাসি - ১৬৬৪", "দিনেমার - ১৬১৬", "পর্তুগিজ - ১৫১৬"], correct: 1, exp: "ফরাসিরা ১৬৬৪ সালে ফরাসি ইস্ট ইন্ডিয়া কোম্পানি গঠন করে এবং তুলনামূলক দেরিতে উপমহাদেশে আসে।" },
+            { id: 14, section: "সংস্কার ও আইন", q: "বিধবা বিবাহ আইন কত সালে পাশ হয় এবং এতে কার প্রধান অবদান ছিল?", options: ["১৮২৯ সালে - রামমোহন রায়", "১৮৫৬ সালে - ঈশ্বরচন্দ্র বিদ্যাসাগর", "১৮৫৭ সালে - লর্ড ডালহৌসি", "১৮৭২ সালে - লর্ড রিপন"], correct: 1, exp: "ঈশ্বরচন্দ্র বিদ্যাসাগরের আন্দোলনের ফলে ১৮৫৬ সালে লর্ড ডালহৌসির আমলে বিধবা বিবাহ আইন পাস হয়।" },
+            { id: 15, section: "প্রতিরোধ ও আন্দোলন", q: "সাঁওতাল বিদ্রোহের প্রধান নেতা কারা ছিলেন এবং প্রতিবছর সাঁওতাল বিদ্রোহ দিবস কবে পালন করা হয়?", options: ["সিধু ও কানু মুর্মু - ৩০ জুন", "তিতুমীর ও মজনু শাহ - ২৩ জুন", "রজব আলী ও মঙ্গল পাণ্ডে - ১৮ মে", "ইলা মিত্র ও হাজী দানেশ - ১৩ এপ্রিল"], correct: 0, exp: "১৮৫৫ সালে সিধু ও কানু মুর্মুর নেতৃত্বে সাঁওতাল বিদ্রোহ শুরু হয়; ৩০ জুন সাঁওতাল বিদ্রোহ দিবস পালিত হয়।" },
+            { id: 16, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "ঢাকা বিশ্ববিদ্যালয় প্রতিষ্ঠার জন্য ১৯১২ সালে কোন কমিশন গঠন করা হয় এবং বিশ্ববিদ্যালয়টি কবে প্রতিষ্ঠিত হয়?", options: ["হান্টার কমিশন - ১৯২০", "নাথান কমিশন - ১৯২১", "র‍্যাডক্লিফ কমিশন - ১৯৪৭", "স্যান্ডলার কমিশন - ১৯১৯"], correct: 1, exp: "বঙ্গভঙ্গ রদের ক্ষতিপূরণ হিসেবে নাথান কমিশনের সুপারিশে ১৯২১ সালে ঢাকা বিশ্ববিদ্যালয় প্রতিষ্ঠিত হয়।" },
+            { id: 17, section: "কোম্পানি ও দেওয়ানি", q: "ছিয়াত্তরের মন্বন্তর বাংলা কত সনে ও ইংরেজি কত সালে ঘটে এবং তখন বাংলার গভর্নর কে ছিলেন?", options: ["১১৭৬ বঙ্গাব্দ (১৭৭০) - কার্টিয়ার", "১৩৫০ বঙ্গাব্দ (১৯৪৩) - ওয়াভেল", "১১৮০ বঙ্গাব্দ (১৭৭৩) - হেস্টিংস", "১১৭২ বঙ্গাব্দ (১৭৬৫) - ক্লাইভ"], correct: 0, exp: "বাংলা ১১৭৬ সন বা ১৭৭০ খ্রিষ্টাব্দে ভয়াবহ দুর্ভিক্ষ 'ছিয়াত্তরের মন্বন্তর' ঘটে যখন গভর্নর ছিলেন কার্টিয়ার।" },
+            { id: 18, section: "সংস্কার ও আইন", q: "ভারতবর্ষে প্রথম রেলপথ কত সালে চালু হয় এবং রেলপথ ও টেলিগ্রাফ ব্যবস্থা কে চালু করেন?", options: ["১৮৫৩ সালে - লর্ড ডালহৌসি", "১৮৫৭ সালে - লর্ড ক্যানিং", "১৮৬১ সালে - লর্ড মেরো", "১৮৮১ সালে - লর্ড রিপন"], correct: 0, exp: "গভর্নর জেনারেল লর্ড ডালহৌসির আমলে ১৮৫৩ সালে ভারতে প্রথম রেলপথ চালু হয়।" },
+            { id: 19, section: "প্রতিরোধ ও আন্দোলন", q: "সিপাহী বিদ্রোহ কত সালে সংঘটিত হয় এবং এর প্রথম শহিদ কে ছিলেন?", options: ["১৮৫৬ সালে - তিতুমীর", "১৮৫৭ সালে - মঙ্গল পাণ্ডে", "১৮৫৮ সালে - রজব আলী", "১৯১৯ সালে - ক্ষুদিরাম বসু"], correct: 1, exp: "১৮৫৭ সালে সিপাহী বিদ্রোহের সূচনা হয় এবং ব্যারাকপুরে মঙ্গল পাণ্ডে প্রথম শহিদ হন।" },
+            { id: 20, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "ঐতিহাসিক লাহোর প্রস্তাব কত সালে এবং কে উত্থাপন করেন?", options: ["১৯৩৭ সালে - মোহাম্মদ আলী জিন্নাহ", "১৯৪০ সালে - শেরে বাংলা এ. কে. ফজলুল হক", "১৯৪২ সালে - হোসেন শহীদ সোহরাওয়ার্দী", "১৯৪৭ সালে - খাজা নাজিমুদ্দিন"], correct: 1, exp: "১৯৪০ সালের ২৩ মার্চ লাহোরে শেরে বাংলা এ. কে. ফজলুল হক ঐতিহাসিক লাহোর প্রস্তাব উত্থাপন করেন।" },
+            { id: 21, section: "কোম্পানি ও দেওয়ানি", q: "বক্সারের যুদ্ধ কত সালে সংঘটিত হয় এবং এতে ইংরেজদের বিরুদ্ধে কে পরাজিত হন?", options: ["১৭৫৭ সালে - সিরাজউদ্দৌলা", "১৭৬৪ সালে - মীর কাসিম", "১৭৬৫ সালে - সুজাউদ্দৌলা", "১৭৭২ সালে - দ্বিতীয় শাহ আলম"], correct: 1, exp: "১৭৬৪ সালে বক্সারের যুদ্ধে মীর কাসিম, অবাবের নবাব ও মোগল সম্রাটের যৌথ বাহিনী ইংরেজদের কাছে পরাজিত হয়।" },
+            { id: 22, section: "সংস্কার ও আইন", q: "ব্রিটিশ ভারতের শেষ গভর্নর জেনারেল ও প্রথম ভাইসরয় কে ছিলেন এবং তিনি কাগজের মুদ্রা কবে চালু করেন?", options: ["লর্ড ডালহৌসি - ১৮৫৬", "লর্ড ক্যানিং - ১৮৬১", "লর্ড রিপন - ১৮৮২", "লর্ড হার্ডিঞ্জ - ১৯১১"], correct: 1, exp: "১৮৫৮ সালে কোম্পানির শাসন শেষে লর্ড ক্যানিং প্রথম ভাইসরয় হন এবং ১৮৬১ সালে কাগজের মুদ্রা প্রবর্তন করেন।" },
+            { id: 23, section: "প্রতিরোধ ও আন্দোলন", q: "'নীলদর্পণ' নাটকটি কে রচনা করেন?", options: ["বঙ্কিমচন্দ্র চট্টোপাধ্যায়", "দীনবন্ধু মিত্র", "রবীন্দ্রনাথ ঠাকুর", "মাইকেল মধুসূদন দত্ত"], correct: 1, exp: "নীলকরদের অত্যাচারের চিত্র তুলে ধরে দীনবন্ধু মিত্র ১৮৬০ সালে 'নীলদর্পণ' নাটক রচনা করেন।" },
+            { id: 24, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "অবিভক্ত বাংলার প্রথম মুখ্যমন্ত্রী কে ছিলেন?", options: ["হোসেন শহীদ সোহরাওয়ার্দী", "শেরে বাংলা এ. কে. ফজলুল হক", "খাজা নাজিমুদ্দিন", "নবাব সলিমুল্লাহ"], correct: 1, exp: "১৯৩৭ সালের নির্বাচনের পর শেরে বাংলা এ. কে. ফজলুল হক অবিভক্ত বাংলার প্রথম মুখ্যমন্ত্রী হন।" },
+            { id: 25, section: "ইউরোপীয়দের আগমন", q: "এশিয়াটিক সোসাইটি কত সালে ও কে প্রতিষ্ঠা করেন?", options: ["১৭৮১ সালে - ওয়ারেন হেস্টিংস", "১৭৮৪ সালে - উইলিয়াম জোন্স", "১৮০০ সালে - লর্ড ওয়েলেসলি", "১৮৮৫ সালে - অ্যালান হিউম"], correct: 1, exp: "প্রাচ্যের ইতিহাস ও সংস্কৃতি গবেষণায় ১৭৮৪ সালে কলকাতায় স্যার উইলিয়াম জোন্স এশিয়াটিক সোসাইটি প্রতিষ্ঠা করেন।" },
+            { id: 26, section: "কোম্পানি ও দেওয়ানি", q: "ফোর্ট উইলিয়াম কলেজ কত সালে, কে প্রতিষ্ঠা করেন এবং এতে বাংলা বিভাগ কবে খোলা হয়?", options: ["১৮০০ সালে - লর্ড ওয়েলেসলি - ১৮০১", "১৭৮৪ সালে - উইলিয়াম জোন্স - ১৭৮৫", "১৭৯৩ সালে - কর্নওয়ালিস - ১৮০০", "১৮২৯ সালে - বেন্টিঙ্ক - ১৮৩৫"], correct: 0, exp: "১৮০০ সালে লর্ড ওয়েলেসলি ফোর্ট উইলিয়াম কলেজ প্রতিষ্ঠা করেন এবং ১৮০১ সালে বাংলা বিভাগ চালু হয়।" },
+            { id: 27, section: "প্রতিরোধ ও আন্দোলন", q: "তেভাগা আন্দোলনের প্রধান নেত্রী ও জনক হিসেবে যথাক্রমে কাদের নাম উল্লেখ করা হয়?", options: ["ইলা মিত্র ও হাজী মোহাম্মদ দানেশ", "বেগম রোকেয়া ও তিতুমীর", "প্রীতিলতা ও সূর্য সেন", "কল্পনা দত্ত ও মজনু শাহ"], correct: 0, exp: "তেভাগা আন্দোলনের সাথে ইলা মিত্র এবং হাজী মোহাম্মদ দানেশের নাম বিশেষভাবে জড়িত।" },
+            { id: 28, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "পঞ্চাশের মন্বন্তর বাংলা কত সনে ও ইংরেজি কত সালে হয় এবং এর ওপর 'ম্যাডোনা-৪৩' কে আঁকেন?", options: ["১১৭৬ (১৭৭০) - রামকিঙ্কর বেইজ", "১৩৫০ (১৯৪৩) - জয়নুল আবেদিন", "১৩৫৯ (১৯৫২) - এস. এম. সুলতান", "১৩৭৮ (১৯৭১) - কামরুল হাসান"], correct: 1, exp: "বাংলা ১৩৫০ বা ১৯৪৩ সালে পঞ্চাশের মন্বন্তর ঘটে এবং দুর্ভিক্ষের প্রেক্ষাপটে জয়নুল আবেদিন 'ম্যাডোনা-৪৩' আঁকেন।" },
+            { id: 29, section: "সংস্কার ও আইন", q: "ব্রিটিশ ভারতের রাজধানী কলকাতা থেকে দিল্লিতে স্থানান্তর করেন কে?", options: ["লর্ড কার্জন", "লর্ড হার্ডিঞ্জ", "লর্ড রিপন", "লর্ড ক্যানিং"], correct: 1, exp: "১৯১১ সালে ঘোষণার পর লর্ড হার্ডিঞ্জের আমলে রাজধানী কলকাতা থেকে দিল্লিতে স্থানান্তরিত হয়।" },
+            { id: 30, section: "ইউরোপীয়দের আগমন", q: "নেদারল্যান্ডস ও ডেনমার্কের অধিবাসীদের বাংলায় কী বলা হয়?", options: ["ফিরিঙ্গি ও ওলন্দাজ", "ওলন্দাজ ও দিনেমার", "দিনেমার ও হার্মাদ", "ফরাসি ও ওলন্দাজ"], correct: 1, exp: "নেদারল্যান্ডসের অধিবাসীদের 'ওলন্দাজ' এবং ডেনমার্কের অধিবাসীদের 'দিনেমার' বলা হয়।" },
+            { id: 31, section: "প্রতিরোধ ও আন্দোলন", q: "চট্টগ্রামে সিপাহী বিদ্রোহের নেতৃত্ব দেন কে এবং বাহাদুর শাহ পার্কের পূর্ব নাম কী?", options: ["মঙ্গল পাণ্ডে - ডালহৌসি স্কয়ার", "হাবিলদার রজব আলী - ভিক্টোরিয়া পার্ক", "সূর্য সেন - রেসকোর্স", "তিতুমীর - কার্জন হল"], correct: 1, exp: "চট্টগ্রামে সিপাহী বিদ্রোহের নেতৃত্ব দেন হাবিলদার রজব আলী; পুরান ঢাকার বাহাদুর শাহ পার্কের পূর্ব নাম ভিক্টোরিয়া পার্ক।" },
+            { id: 32, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "ভারতীয় জাতীয় কংগ্রেস কত সালে ও কে প্রতিষ্ঠা করেন?", options: ["১৮৫৭ সালে - লর্ড ক্যানিং", "১৮৮৫ সালে - অ্যালান অক্টাভিয়ান হিউম", "১৯০৬ সালে - নবাব সলিমুল্লাহ", "১৯১৯ সালে - চিত্তরঞ্জন দাশ"], correct: 1, exp: "১৮৮৫ সালে অবসরপ্রাপ্ত ব্রিটিশ কর্মকর্তা অ্যালান অক্টাভিয়ান হিউম ভারতীয় জাতীয় কংগ্রেস প্রতিষ্ঠা করেন।" },
+            { id: 33, section: "কোম্পানি ও দেওয়ানি", q: "বাংলায় প্রথম গভর্নর জেনারেল কে ছিলেন এবং উপমহাদেশে প্রথম রাজস্ব বোর্ড কে স্থাপন করেন?", options: ["লর্ড ক্লাইভ", "ওয়ারেন হেস্টিংস", "লর্ড বেন্টিঙ্ক", "লর্ড কর্নওয়ালিস"], correct: 1, exp: "রেগুলেটিং অ্যাক্ট অনুযায়ী ওয়ারেন হেস্টিংস বাংলার প্রথম গভর্নর জেনারেল হন এবং রাজস্ব বোর্ড গঠন করেন।" },
+            { id: 34, section: "সংস্কার ও আইন", q: "আইন করে দাস প্রথা বিলুপ্ত করা হয় কত সালে?", options: ["১৮২৯", "১৮৩৩", "১৮৪৩", "১৮৫৬"], correct: 2, exp: "ব্রিটিশ শাসনামলে ১৮৪৩ সালে আইন করে দাস প্রথা বিলোপ করা হয়।" },
+            { id: 35, section: "প্রতিরোধ ও আন্দোলন", q: "'মাস্টারদা' সূর্য সেন কোন আন্দোলনের সঙ্গে যুক্ত ছিলেন?", options: ["অহিংস অসহযোগ আন্দোলন", "সশস্ত্র বিপ্লবী আন্দোলন", "খিলাফত আন্দোলন", "স্বদেশি আন্দোলন"], correct: 1, exp: "চট্টগ্রাম অস্ত্রাগার লুণ্ঠনের নায়ক মাস্টারদা সূর্য সেন ছিলেন সশস্ত্র বিপ্লবী আন্দোলনের অগ্রণী নেতা।" },
+            { id: 36, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "জালিওয়ানওয়ালাবাগ হত্যাকাণ্ড কবে সংঘটিত হয়?", options: ["১৩ এপ্রিল ১৯১৯", "১৮ মে ১৮৫৭", "১৬ অক্টোবর ১৯০৫", "২৩ মার্চ ১৯৪০"], correct: 0, exp: "১৯১৯ সালের ১৩ এপ্রিল অমৃতসরের জালিওয়ানওয়ালাবাগে নিরস্ত্র জনতার ওপর ব্রিটিশ বাহিনী গুলি চালায়।" },
+            { id: 37, section: "ইউরোপীয়দের আগমন", q: "পর্তুগিজরা প্রথম বাংলায় কত সালে আসে এবং তাদের বাণিজ্যিক কুঠি নির্মাণের অনুমতি কোন মোগল সম্রাট দেন?", options: ["১৫১৬ সালে - আকবর", "১৬০০ সালে - জাহাঙ্গীর", "১৬০৮ সালে - বাবর", "১৭৫৭ সালে - শাহজাহান"], correct: 0, exp: "১৫১৬ সালে পর্তুগিজরা প্রথম বাংলায় আসে এবং পরবর্তীতে সম্রাট আকবর বাণিজ্যিক কুঠি নির্মাণের অনুমতি দেন।" },
+            { id: 38, section: "কোম্পানি ও দেওয়ানি", q: "ভারতে ইস্ট ইন্ডিয়া কোম্পানির শাসনের অবসান ঘটে কত সালে এবং কোম্পানি কত খ্রিষ্টাব্দে স্থাপিত হয়?", options: ["১৭৫৭ - ১৬০৮", "১৮৫৮ - ১৬০০", "১৯১১ - ১৬৬৪", "১৯৪৭ - ১৭৬৫"], correct: 1, exp: "১৬০০ সালে গঠিত ব্রিটিশ ইস্ট ইন্ডিয়া কোম্পানির শাসনের অবসান ঘটে ১৮৫৮ সালে ভারত শাসন আইনের মাধ্যমে।" },
+            { id: 39, section: "প্রতিরোধ ও আন্দোলন", q: "চাকমা বিদ্রোহের প্রধান নেতা কে ছিলেন?", options: ["জোয়ান বক্স", "মজনু শাহ", "কানু মুর্মু", "দুদু মিয়া"], correct: 0, exp: "ব্রিটিশ আমলে পার্বত্য চট্টগ্রামে সংঘটিত চাকমা বিদ্রোহের প্রধান নেতা ছিলেন চাকমা রাজা জোয়ান বক্স।" },
+            { id: 40, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "অবিভক্ত বাংলার শেষ মুখ্যমন্ত্রী কে ছিলেন এবং দ্বিতীয় মুখ্যমন্ত্রী কে ছিলেন?", options: ["ফজলুল হক - সোহরাওয়ার্দী", "সোহরাওয়ার্দী - খাজা নাজিমুদ্দিন", "খাজা নাজিমুদ্দিন - ফজলুল হক", "সলিমুল্লাহ - সোহরাওয়ার্দী"], correct: 1, exp: "অবিভক্ত বাংলার দ্বিতীয় মুখ্যমন্ত্রী ছিলেন খাজা নাজিমুদ্দিন এবং শেষ মুখ্যমন্ত্রী ছিলেন হোসেন শহীদ সোহরাওয়ার্দী।" },
+            { id: 41, section: "সংস্কার ও আইন", q: "ভারতের প্রথম গভর্নর জেনারেল কে ছিলেন?", options: ["ওয়ারেন হেস্টিংস", "লর্ড উইলিয়াম বেন্টিঙ্ক", "লর্ড ক্যানিং", "লর্ড ডালহৌসি"], correct: 1, exp: "১৮৩৩ সালের সনদ আইন অনুযায়ী লর্ড উইলিয়াম বেন্টিঙ্ক ভারতের প্রথম গভর্নর জেনারেল হন।" },
+            { id: 42, section: "ইউরোপীয়দের আগমন", q: "পর্তুগিজরা ভারতে প্রথম বাণিজ্য কুঠি কোথায় নির্মাণ করে এবং ফরাসিরা কোথায় করে?", options: ["গোয়া - মাদ্রাজ", "কালিকট - সুরাট", "চট্টগ্রাম - হুগলি", "মুম্বাই - কলকাতা"], correct: 1, exp: "পর্তুগিজরা কালিকটে এবং ফরাসিরা সুরাটে প্রথম বাণিজ্য কুঠি স্থাপন করে।" },
+            { id: 43, section: "প্রতিরোধ ও আন্দোলন", q: "বাংলায় ব্রিটিশ বিরোধী প্রথম সশস্ত্র প্রতিরোধ আন্দোলন কোনটি?", options: ["সিপাহী বিদ্রোহ", "ফকির-সন্ন্যাসী আন্দোলন", "তেভাগা আন্দোলন", "স্বদেশি আন্দোলন"], correct: 1, exp: "ব্রিটিশ শাসনামলে বাংলায় প্রথম সংগঠিত ও সশস্ত্র প্রতিরোধ আন্দোলন ছিল ফকির-সন্ন্যাসী আন্দোলন।" },
+            { id: 44, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "ভারত শাসন আইন কত সালে পাস হয় এবং অবিভক্ত বাংলায় প্রথম প্রাদেশিক নির্বাচন কবে হয়?", options: ["১৯১৯ - ১৯২০", "১৯৩৫ - ১৯৩৭", "১৯৪০ - ১৯৪২", "১৯৪৬ - ১৯৪৭"], correct: 1, exp: "১৯৩৫ সালে ভারত শাসন আইন পাস হয় এবং এর ভিত্তিতে ১৯৩৭ সালে প্রাদেশিক নির্বাচন অনুষ্ঠিত হয়।" },
+            { id: 45, section: "কোম্পানি ও দেওয়ানি", q: "ফোর্ট উইলিয়াম দুর্গ কোথায় নির্মিত হয় এবং কলকাতা মাদ্রাসা কবে প্রতিষ্ঠিত হয়?", options: ["ঢাকা - ১৭৭২", "কলকাতা - ১৭৮১", "মুর্শিদাবাদ - ১৭৮৪", "চট্টগ্রাম - ১৮০০"], correct: 1, exp: "কলকাতায় ফোর্ট উইলিয়াম দুর্গ নির্মিত হয় এবং ১৭৮১ সালে ওয়ারেন হেস্টিংস কলকাতা মাদ্রাসা প্রতিষ্ঠা করেন।" },
+            { id: 46, section: "সংস্কার ও আইন", q: "হান্টার কমিশন কে গঠন করেন এবং প্রথম আদমশুমারি ভারতে কবে চালু হয়?", options: ["লর্ড রিপন - ১৮৭২", "লর্ড কার্জন - ১৯০১", "লর্ড ক্যানিং - ১৮৬১", "লর্ড ডালহৌসি - ১৮৫৩"], correct: 0, exp: "শিক্ষা সংস্কারে লর্ড রিপন হান্টার কমিশন গঠন করেন; ভারতে প্রথম আদমশুমারি শুরু হয় ১৮৭২ সালে।" },
+            { id: 47, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "গান্ধীজীকে 'মহাত্মা' উপাধি দেন কে এবং ভারত 'ছাড় আন্দোলন' কবে শুরু হয়?", options: ["সুভাষ বসু - ১৯৩০", "রবীন্দ্রনাথ ঠাকুর - ১৯৪২", "জিন্নাহ - ১৯৪০", "চিত্তরঞ্জন দাশ - ১৯১৯"], correct: 1, exp: "রবীন্দ্রনাথ ঠাকুর গান্ধীজীকে 'মহাত্মা' উপাধি দেন এবং ১৯৪২ সালে ভারত ছাড় আন্দোলন শুরু হয়।" },
+            { id: 48, section: "ইউরোপীয়দের আগমন", q: "ইস্ট ইন্ডিয়া কোম্পানি কত সালে বাণিজ্য করতে আসে এবং ইউরোপ থেকে ভারতে আসার নৌপথ কে আবিষ্কার করেন?", options: ["১৬০০ - কলম্বাস", "১৬০৮ - ভাস্কো-দা-গামা", "১৬৬৪ - ম্যাগেলান", "১৭৫৭ - ডায়াস"], correct: 1, exp: "১৪৯৮ সালে ভাস্কো-দা-গামা নৌপথ আবিষ্কার করেন এবং ১৬০৮ সালে ইস্ট ইন্ডিয়া কোম্পানি বাণিজ্য করতে আসে।" },
+            { id: 49, section: "প্রতিরোধ ও আন্দোলন", q: "মোহামেডান লিটারারি সোসাইটি কে প্রতিষ্ঠা করেন এবং 'ইয়ং বেঙ্গল' আন্দোলনের উদ্যোক্তা কে ছিলেন?", options: ["নবাব সলিমুল্লাহ - রামমোহন রায়", "নবাব আবদুল লতিফ - হেনরি লুই ভিভিয়ান ডিরোজিও", "সৈয়দ আমীর আলী - বিদ্যাসাগর", "আবদুল লতিফ - বঙ্কিমচন্দ্র"], correct: 1, exp: "নবাব আবদুল লতিফ মোহামেডান লিটারারি সোসাইটি গড়েন এবং ডিরোজিও ইয়ং বেঙ্গল আন্দোলনের নেতৃত্ব দেন।" },
+            { id: 50, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "অবিভক্ত বাংলার সর্বশেষ গভর্নর কে ছিলেন এবং ১৯৪৭ সালের সীমানা কমিশন কী নামে পরিচিত ছিল?", options: ["লর্ড মাউন্টব্যাটেন - সাইমন কমিশন", "স্যার এফ বারোজ - র‍্যাডক্লিফ কমিশন", "লর্ড কার্জন - ক্যাবিনেট মিশন", "খাজা নাজিমুদ্দিন - নাথান কমিশন"], correct: 1, exp: "অবিভক্ত বাংলার সর্বশেষ গভর্নর ছিলেন স্যার এফ বারোজ এবং সিরিল র‍্যাডক্লিফের নেতৃত্বে সীমানা কমিশন গঠিত হয়।" },
+            { id: 51, section: "সংস্কার ও আইন", q: "স্বত্ববিলোপ নীতি কে প্রবর্তন করেন এবং ইন্ডিয়ান সিভিল সার্ভিস কে চালু করেন?", options: ["লর্ড ডালহৌসি - লর্ড কর্নওয়ালিস", "লর্ড কর্নওয়ালিস - লর্ড ডালহৌসি", "লর্ড ক্যানিং - লর্ড রিপন", "ওয়ারেন হেস্টিংস - লর্ড বেন্টিঙ্ক"], correct: 0, exp: "লর্ড ডালহৌসি স্বত্ববিলোপ নীতি প্রবর্তন করেন এবং লর্ড কর্নওয়ালিস সিভিল সার্ভিসের ভিত্তি গড়ে তোলেন।" },
+            { id: 52, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "'দেশবন্ধু' কাকে বলা হয় এবং ক্ষুদিরাম বসু কোন ব্রিটিশ ম্যাজিস্ট্রেটকে হত্যার চেষ্টা করেন?", options: ["আশুতোষ মুখার্জি - স্যান্ডার্স", "চিত্তরঞ্জন দাশ - কিংসফোর্ড", "বিপিন পাল - ও'ডায়ার", "সুরেন্দ্রনাথ - কার্জন"], correct: 1, exp: "চিত্তরঞ্জন দাশ 'দেশবন্ধু' নামে পরিচিত; ক্ষুদিরাম বসু ও প্রফুল্ল চাকী ম্যাজিস্ট্রেট কিংসফোর্ডকে লক্ষ্য করে বোমা নিক্ষেপ করেন।" },
+            { id: 53, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "'আমার সোনার বাংলা' গানটি কোন প্রেক্ষিতে রচিত এবং বঙ্গভঙ্গের প্রতিক্রিয়ায় কোন আন্দোলন গড়ে ওঠে?", options: ["মুক্তিযুদ্ধ - অসহযোগ আন্দোলন", "বঙ্গভঙ্গ - স্বদেশি আন্দোলন", "ভাষা আন্দোলন - খিলাফত আন্দোলন", "সিপাহী বিদ্রোহ - তেভাগা আন্দোলন"], correct: 1, exp: "১৯০৫ সালের বঙ্গভঙ্গের প্রেক্ষাপটে রবীন্দ্রনাথ ঠাকুর গানটি রচনা করেন এবং স্বদেশি আন্দোলন দানা বাঁধে।" },
+            { id: 54, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "সর্বপ্রথম কোন মুসলিম মনীষী দ্বিজাতিতত্ত্বের ধারণা দেন এবং দ্বিজাতিতত্ত্বের প্রবক্তা কে?", options: ["ইকবাল - লিয়াকত আলী", "স্যার সৈয়দ আহমদ খান - মোহাম্মদ আলী জিন্নাহ", "নবাব সলিমুল্লাহ - ফজলুল হক", "আবদুল লতিফ - সোহরাওয়ার্দী"], correct: 1, exp: "দ্বিজাতিতত্ত্বের প্রাথমিক ধারণা স্যার সৈয়দ আহমদ খান দিলেও রাজনৈতিক প্রবক্তা হিসেবে মোহাম্মদ আলী জিন্নাহ এটিকে প্রতিষ্ঠিত করেন।" },
+            { id: 55, section: "ইউরোপীয়দের আগমন", q: "মগ ও পর্তুগিজ জলদস্যুদের কী বলা হতো এবং বাংলায় প্রথম আদমশুমারি চালু করেন কোন ভাইসরয়?", options: ["ফিরিঙ্গি - লর্ড রিপন", "হার্মাদ - লর্ড মেরো", "দিনেমার - লর্ড ক্যানিং", "ওলন্দাজ - লর্ড হার্ডিঞ্জ"], correct: 1, exp: "জলদস্যু পর্তুগিজ ও মগরা 'হার্মাদ' নামে পরিচিত ছিল; লর্ড মেরোর সময়ে বাংলায় প্রথম আদমশুমারি হয়।" },
+            { id: 56, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "বঙ্গভঙ্গের ফলে গঠিত নতুন প্রদেশ দুটির নাম কী ছিল?", options: ["পশ্চিমবঙ্গ ও পূর্ব পাকিস্তান", "'পূর্ববঙ্গ ও আসাম' এবং 'বাংলা'", "উত্তরবঙ্গ ও দক্ষিণবঙ্গ", "ঢাকা ও চট্টগ্রাম"], correct: 1, exp: "১৯০৫ সালের বঙ্গভঙ্গে 'পূর্ববঙ্গ ও আসাম' এবং অপর অংশে 'বাংলা' প্রদেশ গঠিত হয়।" },
+            { id: 57, section: "সংস্কার ও আইন", q: "ব্রিটিশ পার্লামেন্টে 'ভারত শাসন আইন' কত সালে পাশ হয়?", options: ["১৭৬৫", "১৭৭৩", "১৭৮৪", "১৮৫৮"], correct: 2, exp: "পিটের ভারত শাসন আইন হিসেবে পরিচিত আইনটি ১৭৮৪ সালে ব্রিটিশ পার্লামেন্টে পাস হয়।" },
+            { id: 58, section: "বঙ্গভঙ্গ ও জাতীয়তাবাদ", q: "বঙ্গভঙ্গ রদ কার্যকর করেন কে এবং কত সালে?", options: ["রাজা পঞ্চম জর্জ - ১৯১১", "লর্ড হার্ডিঞ্জ (২য়) - ১৯১২", "লর্ড কার্জন - ১৯০৫", "লর্ড মিন্টো - ১৯০৯"], correct: 1, exp: "১৯১১ সালের ঘোষণার পর ১৯১২ সালে লর্ড হার্ডিঞ্জের আমলে বঙ্গভঙ্গ রদ কার্যকর হয়।" },
+            { id: 59, section: "প্রতিরোধ ও আন্দোলন", q: "আলীগড় আন্দোলনের প্রতিষ্ঠাতা কে ছিলেন?", options: ["নবাব আবদুল লতিফ", "স্যার সৈয়দ আহমদ খান", "মৌলানা আবুল কালাম আজাদ", "নবাব সলিমুল্লাহ"], correct: 1, exp: "মুসলিম সমাজে আধুনিক শিক্ষা ও অগ্রগতির লক্ষ্যে স্যার সৈয়দ আহমদ খান আলীগড় আন্দোলন শুরু করেন।" },
+            { id: 60, section: "ইউরোপীয়দের আগমন", q: "ইউরোপ থেকে ভারতবর্ষে আসার সরাসরি নৌপথ প্রথম কে আবিষ্কার করেন?", options: ["ক্রিস্টোফার কলম্বাস", "ভাস্কো-দা-গামা", "ফাগিন্যান্ড ম্যাগেলান", "বার্থোলোমিউ দিয়াজ"], correct: 1, exp: "পর্তুগিজ নাবিক ভাস্কো-দা-গামা ১৪৯৮ সালে উত্তমাশা অন্তরীপ ঘুরে ভারতের কালিকটে পৌঁছান।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let totalTimeSeconds = 1500; // 25 minutes
+        let timeLeft = 1500; 
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-amber-600 text-white border border-amber-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const badge = document.getElementById('section-badge');
+            badge.innerText = q.section;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-amber-600/30 border-amber-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-amber-500 border-amber-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let timeSpent = totalTimeSeconds - timeLeft;
+            let spentMins = Math.floor(timeSpent / 60);
+            let spentSecs = timeSpent % 60;
+            document.getElementById('time-taken-text').innerText = `সময় লেগেছে: ${spentMins} মিনিট ${spentSecs} সেকেন্ড`;
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let html = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400">প্রশ্ন #${qIdx + 1}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold rounded border bg-amber-900 text-amber-200 border-amber-700">${q.section}</span>
+                </div>`;
+                html += `<p class="font-semibold text-slate-200 text-sm md:text-base">${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                html += `<div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 text-xs text-slate-300">
+                    <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${q.exp}
+                </div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1500;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
