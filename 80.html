@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>জনতত্ত্ব, শিক্ষা, স্বাস্থ্য, প্রতিরক্ষা, প্রতিষ্ঠান ও পরিকল্পনা - DU B-Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-violet-800 via-purple-800 to-indigo-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">জনতত্ত্ব, শিক্ষা, স্বাস্থ্য, প্রতিরক্ষা, প্রতিষ্ঠান ও পরিকল্পনা</h1>
+            <p class="text-sm text-purple-100 mt-1">বাংলাদেশ বিষয়াবলি | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>অধ্যায়: জনতত্ত্ব, শিক্ষা, স্বাস্থ্য, প্রতিরক্ষা, প্রতিষ্ঠান ও পরিকল্পনা।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের নিচে ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-purple-900 text-purple-200 border border-purple-700">জনতত্ত্ব ও প্রতিষ্ঠান</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 25:00
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-purple-600 hover:bg-purple-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "জনতত্ত্ব", q: "'জনসংখ্যা বাড়ে জ্যামিতিক হারে, খাদ্যশস্য বাড়ে গাণিতিক হারে' উক্তিটি কার এবং Demographic Dividend বলতে কী বোঝায়?", options: ["অ্যাডাম স্মিথ - ৬৫+ বয়সিদের আধিক্য", "রবার্ট ম্যালথাস - ১৫-৬৪ বছর বয়সি মানুষের আধিক্য", "কার্ল মার্ক্স - ০-১৪ বছর বয়সিদের আধিক্য", "অমর্ত্য সেন - কর্মক্ষম নারীর আধিক্য"], correct: 1, exp: "উক্তিটি রবার্ট ম্যালথাসের এবং ১৫-৬৪ বছর বয়সি কর্মক্ষম মানুষের আধিক্যকে Demographic Dividend বলে[cite: 50]।" },
+            { id: 2, section: "ক্ষুদ্র নৃগোষ্ঠী", q: "বাংলাদেশের ক্ষুদ্র নৃগোষ্ঠীর সংখ্যা কত এবং বৈসাবি উৎসবের সাথে কোন কোন জনগোষ্ঠী জড়িত?", options: ["৪৫ - চাকমা, গারো, সাঁওতাল", "৫০ - ত্রিপুরার বৈসুক, মারমার সাংগ্রাই ও চাকমার বিজু", "৫২ - মণিপুরি, খাসি, হাজং", "৪৮ - ওরাওঁ, কোচ, রাজবংশী"], correct: 1, exp: "ক্ষুদ্র নৃগোষ্ঠীর সংখ্যা ৫০; বৈসাবি হলো ত্রিপুরার বৈসুক, মারমার সাংগ্রাই ও চাকমার বিজু উৎসবের সমন্বয়[cite: 50, 51]।" },
+            { id: 3, section: "ঢাকা বিশ্ববিদ্যালয়", q: "ঢাকা বিশ্ববিদ্যালয় বিল কবে আইনে পরিণত হয় এবং প্রথম উপাচার্য ও প্রথম মুসলিম উপাচার্য কে ছিলেন?", options: ["১৯১২ - পিজে হার্টগ ও মাহমুদ হাসান", "১৮ মার্চ, ১৯২০ - পিজে হার্টগ ও স্যার এ. এফ রহমান", "০১ জুলাই, ১৯২১ - এ. এফ রহমান ও হার্টগ", "১৯২৩ - লর্ড ডানডাস ও হরপ্রসাদ শাস্ত্রী"], correct: 1, exp: "১৮ মার্চ ১৯২০ বিল আইনে পরিণত হয়; প্রথম উপাচার্য পিজে হার্টগ এবং প্রথম মুসলিম উপাচার্য স্যার এ. এফ রহমান[cite: 51]।" },
+            { id: 4, section: "শিক্ষা", q: "বাংলাদেশের প্রথম নারী জাতীয় অধ্যাপক কে এবং স্নাতক পর্যায়ে ছাত্রী উপবৃত্তি কবে চালু হয়?", options: ["নীলিমা ইব্রাহীম - ১৯৯১", "সুফিয়া আহমেদ - ১৯৯৪ সালে", "সুফিয়া কামাল - ১৯৯২", "ফজিলাতুন্নেসা জোহা - ১৯৯৩"], correct: 1, exp: "প্রথম নারী জাতীয় অধ্যাপক সুফিয়া আহমেদ এবং স্নাতক পর্যায়ে ছাত্রী উপবৃত্তি ১৯৯৪ সালে চালু হয়[cite: 51, 52]।" },
+            { id: 5, section: "স্বাস্থ্য", q: "ওরস্যালাইনের আবিষ্কারক কে এবং বিশ্বস্বাস্থ্য সংস্থা বাংলাদেশকে কবে পোলিও মুক্ত ঘোষণা করে?", options: ["ডা. জাফরুল্লাহ চৌধুরী - ২০১২", "ডা. রফিকুল ইসলাম - ২০১৪", "ডা. মুহাম্মদ ইব্রাহীম - ২০১৫", "ডা. সিতারা বেগম - ২০১০"], correct: 1, exp: "ওরস্যালাইনের আবিষ্কারক ডা. রফিকুল ইসলাম এবং বিশ্বস্বাস্থ্য সংস্থা ২০১৪ সালে বাংলাদেশকে পোলিও মুক্ত ঘোষণা করে[cite: 52]।" },
+            { id: 6, section: "প্রতিরক্ষা ও বাহিনী", q: "বাংলাদেশের সশস্ত্র বাহিনীর সর্বাধিনায়ক কে এবং সশস্ত্র বাহিনী দিবস কবে পালিত হয়?", options: ["প্রধানমন্ত্রী - ২৫ ফেব্রুয়ারি", "রাষ্ট্রপতি - ২১ নভেম্বর", "সেনাপ্রধান - ১৬ ডিসেম্বর", "রাষ্ট্রপতি - ১ ডিসেম্বর"], correct: 1, exp: "সশস্ত্র বাহিনীর সর্বাধিনায়ক রাষ্ট্রপতি এবং সশস্ত্র বাহিনী দিবস পালিত হয় ২১ নভেম্বর[cite: 52]।" },
+            { id: 7, section: "প্রতিষ্ঠান ও পরিকল্পনা", q: "বাংলাদেশের উন্নয়ন পরিকল্পনা অনুমোদনের সর্বোচ্চ কর্তৃপক্ষ কোনটি এবং বাংলাদেশ সবচেয়ে বেশি ঋণ নেয় কোন সংস্থা থেকে?", options: ["প্ল্যানিং কমিশন - বিশ্বব্যাংক", "জাতীয় অর্থনৈতিক পরিষদের নির্বাহী কমিটি (ECNEC) - আন্তর্জাতিক উন্নয়ন সমিতি (IDA)", "অর্থ মন্ত্রণালয় - এডিবি", "মন্ত্রিপরিষদ - আইএমএফ"], correct: 1, exp: "উন্নয়ন পরিকল্পনা অনুমোদনের সর্বোচ্চ কর্তৃপক্ষ ECNEC এবং বাংলাদেশ সবচেয়ে বেশি ঋণ নেয় IDA থেকে[cite: 52]।" },
+            { id: 8, section: "উন্নয়ন কার্ড ২০২৬", q: "ফ্যামিলি কার্ডের কার্যক্রম কবে শুরু হয়, প্রথম ফ্যামিলি কার্ড কে পান এবং কার্ডধারী পরিবার মাসে কত টাকা পায়?", options: ["৩০ মার্চ ২০২৬ - পারভিন বেগম - ৩০০০ টাকা", "১০ মার্চ, ২০২৬ - পারভিন বেগম - ২৫০০ টাকা", "১৪ এপ্রিল ২০২৬ - আছিয়া বেগম - ২৫০০ টাকা", "১০ মার্চ ২০২৬ - সুফিয়া বেগম - ২০০০ টাকা"], correct: 1, exp: "ফ্যামিলি কার্ড কার্যক্রম শুরু হয় ১০ মার্চ ২০২৬; প্রথম পান পারভিন বেগম এবং পরিবার মাসে ২৫০০ টাকা পায়[cite: 53]।" },
+            { id: 9, section: "জনতত্ত্ব", q: "বর্তমানে বাংলাদেশের সাক্ষরতার হার কত এবং প্রথম ডিজিটাল পদ্ধতিতে ৬ষ্ঠ জনশুমারি কবে হয়?", options: ["৭২.৬০% - ১৬-২২ জুন ২০২২", "৭৪.৮০% - ১৫-২১ জুন, ২০২২", "৭৬.৪০% - ১০-১৫ মে ২০২২", "৭১.০০% - ০১-০৭ জুলাই ২০২২"], correct: 1, exp: "সাক্ষরতার হার ৭৪.৮০% এবং প্রথম ডিজিটাল ৬ষ্ঠ জনশুমারি অনুষ্ঠিত হয় ১৫-২১ জুন ২০২২ সালে[cite: 50]।" },
+            { id: 10, section: "ক্ষুদ্র নৃগোষ্ঠী", q: "ঐতিহাসিক পার্বত্য চট্টগ্রাম শান্তি চুক্তি (০২ ডিসেম্বর ১৯৯৭) সম্পাদনের সময় শান্তি বাহিনীর পক্ষে কে স্বাক্ষর করেন?", options: ["সন্তু লারমা - পার্বত্য চট্টগ্রাম আঞ্চলিক পরিষদ ১৯৯৮", "জ্যোতিরিন্দ্র বোধিপ্রিয় লারমা - পার্বত্য চট্টগ্রাম আঞ্চলিক পরিষদ ১৯৯৯ সালে", "মনবেন্দ্র লারমা - ১৯৯৭", "উজ্জ্বল স্মৃতি চাকমা - ২০০০"], correct: 1, exp: "শান্তি বাহিনীর পক্ষে স্বাক্ষর করেন জ্যোতিরিন্দ্র বোধিপ্রিয় লারমা এবং আঞ্চলিক পরিষদ প্রতিষ্ঠিত হয় ১৯৯৯ সালে[cite: 51]।" },
+            { id: 11, section: "ঢাকা বিশ্ববিদ্যালয়", q: "ঢাকা বিশ্ববিদ্যালয়ের প্রথম নারী ও মুসলিম নারী শিক্ষার্থী যথাক্রমে কারা ছিলেন?", options: ["ফজিলাতুন্নেসা জোহা ও লীলা নাগ", "লীলা নাগ এবং ফজিলাতুন্নেসা জোহা", "সুফিয়া কামাল ও রোকেয়া সাখাওয়াত", "রাজিয়া বানু ও নভেরা আহমেদ"], correct: 1, exp: "ঢাকা বিশ্ববিদ্যালয়ের প্রথম নারী শিক্ষার্থী লীলা নাগ এবং প্রথম মুসলিম নারী শিক্ষার্থী ফজিলাতুন্নেসা জোহা[cite: 51]।" },
+            { id: 12, section: "শিক্ষা", q: "বর্তমানে বাংলাদেশে ক্যাডেট কলেজের সংখ্যা কত এবং বাধ্যতামূলক প্রাথমিক শিক্ষা আইন কবে পাশ হয়?", options: ["১০টি - ১৯৯২", "১২টি - ১৯৯০ সালে", "১৪টি - ১৯৯১", "১১টি - ১৯৯৩"], correct: 1, exp: "বর্তমানে ক্যাডেট কলেজ ১২টি এবং বাংলাদেশ বাধ্যতামূলক প্রাথমিক শিক্ষা আইন পাশ হয় ১৯৯০ সালে[cite: 51, 52]।" },
+            { id: 13, section: "স্বাস্থ্য", q: "বাংলাদেশের প্রথম ভাসমান হাসপাতালের নাম কী এবং বারডেম হাসপাতালের প্রতিষ্ঠাতা কে?", options: ["স্বাস্থ্যতরী - ডা. রফিকুল ইসলাম", "জীবনতরী - ডা. মুহম্মদ ইব্রাহীম", "মানবতরী - ডা. জাফরুল্লাহ চৌধুরী", "আশাতরী - ডা. সিতারা বেগম"], correct: 1, exp: "প্রথম ভাসমান হাসপাতাল 'জীবনতরী' এবং বারডেম হাসপাতালের প্রতিষ্ঠাতা ডা. মুহম্মদ ইব্রাহীম[cite: 52]।" },
+            { id: 14, section: "প্রতিরক্ষা ও বাহিনী", q: "বাংলাদেশ মিলিটারি একাডেমি ও বাংলাদেশ নেভাল একাডেমি যথাক্রমে কোথায় অবস্থিত?", options: ["পতেঙ্গা ও ভাটিয়ারী", "ভাটিয়ারী চট্টগ্রাম ও পতেঙ্গা", "যশোর ও সারদা", "সাভার ও পেকুয়া"], correct: 1, exp: "বাংলাদেশ মিলিটারি একাডেমি চট্টগ্রামের ভাটিয়ারীতে এবং নেভাল একাডেমি পতেঙ্গায় অবস্থিত[cite: 52]।" },
+            { id: 15, section: "প্রতিষ্ঠান ও পরিকল্পনা", q: "BARD-এর প্রতিষ্ঠাতা কে এবং বর্তমানে মোট কয়টি পল্লী উন্নয়ন একাডেমি কার্যকর রয়েছে?", options: ["ড. সিরাজুল ইসলাম - ৩টি", "আখতার হামিদ খান - ৪টি", "মুহাম্মদ ইউনূস - ৫টি", "নাজমুজ্জামান ভূঁইয়া - ২টি"], correct: 1, exp: "১৯৫৯ সালে কুমিল্লায় BARD প্রতিষ্ঠা করেন আখতার হামিদ খান এবং বর্তমানে মোট ৪টি পল্লী উন্নয়ন একাডেমি রয়েছে[cite: 52]।" },
+            { id: 16, section: "উন্নয়ন কার্ড ২০২৬", q: "কৃষক কার্ডের কার্যক্রম কবে শুরু হয় এবং কার্ডধারী কৃষক বার্ষিক এককালীন কত টাকা পাবে?", options: ["১০ মার্চ ২০২৬ - ২০০০ টাকা", "১৪ এপ্রিল, ২০২৬ - বার্ষিক এককালীন ২৫০০ টাকা", "৩০ মার্চ ২০২৬ - মাসিক ২৫০০ টাকা", "০১ মে ২০২৬ - ৫০০০ টাকা"], correct: 1, exp: "কৃষক কার্ড কার্যক্রম শুরু হয় ১৪ এপ্রিল ২০২৬ এবং কৃষক বার্ষিক এককালীন ২৫০০ টাকা পাবেন[cite: 53]।" },
+            { id: 17, section: "জনতত্ত্ব", q: "জনশুমারি-২০২২ অনুযায়ী পুরুষ ও নারীর অনুপাত কত এবং নারীর সংখ্যা মোট জনসংখ্যার কত শতাংশ?", options: ["১০০:৯৮ - ৪৯.৫৭%", "৯৮:১০০ - ৫০.৪৩%", "১০২:১০০ - ৫০.১০%", "৯৯:১০০ - ৫০.০০%"], correct: 1, exp: "জনশুমারি-২০২২ অনুযায়ী পুরুষ ও নারীর অনুপাত ৯৮:১০০ এবং নারীর সংখ্যা ৫০.৪৩%[cite: 50]।" },
+            { id: 18, section: "ক্ষুদ্র নৃগোষ্ঠী", q: "চাকমাদের মৌজা প্রধান ও গ্রাম প্রধানকে যথাক্রমে কী বলে এবং ওরাওঁদের গ্রাম প্রধানকে কী বলে?", options: ["কারবারি ও হেডম্যান - সর্দার", "হেডম্যান ও কারবারি - মাহাতো", "মাহাতো ও কারবারি - হেডম্যান", "নকমা ও হেডম্যান - কারবারি"], correct: 1, exp: "চাকমাদের মৌজা প্রধান হেডম্যান ও গ্রাম প্রধান কারবারি; ওরাওঁদের গ্রাম প্রধানকে মাহাতো বলা হয়[cite: 51]।" },
+            { id: 19, section: "ঢাকা বিশ্ববিদ্যালয়", q: "ঢাকা বিশ্ববিদ্যালয় দিবস কোন তারিখে পালিত হয় এবং ঢাবির প্রতিষ্ঠাকালীন ৩টি হলের নাম কী?", options: ["১৮ মার্চ - ঢাকা হল, জগন্নাথ হল, ফজলুল হক হল", "১ জুলাই - ঢাকা হল, সলিমুল্লাহ মুসলিম হল ও জগন্নাথ হল", "০১ জুলাই - শহীদুল্লাহ হল, ঢাকা হল, জহুরুল হক হল", "১৫ অক্টোবর - সূর্য সেন হল, ঢাকা হল, জগন্নাথ হল"], correct: 1, exp: "ঢাবি দিবস ১ জুলাই এবং প্রতিষ্ঠাকালীন ৩টি হল হলো ঢাকা হল, সলিমুল্লাহ মুসলিম হল ও জগন্নাথ হল[cite: 51]।" },
+            { id: 20, section: "শিক্ষা", q: "জাতীয় প্রাথমিক শিক্ষা একাডেমি (NAPE) কোথায় অবস্থিত এবং শিক্ষা বিভাগের প্রশিক্ষণের শীর্ষ প্রতিষ্ঠান কোনটি?", options: ["ঢাকা - BANBEIS", "ময়মনসিংহ - নায়েম (NAEM)", "গাজীপুর - NCTB", "রাজশাহী - UGC"], correct: 1, exp: "NAPE ময়মনসিংহে অবস্থিত এবং শিক্ষা বিভাগের প্রশিক্ষণের শীর্ষ প্রতিষ্ঠান নায়েম (NAEM)[cite: 52]।" },
+            { id: 21, section: "স্বাস্থ্য", q: "বাংলাদেশে প্রথম 'জৈবপ্রযুক্তির ঔষধ' তৈরিতে নেতৃত্ব দিয়েছেন কোন দুই বিজ্ঞানী এবং প্রথম ঔষধ পার্ক কোথায়?", options: ["রফিকুল ইসলাম ও ইব্রাহীম - চট্টগ্রামে", "কাকন নাগ ও নাজনীন সুলতানা - মুন্সীগঞ্জের গজারিয়ায়", "সিতারা বেগম ও কাকন নাগ - সাভারে", "নাজনীন সুলতানা ও ইব্রাহীম - গাজীপুরে"], correct: 1, exp: "জৈবপ্রযুক্তির ঔষধ তৈরিতে নেতৃত্ব দেন কাকন নাগ ও নাজনীন সুলতানা; প্রথম ঔষধ পার্ক মুন্সীগঞ্জের গজারিয়ায়[cite: 52]।" },
+            { id: 22, section: "প্রতিরক্ষা ও বাহিনী", q: "বাংলাদেশের প্রথম সাবমেরিন ঘাঁটি কোথায় অবস্থিত এবং নৌবাহিনীর বৃহত্তম যুদ্ধজাহাজ কোনটি?", options: ["পতেঙ্গা - বানৌজা সংগ্রাম", "পেকুয়া, কক্সবাজার - বানৌজা সমুদ্র জয়", "ভাটিয়ারী - বানৌজা প্রত্যাশা", "খুলনা - বানৌজা পদ্মা"], correct: 1, exp: "প্রথম সাবমেরিন ঘাঁটি কক্সবাজারের পেকুয়ায় এবং নৌবাহিনীর বৃহত্তম যুদ্ধজাহাজ বানৌজা সমুদ্র জয়[cite: 52]।" },
+            { id: 23, section: "প্রতিষ্ঠান ও পরিকল্পনা", q: "বাংলাদেশ উন্নয়ন ফোরামের প্রধান সমন্বয়কারীর কাজ করে কোন প্রতিষ্ঠান এবং 'PRSP-1' কবে গৃহীত হয়?", options: ["এডিবি - ২০০৩", "বিশ্বব্যাংক - ২০০৫ সালে", "আইএমএফ - ২০০৬", "ইউএনডিপি - ২০০৪"], correct: 1, exp: "বাংলাদেশ উন্নয়ন ফোরামের প্রধান সমন্বয়কারী বিশ্বব্যাংক এবং PRSP-1 আনুষ্ঠানিকভাবে ২০০৫ সালে গৃহীত হয়[cite: 52]।" },
+            { id: 24, section: "উন্নয়ন কার্ড ২০২৬", q: "স্পোর্টস কার্ডের কার্যক্রম কবে শুরু হয় এবং কার্ডধারী ক্রীড়াবিদরা প্রতি মাসে কত টাকা ভাতা পাবেন?", options: ["১০ মার্চ ২০২৬ - ৫০ হাজার টাকা", "৩০ মার্চ, ২০২৬ - প্রতি মাসে ১ লক্ষ টাকা", "১৪ এপ্রিল ২০২৬ - ২৫ হাজার টাকা", "০১ এপ্রিল ২০২৬ - ১ লক্ষ টাকা"], correct: 1, exp: "স্পোর্টস কার্ড কার্যক্রম শুরু হয় ৩০ মার্চ ২০২৬ এবং ক্রীড়াবিদরা প্রতি মাসে ১ লক্ষ টাকা ভাতা পাবেন[cite: 53]।" },
+            { id: 25, section: "জনতত্ত্ব", q: "জনসংখ্যার ঘনত্ব বেশি কোন জেলায় ও কম কোন জেলায় এবং জাতিসংঘের ২০২৫ রিপোর্ট অনুযায়ী জনসংখ্যার দিক দিয়ে বাংলাদেশের স্থান কত?", options: ["চট্টগ্রাম ও বান্দরবান - সপ্তম", "ঢাকা ও রাঙ্গামাটি - অষ্টম", "ঢাকা ও খাগড়াছড়ি - নবম", "নারায়ণগঞ্জ ও সিলেট - অষ্টম"], correct: 1, exp: "ঘনত্ব বেশি ঢাকায় ও কম রাঙ্গামাটিতে; ২০২৫ জাতিসংঘ রিপোর্ট অনুযায়ী জনসংখ্যায় বাংলাদেশের অবস্থান অষ্টম[cite: 50]।" },
+            { id: 26, section: "ক্ষুদ্র নৃগোষ্ঠী", q: "'পুঞ্জি' শব্দটি কোন জনগোষ্ঠীর সাথে সম্পৃক্ত এবং কোন ক্ষুদ্র নৃগোষ্ঠীর প্রধান পেশা পান চাষ?", options: ["গারো", "খাসিয়া", "মারমা", "সাঁওতাল"], correct: 1, exp: "'পুঞ্জি' শব্দটি খাসিয়া জনগোষ্ঠীর সাথে সম্পৃক্ত এবং পান চাষ তাদের প্রধান পেশা[cite: 51]।" },
+            { id: 27, section: "ঢাকা বিশ্ববিদ্যালয়", q: "কোন প্রতিষ্ঠানটিকে 'দ্বিতীয় সংসদ' বলা হয় এবং ডাকসুর (DUCSU) প্রথম নির্বাচন কবে অনুষ্ঠিত হয়?", options: ["সিনেট - ১৯৫২", "ডাকসু (DUCSU) - ১৯৫৩ সালে", "সিন্ডিকেট - ১৯৫৪", "হল সংসদ - ১৯৫৫"], correct: 1, exp: "ডাকসুকে 'দ্বিতীয় সংসদ' হিসেবে অভিহিত করা হয় এবং প্রথম নির্বাচন হয় ১৯৫৩ সালে[cite: 51]।" },
+            { id: 28, section: "শিক্ষা", q: "বাংলাদেশের প্রথম জাতীয় অধ্যাপক কারা ছিলেন এবং 'খাদ্যের বিনিময়ে শিক্ষা কর্মসূচি' কবে চালু হয়?", options: ["সুফিয়া আহমেদ - ১৯৯১", "শিল্পাচার্য জয়নুল আবেদিন, অধ্যাপক আব্দুর রাজ্জাক ও অধ্যাপক কাজী মোতাহার হোসেন - ১৯৯৩ সালে", "কাজী মোতাহার হোসেন - ১৯৯২", "আব্দুর রাজ্জাক - ১৯৯৫"], correct: 1, exp: "প্রথম জাতীয় অধ্যাপক জয়নুল আবেদিন, আব্দুর রাজ্জাক ও কাজী মোতাহার হোসেন; খাদ্য বিনিময়ে শিক্ষা চালু হয় ১৯৯৩ সালে[cite: 52]।" },
+            { id: 29, section: "স্বাস্থ্য", q: "মহাখালীতে অবস্থিত IEDCR কোন গবেষণার জন্য নিয়োজিত এবং স্বাস্থ্য অধিদপ্তরের স্বাস্থ্য পরিচর্যা কেন্দ্রের প্রতীক কী?", options: ["পুষ্টি গবেষণা - নীল ছাতা", "মহামারি ও সংক্রামক ব্যাধি গবেষণা - সবুজ ছাতা", "ঔষধ গবেষণা - লাল ছাতা", "টিকা গবেষণা - হলুদ ছাতা"], correct: 1, exp: "IEDCR মহামারি ও সংক্রামক ব্যাধি নিয়ে কাজ করে এবং স্বাস্থ্য পরিচর্যা কেন্দ্রের প্রতীক সবুজ ছাতা[cite: 52]।" },
+            { id: 30, section: "প্রতিরক্ষা ও বাহিনী", q: "বাংলাদেশ পুলিশ কোন মন্ত্রণালয়ের অধীন এবং ঢাকায় মেট্রোপলিটন পুলিশ কবে চালু হয়?", options: ["জনপ্রশাসন - ১৯৭৪", "স্বরাষ্ট্র মন্ত্রণালয় - ০১ ফেব্রুয়ারি, ১৯৭৬", "আইন মন্ত্রণালয় - ১৯৭৮", "প্রতিরক্ষা মন্ত্রণালয় - ১৯৭৬"], correct: 1, exp: "পুলিশ স্বরাষ্ট্র মন্ত্রণালয়ের অধীন এবং ০১ ফেব্রুয়ারি ১৯৭৬ ঢাকায় মেট্রোপলিটন পুলিশ চালু হয়[cite: 52]।" },
+            { id: 31, section: "প্রতিষ্ঠান ও পরিকল্পনা", q: "'বাংলাপিডিয়া'-র প্রধান সম্পাদক কে এবং বাংলা একাডেমি ও এশিয়াটিক সোসাইটি কবে প্রতিষ্ঠিত হয়?", options: ["আবদুল করিম - ১৯৫০ ও ১৯৫২", "ড. সিরাজুল ইসলাম - এশিয়াটিক সোসাইটি ১৯৫২ ও বাংলা একাডেমি ১৯৫৫", "মুহাম্মদ শহীদুল্লাহ - ১৯৫২ ও ১৯৫৭", "আনিসুজ্জামান - ১৯৫৫ ও ১৯৫২"], correct: 1, exp: "বাংলাপিডিয়ার প্রধান সম্পাদক ড. সিরাজুল ইসলাম; এশিয়াটিক সোসাইটি ১৯৫২ ও বাংলা একাডেমি ১৯৫৫ সালে প্রতিষ্ঠিত হয়[cite: 52]।" },
+            { id: 32, section: "উন্নয়ন কার্ড ২০২৬", q: "স্বাস্থ্য কার্ড (ইহেলথ কার্ড) কোন মন্ত্রণালয়ের এবং এর প্রধান সুবিধা কী?", options: ["সমাজকল্যাণ - আর্থিক ভাতা", "স্বাস্থ্য ও পরিবার কল্যাণ মন্ত্রণালয় - দ্রুত ও নির্ভুলভাবে রোগ নির্ণয় ও স্বাস্থ্যসেবা", "কৃষি - সেচ সুবিধা", "যুব ও ক্রীড়া - চিকিৎসা বীমা"], correct: 1, exp: "স্বাস্থ্য কার্ড স্বাস্থ্য ও পরিবার কল্যাণ মন্ত্রণালয়ের অধীন যা দ্রুত ও নির্ভুল রোগ শনাক্ত ও সেবায় সহায়ক[cite: 53]।" },
+            { id: 33, section: "জনতত্ত্ব", q: "সাক্ষরতার হারের বিচারে শীর্ষ জেলা কোনটি এবং দারিদ্র্যে শীর্ষ জেলা ও সর্বোচ্চ দারিদ্র্য হারের বিভাগ যথাক্রমে কী?", options: ["ঢাকা - বরিশাল ও রংপুর", "পিরোজপুর - কুড়িগ্রাম ও বরিশাল", "বরিশাল - পিরোজপুর ও খুলনা", "সিলেট - লালমনিরহাট ও ময়মনসিংহ"], correct: 1, exp: "সাক্ষরতায় শীর্ষ পিরোজপুর, দারিদ্র্যে শীর্ষ জেলা কুড়িগ্রাম এবং সর্বোচ্চ দারিদ্র্য হার বরিশাল বিভাগে[cite: 50]।" },
+            { id: 34, section: "ক্ষুদ্র নৃগোষ্ঠী", q: "বাংলাদেশের একমাত্র জাতি-তাত্ত্বিক জাদুঘর কোথায় এবং প্রথম উপজাতীয় কালচারাল একাডেমি কোথায় প্রতিষ্ঠিত হয়?", options: ["ঢাকা - রাঙ্গামাটি", "চট্টগ্রাম - নেত্রকোণার বিরিশিরিতে", "সিলেট - মৌলভীবাজার", "রাজশাহী - দিনাজপুর"], correct: 1, exp: "একমাত্র জাতি-তাত্ত্বিক জাদুঘর চট্টগ্রামে এবং প্রথম উপজাতীয় কালচারাল একাডেমি নেত্রকোণার বিরিশিরিতে[cite: 51]।" },
+            { id: 35, section: "ঢাকা বিশ্ববিদ্যালয়", q: "ঢাবিতে সমাধি রয়েছে কয়টি এবং তিন নেতার মাজার কোথায় অবস্থিত?", options: ["৩টি - শহীদুল্লাহ হলের পাশে", "৪টি - কার্জন হলের বিপরীতে ও দোয়েল চত্বরের পাশে", "৫টি - টিএসসির পাশে", "২টি - কলাভবনের সামনে"], correct: 1, exp: "ঢাবিতে ৪টি সমাধি রয়েছে; তিন নেতার মাজার কার্জন হলের বিপরীতে ও দোয়েল চত্বরের পাশে অবস্থিত[cite: 51]।" },
+            { id: 36, section: "শিক্ষা", q: "NCTB ও UGC-এর পূর্ণরূপ কী এবং প্রাথমিক শিক্ষা বাস্তবায়নে কোন প্রতিষ্ঠান দায়িত্ব পালন করে?", options: ["National Curriculum and Textbook Board ও University Grants Commission - DPE", "National Council for Textbook Board - NAEM", "National Curriculum Board - BANBEIS", "National Textbook Board - NAPE"], correct: 0, exp: "NCTB অর্থ National Curriculum and Textbook Board, UGC অর্থ University Grants Commission এবং প্রাথমিক শিক্ষা বাস্তবায়নে কাজ করে DPE[cite: 52]।" },
+            { id: 37, section: "স্বাস্থ্য", q: "বাংলাদেশে সর্বপ্রথম এইডস শনাক্ত হয় কত সালে এবং 'গণস্বাস্থ্য কেন্দ্র'-এর পূর্বনাম কী?", options: ["১৯৮৫ - গণস্বাস্থ্য ট্রাস্ট", "১৯৮৯ সালে - বাংলাদেশ ফিল্ড হাসপাতাল", "১৯৯১ - ফিল্ড ক্লিনিক", "১৯৮৭ - পল্লী স্বাস্থ্য কেন্দ্র"], correct: 1, exp: "১৯৮৯ সালে প্রথম এইডস শনাক্ত হয় এবং গণস্বাস্থ্য কেন্দ্রের পূর্বনাম ছিল বাংলাদেশ ফিল্ড হাসপাতাল[cite: 52]।" },
+            { id: 38, section: "প্রতিরক্ষা ও বাহিনী", q: "সশস্ত্র বাহিনীর চৌকস অফিসার ক্যাডেটদের সর্বোচ্চ সম্মাননা কোনটি এবং বিমানবাহিনীর প্রশিক্ষণ একাডেমি কোথায়?", options: ["বীর উত্তম - চট্টগ্রাম", "সোর্ড অব অনার - যশোর", "বীর বিক্রম - ঢাকা", "সোর্ড অব অনার - বগুড়া"], correct: 1, exp: "সর্বোচ্চ সম্মাননা 'সোর্ড অব অনার' এবং বিমানবাহিনীর প্রশিক্ষণ একাডেমি যশোরে অবস্থিত[cite: 52]।" },
+            { id: 39, section: "প্রতিষ্ঠান ও পরিকল্পনা", q: "আন্তর্জাতিক মাতৃভাষা ইনস্টিটিউটের সদর দপ্তর কোথায় এবং সবচেয়ে পুরাতন জাদুঘর কোনটি?", options: ["ঢাকা - জাতীয় জাদুঘর", "ঢাকা - বরেন্দ্র গবেষণা জাদুঘর", "সিলেট - আহসান মঞ্জিল", "রাজশাহী - বরেন্দ্র জাদুঘর"], correct: 1, exp: "আন্তর্জাতিক মাতৃভাষা ইনস্টিটিউটের সদর দপ্তর ঢাকায় এবং সবচেয়ে পুরাতন জাদুঘর বরেন্দ্র গবেষণা জাদুঘর[cite: 52]।" },
+            { id: 40, section: "জনতত্ত্ব", q: "অর্থনৈতিক সমীক্ষা ২০২৫ অনুযায়ী জনসংখ্যার ঘনত্ব ও জনসংখ্যা বৃদ্ধির হার যথাক্রমে কত?", options: ["১০৪১ জন ও ১.২০%", "১১৪১ জন ও ১.১২%", "১১৫১ জন ও ১.২২%", "১১০০ জন ও ১.০২%"], correct: 1, exp: "অর্থনৈতিক সমীক্ষা ২০২৫ অনুযায়ী প্রতি বর্গ কিমি ঘনত্ব ১১৪১ জন এবং জনসংখ্যা বৃদ্ধির হার ১.১২%[cite: 50]।" },
+            { id: 41, section: "ক্ষুদ্র নৃগোষ্ঠী", q: "গারোদের দেবতাকে কী বলা হয় এবং বাংলাদেশের কোন ক্ষুদ্র নৃগোষ্ঠী মুসলমান?", options: ["তাতারা রাবুগা - চাকমা", "তাতারা রাবুগা - পাঙন", "মাহাতো - হাজং", "রেংমিচটা - ম্রো"], correct: 1, exp: "গারোদের দেবতা 'তাতারা রাবুগা' এবং পাঙন জনগোষ্ঠী মুসলমান[cite: 51]।" },
+            { id: 42, section: "ঢাকা বিশ্ববিদ্যালয়", q: "ঢাবি থেকে প্রথম 'ডক্টর অব লিটারেচার' ডিগ্রি লাভ করেন কে এবং ঢাবির লোগোতে কোন স্লোগানটি রয়েছে?", options: ["মুহাম্মদ শহীদুল্লাহ - সত্যই আলো", "হরপ্রসাদ শাস্ত্রী - শিক্ষাই আলো", "এ. এফ রহমান - জ্ঞানই শক্তি", "রবীন্দ্রনাথ ঠাকুর - শিক্ষাই আলো"], correct: 1, exp: "প্রথম ডি. লিট পান হরপ্রসাদ শাস্ত্রী এবং ঢাবির বর্তমান লোগোতে 'শিক্ষাই আলো' স্লোগানটি রয়েছে[cite: 51]।" },
+            { id: 43, section: "শিক্ষা", q: "কোন শ্রেণি পর্যন্ত অবৈতনিক নারী শিক্ষা চালু করা হয়েছে এবং নিরক্ষরমুক্ত জেলা কয়টি?", options: ["দশম - ৫টি", "দ্বাদশ - ৭টি", "স্নাতক - ৮টি", "অষ্টম - ৬টি"], correct: 1, exp: "দ্বাদশ শ্রেণি পর্যন্ত অবৈতনিক নারী শিক্ষা চালু করা হয়েছে এবং নিরক্ষরমুক্ত জেলা ৭টি[cite: 51]।" },
+            { id: 44, section: "স্বাস্থ্য", q: "প্রথম শতভাগ স্যানিটেশনের আওতায় আসে কোন জেলা এবং 'icddr,b' কী ধরনের প্রতিষ্ঠান?", options: ["সিলেট - পুষ্টি গবেষণা কেন্দ্র", "কুমিল্লা - উদরাময় গবেষণা কেন্দ্র (স্থাপিত ১৯৬০)", "ঢাকা - ক্যান্সার গবেষণা কেন্দ্র", "যশোর - ম্যালেরিয়া গবেষণা কেন্দ্র"], correct: 1, exp: "প্রথম শতভাগ স্যানিটেশনের আওতায় আসে কুমিল্লা এবং icddr,b একটি উদরাময় গবেষণা কেন্দ্র[cite: 52]।" },
+            { id: 45, section: "প্রতিরক্ষা ও বাহিনী", q: "পুলিশ একাডেমি কোথায় অবস্থিত এবং বর্তমানে মেট্রোপলিটন পুলিশ এলাকা কতটি?", options: ["ঢাকা - ৬টি", "সারদা, রাজশাহী - ৮টি", "চট্টগ্রাম - ৭টি", "খুলনা - ৮টি"], correct: 1, exp: "পুলিশ একাডেমি রাজশাহীর সারদায় এবং বর্তমানে মোট ৮টি মেট্রোপলিটন পুলিশ এলাকা রয়েছে[cite: 52]।" },
+            { id: 46, section: "প্রতিষ্ঠান ও পরিকল্পনা", q: "VGD কর্মসূচির সুবিধাভোগী কারা এবং প্রথম 'গুচ্ছগ্রাম প্রকল্প' কোন জেলায় শুরু হয়?", options: ["ভূমিহীন কৃষক - কুড়িগ্রাম", "দরিদ্র ও দুঃস্থ নারী - নোয়াখালী", "বেকার যুবক - সিলেট", "ক্ষুদ্র নৃগোষ্ঠী - বান্দরবান"], correct: 1, exp: "VGD কর্মসূচির সুবিধাভোগী দরিদ্র ও দুঃস্থ নারী এবং প্রথম গুচ্ছগ্রাম প্রকল্প শুরু হয় নোয়াখালীতে[cite: 52]।" },
+            { id: 47, section: "ক্ষুদ্র নৃগোষ্ঠী", q: "'রেংমিচটা' কোন ক্ষুদ্র নৃগোষ্ঠীর ভাষা এবং মণিপুরি নৃত্য কোন অঞ্চলের ঐতিহ্য?", options: ["চাকমা - চট্টগ্রাম", "ম্রো - সিলেট", "মারমা - কক্সবাজার", "ত্রিপুরা - ময়মনসিংহ"], correct: 1, exp: "'রেংমিচটা' ম্রোদের ভাষা এবং মণিপুরি নৃত্য সিলেট অঞ্চলের ঐতিহ্য[cite: 51]।" },
+            { id: 48, section: "ঢাকা বিশ্ববিদ্যালয়", q: "'সন্ত্রাসবিরোধী রাজু ভাস্কর্য' ও 'দোয়েল চত্বর' ভাস্কর্যের ভাস্কর যথাক্রমে কারা?", options: ["সৈয়দ আব্দুল্লাহ খালিদ ও শামীম সিকদার", "শ্যামল চৌধুরী ও আজিজুল জলিল পাশা", "আজিজুল জলিল পাশা ও শ্যামল চৌধুরী", "নভেরা আহমেদ ও হামিদুর রহমান"], correct: 1, exp: "রাজু ভাস্কর্যের ভাস্কর শ্যামল চৌধুরী এবং দোয়েল চত্বরের ভাস্কর আজিজুল জলিল পাশা[cite: 51]।" },
+            { id: 49, section: "শিক্ষা", q: "BANBEIS কোন কাজ করে এবং ষষ্ঠ জনশুমারি পরিচালনা করে কোন সংস্থা?", options: ["পাঠ্যবই ছাপায় - শিক্ষা মন্ত্রণালয়", "শিক্ষা সংক্রান্ত তথ্য সংগ্রহ, বিশ্লেষণ ও প্রকাশ করে - বাংলাদেশ পরিসংখ্যান ব্যুরো", "শিক্ষক প্রশিক্ষণ দেয় - পরিকল্পনা কমিশন", "বৃত্তি দেয় - ইউজিসি"], correct: 1, exp: "BANBEIS শিক্ষাসংক্রান্ত তথ্য সংগ্রহ ও প্রকাশ করে এবং জনশুমারি পরিচালনা করে বাংলাদেশ পরিসংখ্যান ব্যুরো (BBS)[cite: 50, 52]।" },
+            { id: 50, section: "স্বাস্থ্য", q: "টাইম ম্যাগাজিনের 'শ্রেষ্ঠ উদ্ভাবন ২০২৫' তালিকায় স্থান পাওয়া বাংলাদেশের সম্পূরক খাদ্যের নাম কী?", options: ["ওআরএস-২৫", "এমডিসিএফ-২", "পুষ্টি-২৪", "বায়ো-১"], correct: 1, exp: "টাইম ম্যাগাজিনের 'শ্রেষ্ঠ উদ্ভাবন ২০২৫' তালিকায় স্থান পাওয়া বাংলাদেশের সম্পূরক খাদ্য হলো এমডিসিএফ-২[cite: 52]।" },
+            { id: 51, section: "স্বাস্থ্য", q: "যক্ষ্মা ও পোলিও-মাইলাইটিসের টিকা যথাক্রমে কী কী?", options: ["OPV ও BCG", "BCG (Bacille Calmette-Guerin) ও OPV (Oral Poliovirus Vaccine)", "MR ও HPV", "PCV ও BCG"], correct: 1, exp: "যক্ষ্মার টিকা BCG এবং পোলিও-মাইলাইটিসের টিকা OPV[cite: 52]।" },
+            { id: 52, section: "স্বাস্থ্য", q: "হাম ও রুবেলা এবং জরায়ুমুখ ক্যান্সারের টিকা যথাক্রমে কী কী?", options: ["BCG ও OPV", "MR ভ্যাকসিন ও HPV ভ্যাকসিন", "HPV ও MR", "PCV ও MR"], correct: 1, exp: "হাম ও রুবেলার টিকা MR এবং জরায়ুমুখ ক্যান্সারের টিকা HPV[cite: 52]।" },
+            { id: 53, section: "স্বাস্থ্য", q: "সম্প্রসারিত টিকাদান কর্মসূচিতে সম্প্রতি কোন টিকা যুক্ত করায় শিশুদের নিউমোনিয়া কমেছে এবং গণস্বাস্থ্য কেন্দ্রের প্রথম কমান্ডিং অফিসার কে?", options: ["OPV - ডা. রফিকুল ইসলাম", "PCV - ডা. সিতারা বেগম", "HPV - ডা. ইব্রাহীম", "BCG - ডা. জাফরুল্লাহ"], correct: 1, exp: "PCV টিকা যুক্ত হওয়ায় নিউমোনিয়া কমেছে এবং প্রথম কমান্ডিং অফিসার ছিলেন ডা. সিতারা বেগম[cite: 52]।" },
+            { id: 54, section: "ঢাকা বিশ্ববিদ্যালয়", q: "'স্বাধীনতা সংগ্রাম' ও 'স্বোপার্জিত স্বাধীনতা' ভাস্কর্যের ভাস্কর কে এবং 'ক্যাকটাস' ভাস্কর্য কোথায়?", options: ["আব্দুর রাজ্জাক - কলাভবন", "শামীম সিকদার - টিএসসি চত্বর", "শ্যামল চৌধুরী - কার্জন হল", "হামিদুজ্জামান - মধুর ক্যান্টিন"], correct: 1, exp: "ভাস্কর্য দুটির ভাস্কর শামীম সিকদার এবং 'ক্যাকটাস' ও 'শান্তির পায়রা' টিএসসি চত্বরে অবস্থিত[cite: 51]।" },
+            { id: 55, section: "ঢাকা বিশ্ববিদ্যালয়", q: "বাংলাদেশের একমাত্র খাদ্য ও পুষ্টি ইনস্টিটিউট ও গ্রিক মনুমেন্ট কোথায় অবস্থিত?", options: ["রাজশাহী বিশ্ববিদ্যালয় - কার্জন হল", "ঢাকা বিশ্ববিদ্যালয় - টিএসসি, ঢাকা বিশ্ববিদ্যালয়", "চট্টগ্রাম বিশ্ববিদ্যালয় - কলাভবন", "জাবি - গ্রন্থাগার"], correct: 1, exp: "খাদ্য ও পুষ্টি ইনস্টিটিউট ঢাবিতে এবং গ্রিক মনুমেন্ট ঢাবির টিএসসিতে অবস্থিত[cite: 51]।" },
+            { id: 56, section: "প্রতিরক্ষা ও বাহিনী", q: "নৌবাহিনীর দুই যুদ্ধ জাহাজ কোন দুটি এবং মুক্তিযুদ্ধকালীন কোন দুটি ছোট বোট নিয়ে নৌবাহিনীর যাত্রা শুরু?", options: ["পদ্মা ও পলাশ - সংগ্রাম ও প্রত্যাশা", "সংগ্রাম ও প্রত্যাশা - পদ্মা ও পলাশ", "সমুদ্র জয় ও সংগ্রাম - তিতাস ও মেঘনা", "প্রত্যাশা ও সমুদ্র জয় - সুরমা ও কুশিয়ারা"], correct: 1, exp: "নৌবাহিনীর দুই যুদ্ধ জাহাজ সংগ্রাম ও প্রত্যাশা; যাত্রা শুরু করেছিল পদ্মা ও পলাশ বোট নিয়ে[cite: 52]।" },
+            { id: 57, section: "প্রতিরক্ষা ও বাহিনী", q: "বাংলাদেশে সাইবার অপরাধ তদন্ত করে কোন সংস্থা এবং বাংলা একাডেমির মূল মিলনায়তন কার নামে?", options: ["র‍্যাব - কাজী নজরুল ইসলাম", "সিআইডি - আবদুল করিম সাহিত্য বিশারদ", "ডিবি - মুহম্মদ শহীদুল্লাহ", "পিবিআই - জয়নুল আবেদিন"], correct: 1, exp: "সাইবার অপরাধ তদন্ত করে সিআইডি এবং বাংলা একাডেমির মূল মিলনায়তন আবদুল করিম সাহিত্য বিশারদের নামে[cite: 52]।" },
+            { id: 58, section: "প্রতিষ্ঠান ও পরিকল্পনা", q: "'ERD'-এর পূর্ণরূপ কী এবং ঐতিহাসিক 'বর্ধমান হাউজ'-এর বর্তমান নাম কী?", options: ["Economic Reform Division - জাতীয় জাদুঘর", "Economic Relations Division - বাংলা একাডেমি", "External Resource Division - এশিয়াটিক সোসাইটি", "Economic Revenue Division - শিল্পকলা একাডেমি"], correct: 1, exp: "ERD অর্থ Economic Relations Division এবং বর্ধমান হাউজের বর্তমান নাম বাংলা একাডেমি[cite: 52]।" },
+            { id: 59, section: "ক্ষুদ্র নৃগোষ্ঠী", q: "রাখাইন জনগোষ্ঠী সর্বাধিক কোথায় বাস করে এবং পার্বত্য চট্টগ্রামের দ্বিতীয় বৃহত্তম ক্ষুদ্র নৃগোষ্ঠী কোনটি?", options: ["সিলেট - ত্রিপুরা", "কক্সবাজার - মারমা", "ময়মনসিংহ - চাকমা", "বান্দরবান - ম্রো"], correct: 1, exp: "রাখাইন সর্বাধিক কক্সবাজারে বাস করে এবং পার্বত্য চট্টগ্রামের দ্বিতীয় বৃহত্তম ক্ষুদ্র নৃগোষ্ঠী মারমা[cite: 50, 51]।" },
+            { id: 60, section: "ঢাকা বিশ্ববিদ্যালয়", q: "'মুক্তি ও গণতন্ত্র তোরণ' ও 'স্যার পি জে হার্টগ ইন্টারন্যাশনাল হল' কোথায় অবস্থিত?", options: ["জাহাঙ্গীরনগর বিশ্ববিদ্যালয়", "ঢাকা বিশ্ববিদ্যালয়", "রাজশাহী বিশ্ববিদ্যালয়", "চট্টগ্রাম বিশ্ববিদ্যালয়"], correct: 1, exp: "'মুক্তি ও গণতন্ত্র তোরণ' এবং 'স্যার পি জে হার্টগ ইন্টারন্যাশনাল হল' উভয়ই ঢাকা বিশ্ববিদ্যালয়ে অবস্থিত[cite: 51]।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let totalTimeSeconds = 1500;
+        let timeLeft = 1500; 
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-purple-600 text-white border border-purple-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const badge = document.getElementById('section-badge');
+            badge.innerText = q.section;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-purple-600/30 border-purple-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-purple-500 border-purple-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let timeSpent = totalTimeSeconds - timeLeft;
+            let spentMins = Math.floor(timeSpent / 60);
+            let spentSecs = timeSpent % 60;
+            document.getElementById('time-taken-text').innerText = `সময় লেগেছে: ${spentMins} মিনিট ${spentSecs} সেকেন্ড`;
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let html = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400">প্রশ্ন #${qIdx + 1}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold rounded border bg-purple-900 text-purple-200 border-purple-700">${q.section}</span>
+                </div>`;
+                html += `<p class="font-semibold text-slate-200 text-sm md:text-base">${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                html += `<div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 text-xs text-slate-300">
+                    <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${q.exp}
+                </div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1500;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

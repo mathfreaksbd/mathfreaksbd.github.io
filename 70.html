@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাংলাদেশ পরিচিতি - DU B-Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-emerald-800 via-green-800 to-teal-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">বাংলাদেশ পরিচিতি</h1>
+            <p class="text-sm text-emerald-100 mt-1">বাংলাদেশ বিষয়াবলি | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>অধ্যায়: বাংলাদেশ পরিচিতি।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের নিচে ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-emerald-900 text-emerald-200 border border-emerald-700">বাংলাদেশ পরিচিতি</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 25:00
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "সীমানা ও ভৌগোলিক তথ্য", q: "কোন জেলাকে 'হিমালয়ের কন্যা' বলা হয় এবং ভারতের 'চিকেন নেক' করিডরে সন্নিহিত জেলার নাম কী?", options: ["ঠাকুরগাঁও", "পঞ্চগড়", "দিনাজপুর", "লালমনিরহাট"], correct: 1, exp: "পঞ্চগড়কে 'হিমালয়ের কন্যা' বলা হয় এবং এটি ভারতের 'চিকেন নেক' করিডরের কাছে অবস্থিত[cite: 47]।" },
+            { id: 2, section: "নদ-নদী ও জলরাশি", q: "বাংলাদেশের মোট অভিন্ন নদী কতটি এবং ভারত থেকে আসা অভিন্ন নদী কতটি?", options: ["৫৪টি ও ৫৭টি", "৫৭টি ও ৫৪টি", "৫৬টি ও ৫৩টি", "৫৮টি ও ৫৫টি"], correct: 1, exp: "মোট অভিন্ন নদী ৫৭টি; এর মধ্যে ভারত থেকে আসা ৫৪টি এবং মিয়ানমার থেকে আসা ৩টি[cite: 48, 49]।" },
+            { id: 3, section: "প্রতীক ও জাতীয় বিষয়", q: "বাংলাদেশের জাতীয় পতাকার ডিজাইনার কে এবং রণসংগীত সর্বপ্রথম কোন পত্রিকায় প্রকাশিত হয়?", options: ["শিব নারায়ণ দাস - ধূমকেতু", "কামরুল হাসান - শিখা পত্রিকায়", "জয়নুল আবেদিন - সওগাত", "হাশেম খান - কল্লোল"], correct: 1, exp: "জাতীয় পতাকার মূল রূপকার কামরুল হাসান; কাজী নজরুল ইসলামের রণসংগীত প্রথম প্রকাশিত হয় 'শিখা' পত্রিকায়[cite: 47]।" },
+            { id: 4, section: "পরিবেশ ও দুর্যোগ", q: "ডেল্টা প্ল্যান ২১০০ প্রণয়নে কোন দেশ সহায়তা করেছে এবং এতে কয়টি চ্যালেঞ্জ/হটস্পট চিহ্নিত করা হয়েছে?", options: ["জাপান - ৫টি", "নেদারল্যান্ডস - ৬টি", "সুইডেন - ৪টি", "ডেনমার্ক - ৭টি"], correct: 1, exp: "ডেল্টা প্ল্যান ২১০০ প্রণয়নে নেদারল্যান্ডস সহায়তা করেছে এবং এতে ৬টি হটস্পট/চ্যালেঞ্জ চিহ্নিত করা হয়েছে[cite: 48]।" },
+            { id: 5, section: "যোগাযোগ ও অবকাঠামো", q: "বাংলাদেশের দীর্ঘতম সেতু ও দীর্ঘতম একক রেলসেতু যথাক্রমে কোন দুটি?", options: ["যমুনা সেতু ও পদ্মা সেতু", "পদ্মা সেতু ও যমুনা রেলসেতু (টাঙ্গাইল-সিরাজগঞ্জ)", "বঙ্গবন্ধু সেতু ও হার্ডিঞ্জ ব্রিজ", "রূপসা সেতু ও ভৈরব সেতু"], correct: 1, exp: "দীর্ঘতম সেতু পদ্মা সেতু এবং দীর্ঘতম একক রেলসেতু যমুনা রেলসেতু (টাঙ্গাইল-সিরাজগঞ্জ)[cite: 48]।" },
+            { id: 6, section: "সীমানা ও ভৌগোলিক তথ্য", q: "বাংলাদেশের সীমান্তবর্তী জেলা কতটি এবং ভারতের সাথে সীমান্ত জেলা কতটি?", options: ["৩০টি ও ৩২টি", "৩২টি ও ৩০টি", "১৯টি ও ৩০টি", "৩২টি ও ১৯টি"], correct: 1, exp: "বাংলাদেশের সীমান্তবর্তী জেলা ৩২টি এবং এর মধ্যে ভারতের সাথে সীমান্ত রয়েছে ৩০টি জেলার[cite: 47]।" },
+            { id: 7, section: "নদ-নদী ও জলরাশি", q: "বাংলাদেশের দীর্ঘতম নদী ও বৃহত্তম, প্রশস্ততম ও গভীরতম নদী যথাক্রমে কোনটি?", options: ["যমুনা ও পদ্মা", "পদ্মা ও মেঘনা", "মেঘনা ও যমুনা", "ব্রহ্মপুত্র ও কর্ণফুলী"], correct: 1, exp: "দীর্ঘতম নদী পদ্মা (৩৫১ কিমি) এবং বৃহত্তম, প্রশস্ততম ও গভীরতম নদী মেঘনা[cite: 49]।" },
+            { id: 8, section: "প্রতীক ও জাতীয় বিষয়", q: "'আমার সোনার বাংলা' গানের কতটি লাইন 'জাতীয় সংগীত' হিসেবে নেওয়া হয়েছে এবং রাষ্ট্রীয় অনুষ্ঠানে কত চরণ বাজানো হয়?", options: ["প্রথম ৪ চরণ ও প্রথম ১০ লাইন", "প্রথম দশটি লাইন ও প্রথম ৪ চরণ", "প্রথম ৮ লাইন ও প্রথম ২ চরণ", "সম্পূর্ণ গান ও প্রথম ৪ লাইন"], correct: 1, exp: "জাতীয় সংগীত হিসেবে প্রথম ১০টি লাইন গৃহীত এবং রাষ্ট্রীয় অনুষ্ঠানে প্রথম ৪ চরণ বাজানো হয়[cite: 47]।" },
+            { id: 9, section: "পরিবেশ ও দুর্যোগ", q: "ECA-এর পূর্ণরূপ কী এবং বাংলাদেশে পরিবেশগত সংকটাপন্ন এলাকার সংখ্যা কতটি?", options: ["Environmental Control Area - ১০টি", "Ecologically Critical Area - ১৩টি", "Eco Conservation Area - ১২টি", "Ecological Zone Area - ১৫টি"], correct: 1, exp: "ECA অর্থ Ecologically Critical Area এবং বাংলাদেশে এর সংখ্যা ১৩টি[cite: 48]।" },
+            { id: 10, section: "যোগাযোগ ও অবকাঠামো", q: "বাংলাদেশের বৃহত্তম রেলওয়ে জংশন কোথায় এবং প্রথম কোন আন্তর্জাতিক সংস্থার সদস্যপদ লাভ করে?", options: ["কমলাপুর - জাতিসংঘ", "ঈশ্বরদী রেলওয়ে জংশন - কমনওয়েলথ", "পার্বতীপুর - ওআইসি", "আখাউড়া - সার্ক"], correct: 1, exp: "বৃহত্তম রেলওয়ে জংশন ঈশ্বরদী এবং বাংলাদেশ প্রথম কমনওয়েলথের সদস্যপদ লাভ করে[cite: 48]।" },
+            { id: 11, section: "সীমানা ও ভৌগোলিক তথ্য", q: "বাংলাদেশের কোন বিভাগ দুটির সাথে ভারতের কোনো সীমান্ত নেই এবং কোন জেলার সাথে ভারত ও মিয়ানমার উভয়ের সীমান্ত আছে?", options: ["ঢাকা ও খুলনা - বান্দরবান", "ঢাকা ও বরিশাল বিভাগ - রাঙ্গামাটি", "বরিশাল ও সিলেট - কক্সবাজার", "ঢাকা ও ময়মনসিংহ - খাগড়াছড়ি"], correct: 1, exp: "ঢাকা ও বরিশাল বিভাগে ভারতের সীমান্ত নেই এবং রাঙ্গামাটির সাথে ভারত ও মিয়ানমার উভয়ের সীমান্ত রয়েছে[cite: 47]।" },
+            { id: 12, section: "নদ-নদী ও জলরাশি", q: "বাংলাদেশের অভ্যন্তরে উৎপত্তি ও সমাপ্ত নদী কয়টি ও কী কী এবং এশিয়ার বৃহত্তম প্রাকৃতিক মৎস্য প্রজনন ক্ষেত্র কোনটি?", options: ["১টি (পদ্মা) - মেঘনা", "২টি (হালদা ও সাঙ্গু) - হালদা", "৩টি (তিস্তা, হালদা, নাফ) - কর্ণফুলী", "২টি (বুড়িগঙ্গা ও তুরাগ) - চলন বিল"], correct: 1, exp: "অভ্যন্তরে উৎপত্তি ও সমাপ্ত নদী ২টি (হালদা ও সাঙ্গু); হালদা নদী মৎস্য প্রজননের জন্য বিখ্যাত[cite: 48, 49]।" },
+            { id: 13, section: "প্রতীক ও জাতীয় বিষয়", q: "কাজী নজরুল ইসলামকে কত সালে জাতীয় কবির মর্যাদা দেওয়া হয় এবং ঢাকা বিশ্ববিদ্যালয় কবে 'ডি. লিট' উপাধি দেয়?", options: ["১৯৭২ - ১৯৭৬", "১৯৭২ সালে (গেজেট ২০২৪) - ০৯ ডিসেম্বর, ১৯৭৪", "১৯৭৪ - ১৯৭২", "১৯৭৬ - ১৯৭৫"], correct: 1, exp: "১৯৭২ সালে জাতীয় কবির মর্যাদা দেওয়া হয় (গেজেট ২০২৪) এবং ০৯ ডিসেম্বর ১৯৭৪ ঢাবি 'ডি. লিট' উপাধি দেয়[cite: 47]।" },
+            { id: 14, section: "পরিবেশ ও দুর্যোগ", q: "ঘূর্ণিঝড় 'সিডর' ও 'আইলা' বাংলাদেশে কবে আঘাত হানে এবং কত কিমি/ঘণ্টা বাতাসের বেগকে ঘূর্ণিঝড় বলে?", options: ["২০০৬ ও ২০০৮ - ৬০ কিমি", "২০০৭ ও ২০০৯ সালে - ৬৩ কিমি", "২০০৯ ও ২০০৭ - ৬৫ কিমি", "২০০৫ ও ২০০৯ - ৫০ কিমি"], correct: 1, exp: "সিডর ২০০৭ সালে ও আইলা ২০০৯ সালে আঘাত হানে; বাতাসের বেগ ঘণ্টায় ৬৩ কিমি বা তার বেশি হলে ঘূর্ণিঝড় বলে[cite: 48]।" },
+            { id: 15, section: "যোগাযোগ ও অবকাঠামো", q: "বাংলাদেশে প্রথম আদমশুমারি হয় কবে এবং প্রথম নিরক্ষরমুক্ত গ্রামের নাম কী?", options: ["১৯৭২ - তেঁতুলিয়া", "১৯৭৪ সালে - কচুবাড়ী কৃষ্টপুর, ঠাকুরগাঁও", "১৯৮১ - বোদা", "১৯৯১ - আটোয়ারী"], correct: 1, exp: "প্রথম আদমশুমারি হয় ১৯৭৪ সালে এবং প্রথম নিরক্ষরমুক্ত গ্রাম ঠাকুরগাঁওয়ের কচুবাড়ী কৃষ্টপুর[cite: 48]।" },
+            { id: 16, section: "সীমানা ও ভৌগোলিক তথ্য", q: "দহগ্রাম ও আঙ্গরপোতা ছিটমহল এবং তিন বিঘা করিডর কোন জেলায় অবস্থিত এবং সর্ব পশ্চিমের জেলা কোনটি?", options: ["কুড়িগ্রাম - ঠাকুরগাঁও", "লালমনিরহাট - চাঁপাইনবাবগঞ্জ", "নীলফামারী - পঞ্চগড়", "পঞ্চগড় - মেহেরপুর"], correct: 1, exp: "দহগ্রাম, আঙ্গরপোতা ও তিন বিঘা করিডর লালমনিরহাটে এবং সর্ব পশ্চিমের জেলা চাঁপাইনবাবগঞ্জ[cite: 47]।" },
+            { id: 17, section: "নদ-নদী ও জলরাশি", q: "সুন্দরবনে বাংলাদেশ ও ভারতকে পৃথক করেছে কোন নদী এবং বাংলাদেশের সুয়েজ খাল বলা হয় কোন নদীকে?", options: ["নাফ - ধলেশ্বরী", "হাড়িয়াভাঙ্গা - গাবখান", "কুলিখ - বুড়িগঙ্গা", "মহানন্দা - তুরাগ"], correct: 1, exp: "সুন্দরবনে ভারত-বাংলাদেশ পৃথক করেছে হাড়িয়াভাঙ্গা নদী এবং গাবখান নদীকে বাংলাদেশের সুয়েজ খাল বলা হয়[cite: 48]।" },
+            { id: 18, section: "প্রতীক ও জাতীয় বিষয়", q: "বাংলাদেশের রাষ্ট্রীয় প্রতীক ডিজাইনের সাথে কার নাম জড়িত এবং রাষ্ট্রীয় মনোগ্রামের ডিজাইনার কে?", options: ["জয়নুল আবেদিন - কামরুল হাসান", "কামরুল হাসান - এ. এন. এ. সাহা", "শিব নারায়ণ দাস - হাশেম খান", "এ. এন. এ. সাহা - কামরুল হাসান"], correct: 1, exp: "রাষ্ট্রীয় প্রতীক ও ধানের শিষের নকশায় কামরুল হাসান এবং মনোগ্রামের ডিজাইনার এ. এন. এ. সাহা[cite: 47]।" },
+            { id: 19, section: "পরিবেশ ও দুর্যোগ", q: "বাংলাদেশের উষ্ণতম ও শীতলতম স্থান এবং মাস যথাক্রমে কী কী?", options: ["রাজশাহী (মে) ও সিলেট (ডিসেম্বর)", "লালপুর, নাটোর (এপ্রিল) ও শ্রীমঙ্গল, মৌলভীবাজার (জানুয়ারি)", "যশোর (এপ্রিল) ও দিনাজপুর (জানুয়ারি)", "পাবনা (জুন) ও পঞ্চগড় (ফেব্রুয়ারি)"], correct: 1, exp: "উষ্ণতম স্থান নাটোরের লালপুর (এপ্রিল) এবং শীতলতম স্থান মৌলভীবাজারের শ্রীমঙ্গল (জানুয়ারি)[cite: 48]।" },
+            { id: 20, section: "যোগাযোগ ও অবকাঠামো", q: "এম এ মুহিত দ্বিতীয় বাংলাদেশি হিসেবে কবে এভারেস্ট জয় করেন এবং বাংলাদেশের সর্বোচ্চ বেসামরিক পুরস্কার কোনটি?", options: ["২০১০ ও ২০১১ - একুশে পদক", "২০১১ ও ২০১২ সাল - স্বাধীনতা পদক", "২০১২ ও ২০১৩ - স্বাধীনতা পদক", "২০১১ ও ২০১৩ - বাংলা একাডেমি পুরস্কার"], correct: 1, exp: "এম এ মুহিত ২০১১ ও ২০১২ সালে এভারেস্ট জয় করেন এবং সর্বোচ্চ বেসামরিক পুরস্কার স্বাধীনতা পদক[cite: 48]।" },
+            { id: 21, section: "সীমানা ও ভৌগোলিক তথ্য", q: "কর্কটক্রান্তি এবং ৯০° পূর্ব দ্রাঘিমার ছেদবিন্দুটি কোন জেলায় পড়েছে এবং বাংলাদেশের উপর দিয়ে কোন রেখাগুলো গেছে?", options: ["রাজবাড়ী - মকরক্রান্তি ও ৮০° দ্রাঘিমা", "ফরিদপুর - কর্কটক্রান্তি রেখা ও ৯০ ডিগ্রি দ্রাঘিমা রেখা", "ঢাকা - বিষুবরেখা ও ৯০° দ্রাঘিমা", "গোপালগঞ্জ - কর্কটক্রান্তি ও ৮৮° দ্রাঘিমা"], correct: 1, exp: "ছেদবিন্দু ফরিদপুরে এবং বাংলাদেশের উপর দিয়ে কর্কটক্রান্তি ও ৯০° দ্রাঘিমা রেখা অতিক্রম করেছে[cite: 47]।" },
+            { id: 22, section: "নদ-নদী ও জলরাশি", q: "বাংলাদেশের বৃহত্তম প্রাকৃতিক হ্রদ ও বৃহত্তম কৃত্রিম লেক যথাক্রমে কোন দুটি?", options: ["কাপ্তাই লেক ও বগা লেক", "বগা লেক (বান্দরবান) ও কাপ্তাই লেক (রাঙ্গামাটি)", "ফয়'স লেক ও বগা লেক", "কাপ্তাই লেক ও হাকালুকি"], correct: 1, exp: "বৃহত্তম প্রাকৃতিক হ্রদ বগা লেক (বান্দরবান) এবং বৃহত্তম কৃত্রিম লেক কাপ্তাই লেক (রাঙ্গামাটি)[cite: 48]।" },
+            { id: 23, section: "প্রতীক ও জাতীয় বিষয়", q: "বাংলাদেশ সরকারের জাতীয় পোর্টাল কোনটি এবং প্রধান সংবাদ সংস্থার নাম কী?", options: ["www.bd.gov.bd - ইউএনবি", "www.bangladesh.gov.bd - বাসস", "www.gov.bd - বিটিভি", "www.bangladesh.org - বাসস"], correct: 1, exp: "জাতীয় পোর্টাল www.bangladesh.gov.bd এবং প্রধান সংবাদ সংস্থা বাসস (BSS)[cite: 47]।" },
+            { id: 24, section: "পরিবেশ ও দুর্যোগ", q: "বাংলাদেশ আবহাওয়া অধিদপ্তর কোন মন্ত্রণালয়ের অধীন এবং ঘূর্ণিঝড় পূর্বাভাসের একমাত্র কেন্দ্র কোনটি?", options: ["দুর্যোগ ব্যবস্থাপনা - আবহাওয়া অধিদপ্তর", "প্রতিরক্ষা মন্ত্রণালয় - স্পারসো (SPARRSO)", "পরিবেশ মন্ত্রণালয় - নদী গবেষণা ইনস্টিটিউট", "স্বরাষ্ট্র মন্ত্রণালয় - স্পারসো"], correct: 1, exp: "আবহাওয়া অধিদপ্তর প্রতিরক্ষা মন্ত্রণালয়ের অধীন এবং দুর্যোগ পূর্বাভাসের একমাত্র কেন্দ্র স্পারসো[cite: 48]।" },
+            { id: 25, section: "যোগাযোগ ও অবকাঠামো", q: "সশস্ত্র বাহিনী দিবস ও জাতীয় শহিদ সেনা দিবস যথাক্রমে কোন তারিখে এবং 'মুক্তিযোদ্ধা দিবস' কবে?", options: ["০১ ডিসেম্বর ও ২১ নভেম্বর - ২৫ ফেব্রুয়ারি", "২১ নভেম্বর ও ২৫ ফেব্রুয়ারি - ১ ডিসেম্বর", "২৫ ফেব্রুয়ারি ও ২১ নভেম্বর - ১৬ ডিসেম্বর", "২১ নভেম্বর ও ১ ডিসেম্বর - ২৫ ফেব্রুয়ারি"], correct: 1, exp: "সশস্ত্র বাহিনী দিবস ২১ নভেম্বর, জাতীয় শহিদ সেনা দিবস ২৫ ফেব্রুয়ারি এবং মুক্তিযোদ্ধা দিবস ১ ডিসেম্বর[cite: 48]।" },
+            { id: 26, section: "সীমানা ও ভৌগোলিক তথ্য", q: "বাংলাদেশের টেরিটোরিয়াল ও অর্থনৈতিক সমুদ্রসীমা যথাক্রমে কত নটিক্যাল মাইল এবং মোট সমুদ্রসীমা কত বর্গ কিমি?", options: ["২০ ও ২০০ - ১,১৮,৮১৩", "১২ ও ২০০ নটিক্যাল মাইল - ১,১৮,৮১৩ বর্গ কিমি", "১২ ও ১৫০ - ১,০০,০০০", "২৪ ও ২০০ - ১,২০,৮১৩"], correct: 1, exp: "টেরিটোরিয়াল ১২ ও অর্থনৈতিক ২০০ নটিক্যাল মাইল; মোট সমুদ্রসীমা ১,১৮,৮১৩ বর্গ কিলোমিটার[cite: 47]।" },
+            { id: 27, section: "নদ-নদী ও জলরাশি", q: "পদ্মা ও যমুনার মিলনস্থল কোথায় এবং পদ্মা, মেঘনা ও ডাকাতিয়ার মিলনস্থল কোথায়?", options: ["চাঁদপুর - দৌলতদিয়া", "দৌলতদিয়া, গোয়ালন্দ (রাজবাড়ী) - চাঁদপুর", "চিলমারী - ভৈরব বাজার", "গোয়ালন্দ - চিলমারী"], correct: 1, exp: "পদ্মা ও যমুনা মিলিত হয়েছে দৌলতদিয়া-গোয়ালন্দে এবং পদ্মা, মেঘনা ও ডাকাতিয়া মিলিত হয়েছে চাঁদপুরে[cite: 48]।" },
+            { id: 28, section: "পাহাড় ও জলপ্রপাত", q: "বাংলাদেশের সর্বোচ্চ পর্বত কোনটি এবং উচ্চতম জলপ্রপাত কোথায় অবস্থিত?", options: ["কেওক্রাডং - হিমছড়ি", "তাজিংডং - মাধবকুণ্ড জলপ্রপাত (মৌলভীবাজার)", "নীলগিরি - ঋজুক", "চিম্বুক - নাফাখুম"], correct: 1, exp: "সর্বোচ্চ পর্বত তাজিংডং (বান্দরবান) এবং উচ্চতম জলপ্রপাত মৌলভীবাজারের মাধবকুণ্ড[cite: 47, 48]।" },
+            { id: 29, section: "পরিবেশ ও দুর্যোগ", q: "বাংলাদেশের বার্ষিক গড় বৃষ্টিপাত কত মিলিমিটার এবং ১৭৮৭ সালের ভূমিকম্পের মাত্রা কত ছিল?", options: ["১৮০০ মিমি - ৮.০", "২০৩০ মি.মি - ৮.৭", "২২০০ মিমি - ৭.৫", "১৯৫০ মিমি - ৮.২"], correct: 1, exp: "বার্ষিক গড় বৃষ্টিপাত ২০৩০ মিমি এবং ১৭৮৭ সালের ভূমিকম্পের মাত্রা ছিল ৮.৭[cite: 48]।" },
+            { id: 30, section: "যোগাযোগ ও অবকাঠামো", q: "জাতীয় জরুরি সেবা নম্বর কত এবং জাতীয় তথ্য বাতায়নের হটলাইন নম্বর কোনটি?", options: ["১০৬ ও ১০৯", "৯৯৯ ও ৩৩৩", "৩৩৩ ও ১৬২৬৩", "১০৯ ও ৯৯৯"], correct: 1, exp: "জাতীয় জরুরি সেবা ৯৯৯ এবং জাতীয় তথ্য বাতায়নের হটলাইন নম্বর ৩৩৩[cite: 48]।" },
+            { id: 31, section: "সীমানা ও ভৌগোলিক তথ্য", q: "বাংলার মানচিত্র প্রথম কে এঁকেছিলেন এবং গ্রিনিচ মান সময় অপেক্ষা বাংলাদেশ কত ঘণ্টা পরে?", options: ["লুই আই কান - ৫ ঘণ্টা", "মেজর জেমস রেনেল - ৬ ঘণ্টা", "শিব নারায়ণ দাস - ৬.৫ ঘণ্টা", "কামরুল হাসান - ৪ ঘণ্টা"], correct: 1, exp: "বাংলার মানচিত্র প্রথম আঁকেন মেজর জেমস রেনেল এবং বাংলাদেশ গ্রিনিচ মান সময় অপেক্ষা ৬ ঘণ্টা এগিয়ে/পরে[cite: 47]।" },
+            { id: 32, section: "নদ-নদী ও জলরাশি", q: "বাংলাদেশ হতে ভারতে প্রবেশকারী নদী কয়টি ও কী এবং ভারতে গিয়ে পুনরায় বাংলাদেশে প্রবেশ করা নদী কয়টি?", options: ["২টি (তিস্তা, নাফ) - ৩টি", "১টি (কুলিখ) - ৪টি নদী (আত্রাই, পুনর্ভবা, মহানন্দা ও টাঙ্গন)", "১টি (সাঙ্গু) - ২টি", "৩টি (হালদা, সাঙ্গু, নাফ) - ৫টি"], correct: 1, exp: "বাংলাদেশ থেকে ভারতে প্রবেশকারী নদী ১টি (কুলিখ) এবং ঘুরে আসা নদী ৪টি (আত্রাই, পুনর্ভবা, মহানন্দা, টাঙ্গন)[cite: 48]।" },
+            { id: 33, section: "পাহাড় ও জলপ্রপাত", q: "'বাংলার নায়াগ্রা' হিসেবে পরিচিত কোনটি এবং 'ঋজুক' জলপ্রপাত কোন জেলায় অবস্থিত?", options: ["মাধবকুণ্ড - সিলেট", "নাফাখুম জলপ্রপাত - বান্দরবান", "হিমছড়ি - কক্সবাজার", "চন্দ্রনাথ - চট্টগ্রাম"], correct: 1, exp: "'বাংলার নায়াগ্রা' নাফাখুম জলপ্রপাত এবং 'ঋজুক' জলপ্রপাত বান্দরবান জেলায় অবস্থিত[cite: 48]।" },
+            { id: 34, section: "পরিবেশ ও দুর্যোগ", q: "কোন নদীকে 'জীবন্ত সত্তা' হিসেবে ঘোষণা করা হয়েছে এবং নদী গবেষণা ইনস্টিটিউট কোথায় অবস্থিত?", options: ["পদ্মা - ঢাকা", "তুরাগ - ফরিদপুর", "বুড়িগঙ্গা - রাজশাহী", "যমুনা - সিরাজগঞ্জ"], correct: 1, exp: "তুরাগ নদীকে 'জীবন্ত সত্তা' ঘোষণা করা হয় এবং বাংলাদেশ নদী গবেষণা ইনস্টিটিউট ফরিদপুরে অবস্থিত[cite: 48]।" },
+            { id: 35, section: "যোগাযোগ ও অবকাঠামো", q: "দুর্নীতি দমন কমিশনের হটলাইন নম্বর কত এবং বাল্যবিবাহ প্রতিরোধের হেল্পলাইন কত?", options: ["১০৯ ও ১০৬", "১০৬ ও ১০৯", "১৬২৬৩ ও ১০৬", "৩৩৩ ও ১০৯"], correct: 1, exp: "দুদকের টোল ফ্রি হটলাইন ১০৬ এবং বাল্যবিবাহ প্রতিরোধের হেল্পলাইন হলো ১০৯[cite: 48]।" },
+            { id: 36, section: "সীমানা ও ভৌগোলিক তথ্য", q: "মংডু কোন দুটি দেশের সীমান্ত এলাকা এবং উপকূলীয় জেলার সংখ্যা কতটি?", options: ["বাংলাদেশ-ভারত - ৩২টি", "বাংলাদেশ-মিয়ানমার - ১৯টি", "ভারত-মিয়ানমার - ১৯টি", "বাংলাদেশ-নেপাল - ১২টি"], correct: 1, exp: "মংডু বাংলাদেশ-মিয়ানমার সীমান্ত এলাকা এবং বাংলাদেশের উপকূলীয় জেলা ১৯টি[cite: 47]।" },
+            { id: 37, section: "নদ-নদী ও জলরাশি", q: "বাংলাদেশের বৃহত্তম হাওড় ও বৃহত্তম বিল যথাক্রমে কোন দুটি?", options: ["টাঙ্গুয়ার হাওড় ও চলন বিল", "হাকালুকি হাওড় ও চলন বিল", "হাকালুকি হাওড় ও বগা লেক", "চলন বিল ও হাকালুকি হাওড়"], correct: 1, exp: "বৃহত্তম হাওড় হাকালুকি (মৌলভীবাজার ও সিলেট) এবং বৃহত্তম বিল চলন বিল (পাবনা, সিরাজগঞ্জ, নাটোর)[cite: 48]।" },
+            { id: 38, section: "পাহাড় ও জলপ্রপাত", q: "টারশিয়ারি যুগের পাহাড়সমূহ বাংলাদেশের মোট আয়তনের কত ভাগ এবং গারো পাহাড় কোথায় অবস্থিত?", options: ["৮ ভাগ - সিলেট ও মৌলভীবাজার", "১২ ভাগ - ময়মনসিংহ, শেরপুর, জামালপুর", "১০ ভাগ - বান্দরবান ও রাঙ্গামাটি", "১৫ ভাগ - কুমিল্লা ও চট্টগ্রাম"], correct: 1, exp: "টারশিয়ারি যুগের পাহাড় মোট আয়তনের ১২ ভাগ এবং গারো পাহাড় ময়মনসিংহ, শেরপুর ও জামালপুরে অবস্থিত[cite: 47, 48]।" },
+            { id: 39, section: "পরিবেশ ও দুর্যোগ", q: "ফারাক্কা বাঁধ বাংলাদেশ সীমান্ত থেকে কত দূরে এবং যৌথ নদী কমিশন কবে গঠিত হয়?", options: ["১৮ কিমি - ১৯৭১", "১৬.৫ কিমি - ১৯৭২ সালে", "১৫ কিমি - ১৯৭৪", "২০ কিমি - ১৯৭৫"], correct: 1, exp: "ফারাক্কা বাঁধ সীমান্ত থেকে ১৬.৫ কিমি দূরে এবং বাংলাদেশ-ভারত যৌথ নদী কমিশন গঠিত হয় ১৯৭২ সালে[cite: 48]।" },
+            { id: 40, section: "যোগাযোগ ও অবকাঠামো", q: "১৬২৬৩ নম্বরে ফোন করলে কোন সেবা পাওয়া যায় এবং রোকেয়া দিবস কবে পালিত হয়?", options: ["জাতীয় জরুরি সেবা - ২৫ ফেব্রুয়ারি", "অ্যাম্বুলেন্স - ৯ ডিসেম্বর", "তথ্য সেবা - ১ ডিসেম্বর", "দুর্যোগ সেবা - ৯ ডিসেম্বর"], correct: 1, exp: "১৬২৬৩ নম্বরে অ্যাম্বুলেন্স সেবা পাওয়া যায় এবং রোকেয়া দিবস পালিত হয় ৯ ডিসেম্বর[cite: 48]।" },
+            { id: 41, section: "সীমানা ও ভৌগোলিক তথ্য", q: "আয়তনে বাংলাদেশের বৃহত্তম সিটি কর্পোরেশন ও ক্ষুদ্রতম জেলা যথাক্রমে কোন দুটি?", options: ["ঢাকা উত্তর - মেহেরপুর", "গাজীপুর - নারায়ণগঞ্জ", "চট্টগ্রাম - ঝালকাঠি", "নারায়ণগঞ্জ - গাজীপুর"], correct: 1, exp: "আয়তনে বৃহত্তম সিটি কর্পোরেশন গাজীপুর এবং ক্ষুদ্রতম জেলা নারায়ণগঞ্জ[cite: 47]।" },
+            { id: 42, section: "নদ-নদী ও জলরাশি", q: "'সোয়াচ অব নো গ্রাউন্ড' কোথায় অবস্থিত এবং এর গড় গভীরতা কত?", options: ["কাপ্তাই লেক - প্রায় ১০০০ মিটার", "বঙ্গোপসাগর - প্রায় ১২০০ মিটার", "হাড়িয়াভাঙ্গা - প্রায় ১৫০০ মিটার", "নাফ নদী - প্রায় ৯০০ মিটার"], correct: 1, exp: "'সোয়াচ অব নো গ্রাউন্ড' বঙ্গোপসাগরে অবস্থিত এবং এর গড় গভীরতা প্রায় ১২০০ মিটার[cite: 47]।" },
+            { id: 43, section: "পাহাড় ও জলপ্রপাত", q: "লালমাই পাহাড় ও চন্দ্রনাথ পাহাড় যথাক্রমে কোন জেলায় অবস্থিত?", options: ["চট্টগ্রাম ও কুমিল্লা", "কুমিল্লা ও সীতাকুণ্ড, চট্টগ্রাম", "বান্দরবান ও খাগড়াছড়ি", "সিলেট ও মৌলভীবাজার"], correct: 1, exp: "লালমাই পাহাড় কুমিল্লায় এবং চন্দ্রনাথ পাহাড় চট্টগ্রামের সীতাকুণ্ডে অবস্থিত[cite: 47]।" },
+            { id: 44, section: "পরিবেশ ও দুর্যোগ", q: "পদ্মা ও যমুনার শাখা নদী যথাক্রমে কোন দুটি এবং বুড়িগঙ্গার পূর্ব নাম কী?", options: ["ধলেশ্বরী ও গড়াই - তুরাগ", "গড়াই ও ধলেশ্বরী - দোলাই", "মেঘনা ও তিস্তা - শীতলক্ষ্যা", "কর্ণফুলী ও সাঙ্গু - হালদা"], correct: 1, exp: "পদ্মার শাখা গড়াই ও যমুনার শাখা ধলেশ্বরী; ধলেশ্বরীর শাখা বুড়িগঙ্গার পূর্ব নাম দোলাই[cite: 48]।" },
+            { id: 45, section: "যোগাযোগ ও অবকাঠামো", q: "হাইকোর্টের প্রথম নারী বিচারপতি কে ছিলেন এবং বাংলাদেশের বৃহত্তম দ্বীপ কোনটি?", options: ["তারামন বিবি - মহেশখালী", "নাজমুন আরা সুলতানা - ভোলা", "সিতারা বেগম - সন্দ্বীপ", "নীলিমা ইব্রাহীম - হাতিয়া"], correct: 1, exp: "হাইকোর্টের প্রথম নারী বিচারপতি নাজমুন আরা সুলতানা এবং বৃহত্তম দ্বীপ ভোলা[cite: 48]।" },
+            { id: 46, section: "সীমানা ও ভৌগোলিক তথ্য", q: "পার্বত্য চট্টগ্রামের সাথে ভারতের কোন দুটি রাজ্যের সীমান্ত রয়েছে এবং ঢাকা বিভাগে জেলা কয়টি?", options: ["আসাম ও মেঘালয় - ১২টি", "মিজোরাম ও ত্রিপুরা - ১৩টি", "ত্রিপুরা ও মণিপুর - ১৪টি", "মিজোরাম ও আসাম - ১০টি"], correct: 1, exp: "পার্বত্য চট্টগ্রামের সাথে মিজোরাম ও ত্রিপুরার সীমান্ত আছে এবং ঢাকা বিভাগে জেলা ১৩টি[cite: 47]।" },
+            { id: 47, section: "প্রতীক ও জাতীয় বিষয়", q: "জাতীয় সংসদ ভবনের স্থপতি কে এবং ক্রিসেন্ট লেক কোথায় অবস্থিত?", options: ["সৈয়দ মাইনুল হোসেন - সোহরাওয়ার্দী উদ্যান", "লুই আই কান - জাতীয় সংসদ ভবনের কাছে", "রবিউল হুসাইন - চন্দ্রিমা উদ্যান", "মাজহারুল ইসলাম - রমনা পার্ক"], correct: 1, exp: "সংসদ ভবনের স্থপতি লুই আই কান এবং ক্রিসেন্ট লেক সংসদ ভবনের কাছে অবস্থিত[cite: 47]।" },
+            { id: 48, section: "প্রতীক ও জাতীয় বিষয়", q: "কোন স্থাপত্যটি 'সম্মিলিত প্রয়াস' নামে পরিচিত এবং জাতীয় স্মৃতিসৌধের নির্মাণকাজ কবে শুরু হয়?", options: ["শহীদ মিনার - ১৯৭২", "সাভার জাতীয় স্মৃতিসৌধ - ১৯৭৮ সালে", "অপরাজেয় বাংলা - ১৯৭৫", "কেন্দ্রীয় শহীদ মিনার - ১৯৭৩"], correct: 1, exp: "সাভার জাতীয় স্মৃতিসৌধ 'সম্মিলিত প্রয়াস' নামে পরিচিত এবং এর নির্মাণকাজ শুরু হয় ১৯৭৮ সালে[cite: 47]।" },
+            { id: 49, section: "নদ-নদী ও জলরাশি", q: "বিখ্যাত আদিনাথ মন্দির কোন দ্বীপে অবস্থিত এবং তিস্তা ব্যারেজ কোথায় অবস্থিত?", options: ["ভোলা - নীলফামারী", "মহেশখালী - লালমনিরহাট", "সন্দ্বীপ - রংপুর", "কুতুবদিয়া - কুড়িগ্রাম"], correct: 1, exp: "আদিনাথ মন্দির মহেশখালী দ্বীপে এবং তিস্তা ব্যারেজ লালমনিরহাটে অবস্থিত[cite: 48]।" },
+            { id: 50, section: "পরিবেশ ও দুর্যোগ", q: "বাংলাদেশে সবচেয়ে বেশি নদী ভাঙন হয় কোন নদীর কারণে এবং কালবৈশাখী ঝড় সাধারণত কোন মাসে হয়?", options: ["পদ্মা - মার্চ-এপ্রিল", "যমুনা - এপ্রিল-মে", "মেঘনা - মে-জুন", "ব্রহ্মপুত্র - ফেব্রুয়ারি-মার্চ"], correct: 1, exp: "সবচেয়ে বেশি নদী ভাঙন হয় যমুনা নদীর কারণে এবং কালবৈশাখী সাধারণত এপ্রিল-মে মাসে আঘাত হানে[cite: 48]।" },
+            { id: 51, section: "সীমানা ও ভৌগোলিক তথ্য", q: "ঢাকার পুরাতন নামসমূহের মধ্যে কোনটি সঠিক নয়?", options: ["জাহাঙ্গীরনগর", "ঢাবেকা", "ঢাক্কা", "ইসলামাবাদ"], correct: 3, exp: "জাহাঙ্গীরনগর, ঢাবেকা ও ঢাক্কা ঢাকার পুরাতন নাম; ইসলামাবাদ চট্টগ্রামের পুরাতন নাম[cite: 47]।" },
+            { id: 52, section: "সীমানা ও ভৌগোলিক তথ্য", q: "বরিশাল ও কুমিল্লার পুরাতন নাম যথাক্রমে কী কী?", options: ["সমতট ও বাকলা", "চন্দ্রদ্বীপ ও ত্রিপুরা/সমতট", "জাহানাবাদ ও সুবর্ণগ্রাম", "নাসিরাবাদ ও পালংকি"], correct: 1, exp: "বরিশালের পুরাতন নাম চন্দ্রদ্বীপ/ইসমাইলপুর/বাকলা এবং কুমিল্লার ত্রিপুরা/সমতট[cite: 47]।" },
+            { id: 53, section: "সীমানা ও ভৌগোলিক তথ্য", q: "সোনারগাঁও ও কক্সবাজারের পুরাতন নাম যথাক্রমে কী কী?", options: ["সুবর্ণগ্রাম ও পালংকি", "পালংকি ও সুবর্ণগ্রাম", "মোমেনশাহী ও গন্ডোয়ানাল্যান্ড", "জালালাবাদ ও চন্দ্রদ্বীপ"], correct: 0, exp: "সোনারগাঁওয়ের পুরাতন নাম সুবর্ণগ্রাম এবং কক্সবাজারের পুরাতন নাম পালংকি[cite: 47]।" },
+            { id: 54, section: "নদ-নদী ও জলরাশি", q: "মিয়ানমার ও বাংলাদেশের অভিন্ন নদী ৩টি কী কী?", options: ["পদ্মা, যমুনা, মেঘনা", "সাঙ্গু, মাতামুহুরী ও নাফ", "তিস্তা, হালদা, সাঙ্গু", "কর্ণফুলী, নাফ, ফেনী"], correct: 1, exp: "বাংলাদেশ ও মিয়ানমারের অভিন্ন নদী ৩টি হলো সাঙ্গু, মাতামুহুরী ও নাফ[cite: 48]।" },
+            { id: 55, section: "নদ-নদী ও জলরাশি", q: "যমুনা নদী জামালপুরের দেওয়ানগঞ্জ থেকে কোন জেলা পর্যন্ত যমুনা নামে পরিচিত?", options: ["সিরাজগঞ্জ", "রাজবাড়ী জেলার গোয়ালন্দ", "মানিকগঞ্জ", "পাবনা"], correct: 1, exp: "দেওয়ানগঞ্জ থেকে রাজবাড়ীর গোয়ালন্দ পর্যন্ত এটি যমুনা নামে পরিচিত[cite: 49]।" },
+            { id: 56, section: "নদ-নদী ও জলরাশি", q: "বরাক নদী কোন দুটি শাখায় বিভক্ত হয়ে বাংলাদেশে প্রবেশ করেছে?", options: ["পদ্মা ও যমুনা", "সুরমা ও কুশিয়ারা", "তিস্তা ও ধরলা", "গোমতী ও মুহুরী"], correct: 1, exp: "বরাক নদী সিলেট সীমান্তে সুরমা ও কুশিয়ারা নামে দুই শাখায় বিভক্ত হয়ে প্রবেশ করেছে[cite: 49]।" },
+            { id: 57, section: "পরিবেশ ও দুর্যোগ", q: "সম্প্রতি হওয়া সর্বাধিক শক্তিশালী ভূমিকম্প হিসেবে বিবেচিত হয় কোনটি?", options: ["১৭৮৭ সালের ভূমিকম্প", "১৯৯৭ সালের চট্টগ্রাম ভূমিকম্প", "১৮৯৭ সালের ভূমিকম্প", "২০০১ সালের ভূমিকম্প"], correct: 1, exp: "সাম্প্রতিক সর্বাধিক শক্তিশালী ভূমিকম্প হিসেবে ১৯৯৭ সালের চট্টগ্রাম ভূমিকম্প বিবেচিত হয়[cite: 48]।" },
+            { id: 58, section: "পরিবেশ ও দুর্যোগ", q: "বাংলাদেশ যে সকল পরিবেশ চুক্তিতে স্বাক্ষর করেছে তার মধ্যে কোনটি অন্তর্ভুক্ত?", options: ["কিয়োটো প্রোটোকল ও প্যারিস চুক্তি", "রামসার কনভেনশন ও জীববৈচিত্র্য সংরক্ষণ চুক্তি", "উভয়ই", "কোনোটিই নয়"], correct: 2, exp: "বাংলাদেশ কিয়োটো প্রোটোকল, প্যারিস চুক্তি, CBD ও রামসার কনভেনশনে স্বাক্ষর করেছে[cite: 48]।" },
+            { id: 59, section: "সীমানা ও ভৌগোলিক তথ্য", q: "১৯৭১ সালের স্বাধীনতা পরবর্তী সময়ে বাংলাদেশে কয়টি বিভাগ ছিল?", options: ["তিনটি", "চারটি", "পাঁচটি", "ছয়টি"], correct: 1, exp: "স্বাধীনতা পরবর্তী সময়ে বাংলাদেশে চারটি বিভাগ ছিল[cite: 47]।" },
+            { id: 60, section: "প্রতীক ও জাতীয় বিষয়", q: "কাজী নজরুল ইসলাম কত সালে প্রথম ঢাকায় আসেন এবং গণপ্রজাতন্ত্রী বাংলাদেশ সরকারের মনোগ্রামে তারকা চিহ্ন কয়টি?", options: ["১৯২৪ - ৩টি", "১৯২৬ - ৪টি", "১৯২৮ - ৫টি", "১৯২২ - ৪টি"], correct: 1, exp: "নজরুল ১৯২৬ সালে প্রথম ঢাকায় আসেন এবং রাষ্ট্রীয় মনোগ্রামে ৪টি তারকা চিহ্ন রয়েছে[cite: 47]।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let totalTimeSeconds = 1500;
+        let timeLeft = 1500; 
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-emerald-600 text-white border border-emerald-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const badge = document.getElementById('section-badge');
+            badge.innerText = q.section;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-emerald-600/30 border-emerald-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-emerald-500 border-emerald-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let timeSpent = totalTimeSeconds - timeLeft;
+            let spentMins = Math.floor(timeSpent / 60);
+            let spentSecs = timeSpent % 60;
+            document.getElementById('time-taken-text').innerText = `সময় লেগেছে: ${spentMins} মিনিট ${spentSecs} সেকেন্ড`;
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let html = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400">প্রশ্ন #${qIdx + 1}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold rounded border bg-emerald-900 text-emerald-200 border-emerald-700">${q.section}</span>
+                </div>`;
+                html += `<p class="font-semibold text-slate-200 text-sm md:text-base">${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                html += `<div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 text-xs text-slate-300">
+                    <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${q.exp}
+                </div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1500;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সংবিধান ও রাজনৈতিক কাঠামো - DU B-Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Container -->
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-emerald-800 via-teal-800 to-slate-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">সংবিধান ও রাজনৈতিক কাঠামো</h1>
+            <p class="text-sm text-emerald-100 mt-1">বাংলাদেশ বিষয়াবলি | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>অধ্যায়: সংবিধান ও রাজনৈতিক কাঠামো।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের নিচে ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <!-- Top Bar -->
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-emerald-900 text-emerald-200 border border-emerald-700">সংবিধান ও কাঠামো</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 25:00
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed">
+                    <!-- Question goes here -->
+                </h2>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Options go here -->
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <!-- Question Palette (Grid) -->
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700">
+                    <!-- Palette numbers go here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <!-- Score Summary Card -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <!-- Review Tabs Navigation -->
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <!-- Tab Content Containers -->
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700">
+                <!-- Dynamic content -->
+            </div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script -->
+    <script>
+        const questions = [
+            { id: 1, section: "সংবিধান পরিচিতি", q: "বাংলাদেশের সংবিধান কবে গৃহীত হয় এবং কবে কার্যকর হয়?", options: ["১০ এপ্রিল ১৯৭২ - ১৬ ডিসেম্বর ১৯৭২", "০৪ নভেম্বর ১৯৭২ - ১৬ ডিসেম্বর ১৯৭২", "০৪ নভেম্বর ১৯৭২ - ১০ এপ্রিল ১৯৭২", "১১ জানুয়ারি ১৯৭২ - ০৪ নভেম্বর ১৯৭২"], correct: 1, exp: "০৪ নভেম্বর ১৯৭২ সালে বাংলাদেশের জাতীয় সংবিধান গৃহীত হয় এবং ১৬ ডিসেম্বর ১৯৭২ সালে কার্যকর হয়[cite: 42]।" },
+            { id: 2, section: "সংবিধান পরিচিতি", q: "সংবিধান প্রণয়ন কমিটির সভাপতি কে ছিলেন, সদস্য কতজন ছিলেন এবং একমাত্র নারী সদস্য কে ছিলেন?", options: ["শাহ আব্দুল হামিদ - ৩৪ জন - রাজিয়া বানু", "ড. কামাল হোসেন - ৩৪ জন - রাজিয়া বানু", "আব্দুর রশীদ তর্কবাগীশ - ৩৫ জন - সুফিয়া কামাল", "মোহাম্মদ উল্লাহ - ৩৪ জন - তারামন বিবি"], correct: 1, exp: "সংবিধান প্রণয়ন কমিটির সভাপতি ছিলেন ড. কামাল হোসেন (তাঁকে রূপকার বলা হয়), মোট সদস্য ৩৪ জন এবং একমাত্র নারী সদস্য রাজিয়া বানু[cite: 42]।" },
+            { id: 3, section: "অনুচ্ছেদ ও ভাগ", q: "বাংলাদেশের সংবিধানে মোট কতটি ভাগ/অধ্যায় ও কতটি অনুচ্ছেদ রয়েছে এবং কোন অনুচ্ছেদে রাষ্ট্রধর্ম ও রাষ্ট্রভাষা আছে?", options: ["১০ ভাগ, ১৫০ অনুচ্ছেদ - অনুচ্ছেদ ১ ও ২", "১১ ভাগ, ১৫৩ অনুচ্ছেদ - অনুচ্ছেদ ২(ক) ও ৩", "১২ ভাগ, ১৫৩ অনুচ্ছেদ - অনুচ্ছেদ ৩ ও ৪", "১১ ভাগ, ১৪২ অনুচ্ছেদ - অনুচ্ছেদ ৭ ও ৮"], correct: 1, exp: "সংবিধানে ১১টি ভাগ ও ১৫৩টি অনুচ্ছেদ আছে; রাষ্ট্রধর্ম ২(ক) অনুচ্ছেদে এবং রাষ্ট্রভাষা ৩ নং অনুচ্ছেদে বর্ণিত[cite: 42, 43]।" },
+            { id: 4, section: "সংশোধনীসমূহ", q: "সংবিধানের কোন সংশোধনীর মাধ্যমে রাষ্ট্রপতি শাসিত ব্যবস্থা ও বাকশাল চালু হয় এবং কোন সংশোধনীতে সংসদীয় সরকার পুনর্বহাল হয়?", options: ["পঞ্চম - অষ্টম", "চতুর্থ - দ্বাদশ", "দ্বাদশ - ত্রয়োদশ", "তৃতীয় - চতুর্থ"], correct: 1, exp: "১৯৭৫ সালের চতুর্থ সংশোধনীতে রাষ্ট্রপতি শাসন ও বাকশাল চালু হয় এবং ১৯৯১ সালের দ্বাদশ সংশোধনীতে সংসদীয় সরকার পুনর্বহাল হয়[cite: 44]।" },
+            { id: 5, section: "সরকার ও শাসনব্যবস্থা", q: "বাংলাদেশের স্থানীয় সরকার ব্যবস্থা কয় স্তরের এবং স্থানীয় সরকারের সর্বনিম্ন ও সর্বোচ্চ স্তর যথাক্রমে কোনটি?", options: ["দুই স্তরের - পৌরসভা ও সিটি কর্পোরেশন", "তিন স্তরের - ইউনিয়ন পরিষদ ও জেলা পরিষদ", "চার স্তরের - ওয়ার্ড ও বিভাগীয় প্রশাসন", "তিন স্তরের - উপজেলা ও ইউনিয়ন পরিষদ"], correct: 1, exp: "স্থানীয় সরকার ব্যবস্থা তিন স্তরের; এর সর্বনিম্ন স্তর ইউনিয়ন পরিষদ এবং সর্বোচ্চ স্তর জেলা পরিষদ[cite: 46]।" },
+            { id: 6, section: "নির্বাচন ও রাজনীতি", q: "জাতীয় সংসদের সাধারণ নির্বাচনের জন্য সমগ্র দেশকে কতটি এলাকায় ভাগ করা হয় এবং ভোটার হওয়ার সর্বনিম্ন বয়স কত?", options: ["৩৫০টি - ২১ বছর", "৩০০টি - ১৮ বছর", "৬৪টি - ১৮ বছর", "৫০টি - ২৫ বছর"], correct: 1, exp: "সাধারণ নির্বাচনের জন্য দেশকে ৩০০টি নির্বাচনি এলাকায় বিভক্ত করা হয় এবং ভোটার হওয়ার সর্বনিম্ন বয়স ১৮ বছর[cite: 46]।" },
+            { id: 7, section: "সংবিধান পরিচিতি", q: "হস্তলিখিত সংবিধানের মূল লেখক কে এবং প্রথম অলংকরণ ও অঙ্গসজ্জা করেন যথাক্রমে কোন শিল্পীরা?", options: ["হাশেম খান - জয়নুল আবেদিন ও কামরুল হাসান", "একেএম আব্দুর রউফ - জয়নুল আবেদিন ও হাশেম খান", "জয়নুল আবেদিন - একেএম আব্দুর রউফ ও হাশেম খান", "আব্দুর রউফ - হাশেম খান ও জয়নুল আবেদিন"], correct: 1, exp: "মূল লেখক একেএম আব্দুর রউফ, প্রথম অলংকরণ করেন জয়নুল আবেদিন এবং অঙ্গসজ্জা করেন শিল্পী হাশেম খান[cite: 42]।" },
+            { id: 8, section: "সংবিধান পরিচিতি", q: "গণপরিষদের প্রথম অধিবেশন কবে বসে এবং তাতে কে সভাপতিত্ব করেন?", options: ["১১ জানুয়ারি ১৯৭২ - শাহ আব্দুল হামিদ", "১০ এপ্রিল ১৯৭২ - মাওলানা আব্দুর রশীদ তর্কবাগীশ", "০৪ নভেম্বর ১৯৭২ - মোহাম্মদ উল্লাহ", "১৬ ডিসেম্বর ১৯৭২ - কামাল হোসেন"], correct: 1, exp: "১০ এপ্রিল ১৯৭২ গণপরিষদের প্রথম অধিবেশন বসে এবং সভাপতিত্ব করেন মাওলানা আব্দুর রশীদ তর্কবাগীশ[cite: 42]।" },
+            { id: 9, section: "অনুচ্ছেদ ও ভাগ", q: "সংবিধানের কোন অনুচ্ছেদে 'আইনের দৃষ্টিতে সমতা' ও 'নারী-পুরুষের সমান অধিকার'-এর উল্লেখ আছে?", options: ["অনুচ্ছেদ ১১ ও ২৬", "অনুচ্ছেদ ২৭ ও ২৮(২)", "অনুচ্ছেদ ৩৬ ও ৩৯", "অনুচ্ছেদ ৪৮ ও ৬৫"], correct: 1, exp: "আইনের দৃষ্টিতে সমতা ২৭ নং অনুচ্ছেদে এবং নারী-পুরুষের সমান অধিকার ২৮(২) নং অনুচ্ছেদে উল্লেখ আছে[cite: 43]।" },
+            { id: 10, section: "সংশোধনীসমূহ", q: "কোন সংশোধনীতে নির্দলীয় 'তত্ত্বাবধায়ক সরকার' ব্যবস্থার বিধান করা হয় এবং কোন সংশোধনীতে তা বাতিল করা হয়?", options: ["দ্বাদশ - চতুর্দশ", "ত্রয়োদশ - পঞ্চদশ", "পঞ্চদশ - ষোড়শ", "অষ্টম - দ্বাদশ"], correct: 1, exp: "১৯৯৬ সালের ত্রয়োদশ সংশোধনীতে তত্ত্বাবধায়ক সরকার ব্যবস্থা যুক্ত হয় এবং ২০১১ সালের পঞ্চদশ সংশোধনীতে বাতিল করা হয়[cite: 44]।" },
+            { id: 11, section: "সরকার ও শাসনব্যবস্থা", q: "বাংলাদেশের সংবিধান অনুসারে রাষ্ট্রপতি ও সংসদ সদস্যদের শপথ বাক্য পাঠ করান কে?", options: ["প্রধান বিচারপতি", "স্পিকার", "প্রধান নির্বাচন কমিশনার", "প্রধানমন্ত্রী"], correct: 1, exp: "সংবিধান অনুসারে রাষ্ট্রপতি ও সংসদ সদস্যদের শপথ বাক্য পাঠ করান জাতীয় সংসদের স্পিকার[cite: 45]।" },
+            { id: 12, section: "নির্বাচন ও রাজনীতি", q: "বাংলাদেশে রাজনৈতিক দলের নিবন্ধন বাধ্যতামূলক করা হয় কত সালে এবং 'ডেমোক্রেসি ওয়াচ' কবে প্রতিষ্ঠিত হয়?", options: ["২০০৪ - ১৯৯২", "২০০৮ সালে - ১৯৯৫", "২০০৬ - ১৯৯৮", "২০১০ - ১৯৯১"], correct: 1, exp: "২০০৮ সালে রাজনৈতিক দলের নিবন্ধন বাধ্যতামূলক হয় এবং ডেমোক্রেসি ওয়াচ প্রতিষ্ঠিত হয় ১৯৯৫ সালে[cite: 46]।" },
+            { id: 13, section: "সংবিধান পরিচিতি", q: "বাংলাদেশের অস্থায়ী সংবিধান আদেশ কবে জারি করা হয় এবং গণপরিষদ আদেশ কবে জারি হয়?", options: ["০৪ নভেম্বর ও ১৬ ডিসেম্বর ১৯৭২", "১১ জানুয়ারি ১৯৭২ ও ২৩ মার্চ ১৯৭২", "২৩ মার্চ ১৯৭২ ও ১০ এপ্রিল ১৯৭২", "২৬ মার্চ ১৯৭১ ও ১১ জানুয়ারি ১৯৭২"], correct: 1, exp: "১১ জানুয়ারি ১৯৭২ অস্থায়ী সংবিধান আদেশ এবং ২৩ মার্চ ১৯৭২ গণপরিষদ আদেশ জারি করা হয়[cite: 42]।" },
+            { id: 14, section: "অনুচ্ছেদ ও ভাগ", q: "সংবিধানের কোন অনুচ্ছেদে 'মৌলিক বিষয় সংশোধন অযোগ্য' বলা হয়েছে এবং কোন অনুচ্ছেদে সংবিধান সংশোধনের ক্ষমতা আছে?", options: ["অনুচ্ছেদ ৮ ও ৯৩", "অনুচ্ছেদ ৭(খ) ও ১৪২", "অনুচ্ছেদ ৭ ও ১০২", "অনুচ্ছেদ ৪৪ ও ১১৮"], correct: 1, exp: "৭(খ) অনুচ্ছেদে মৌলিক বিষয় সংশোধন অযোগ্য এবং ১৪২ নং অনুচ্ছেদে সংবিধান সংশোধনের ক্ষমতা বর্ণিত আছে[cite: 43, 44]।" },
+            { id: 15, section: "সংশোধনীসমূহ", q: "বিচারপতিদের অভিশংসন বা অপসারণের ক্ষমতা জাতীয় সংসদের হাতে কোন সংশোধনীতে দেওয়া হয় এবং সংরক্ষিত নারী আসনের মেয়াদ ২৫ বছর বাড়ে কোনটিতে?", options: ["পঞ্চদশ ও ষোড়শ", "ষোড়শ ও সপ্তদশ", "সপ্তদশ ও চতুর্দশ", "অষ্টম ও সপ্তদশ"], correct: 1, exp: "২০১৪ সালের ষোড়শ সংশোধনীতে অপসারণের ক্ষমতা এবং ২০১৮ সালের সপ্তদশ সংশোধনীতে নারী আসনের মেয়াদ ২৫ বছর বাড়ানো হয়[cite: 44]।" },
+            { id: 16, section: "সরকার ও শাসনব্যবস্থা", q: "কোরামের জন্য জাতীয় সংসদে কতজন সদস্যের উপস্থিতি প্রয়োজন এবং জাতীয় সংসদের বেসরকারি দিবস কোনটি?", options: ["৫০ জন - বুধবার", "৬০ জন - বৃহস্পতিবার", "৭৫ জন - রবিবার", "১০০ জন - সোমবার"], correct: 1, exp: "সংসদের কোরামের জন্য ৬০ জন সদস্যের উপস্থিতি প্রয়োজন এবং বেসরকারি দিবস হলো বৃহস্পতিবার[cite: 45, 46]।" },
+            { id: 17, section: "নির্বাচন ও রাজনীতি", q: "চাপ সৃষ্টিকারী গোষ্ঠীর অপর নাম কী এবং রাষ্ট্রের প্রধান চাপ সৃষ্টিকারী গোষ্ঠী কোনটি?", options: ["বিরোধী দল - নির্বাচন কমিশন", "Attitude Group বা Lobby Group - সুশীল সমাজ", "মানবাধিকার সংস্থা - সংসদ", "বিকল্প সরকার - বিচার বিভাগ"], correct: 1, exp: "চাপ সৃষ্টিকারী গোষ্ঠীকে Attitude বা Lobby Group বলা হয় এবং রাষ্ট্রের প্রধান চাপ সৃষ্টিকারী গোষ্ঠী হলো সুশীল সমাজ[cite: 46]।" },
+            { id: 18, section: "সংবিধান পরিচিতি", q: "বাংলাদেশ গণপরিষদের প্রথম স্পিকার কে ছিলেন এবং জাতীয় সংসদের প্রথম স্পিকার কে ছিলেন?", options: ["মোহাম্মদ উল্লাহ - শাহ আব্দুল হামিদ", "শাহ আব্দুল হামিদ - মোহাম্মদ উল্লাহ", "আব্দুর রশীদ তর্কবাগীশ - কামাল হোসেন", "কামাল হোসেন - মোহাম্মদ উল্লাহ"], correct: 1, exp: "গণপরিষদের প্রথম স্পিকার ছিলেন শাহ আব্দুল হামিদ এবং জাতীয় সংসদের প্রথম স্পিকার ছিলেন মোহাম্মদ উল্লাহ[cite: 42]।" },
+            { id: 19, section: "অনুচ্ছেদ ও ভাগ", q: "সংবিধানের কোন অনুচ্ছেদে 'নির্বাহী বিভাগ হতে বিচার বিভাগকে পৃথকীকরণ' ও 'ন্যায়পাল' পদের কথা আছে?", options: ["অনুচ্ছেদ ২১ ও ৭৫", "অনুচ্ছেদ ২২ ও ৭৭", "অনুচ্ছেদ ২৫ ও ৮৭", "অনুচ্ছেদ ২৭ ও ৯৩"], correct: 1, exp: "বিচার বিভাগ পৃথকীকরণ ২২ নং অনুচ্ছেদে এবং ন্যায়পাল ৭৭ নং অনুচ্ছেদে উল্লেখ রয়েছে[cite: 43]।" },
+            { id: 20, section: "সংশোধনীসমূহ", q: "তত্ত্বাবধায়ক সরকারের প্রধান উপদেষ্টাকে কে শপথ পড়ান এবং প্রধান উপদেষ্টা রাষ্ট্রপতি হলে কে শপথ পড়ান?", options: ["স্পিকার - প্রধান নির্বাচন কমিশনার", "রাষ্ট্রপতি - প্রধান বিচারপতি", "প্রধান বিচারপতি - রাষ্ট্রপতি", "প্রধানমন্ত্রী - স্পিকার"], correct: 1, exp: "প্রধান উপদেষ্টাকে শপথ পড়ান রাষ্ট্রপতি; আর রাষ্ট্রপতিই প্রধান উপদেষ্টা হলে শপথ পড়ান প্রধান বিচারপতি[cite: 44]।" },
+            { id: 21, section: "সরকার ও শাসনব্যবস্থা", q: "বাংলাদেশের প্রধানমন্ত্রী হওয়ার ন্যূনতম বয়স কত এবং শাসন বিভাগের প্রকৃত ক্ষমতা কার ওপর ন্যস্ত?", options: ["৩৫ বছর - রাষ্ট্রপতি", "২৫ বছর - প্রধানমন্ত্রী", "৩০ বছর - স্পিকার", "১৮ বছর - মন্ত্রিপরিষদ সচিব"], correct: 1, exp: "প্রধানমন্ত্রী হওয়ার ন্যূনতম বয়স ২৫ বছর এবং শাসন বিভাগের প্রকৃত ক্ষমতা প্রধানমন্ত্রীর ওপর ন্যস্ত থাকে[cite: 46]।" },
+            { id: 22, section: "নির্বাচন ও রাজনীতি", q: "প্রতিনিধিত্বশীল গণতন্ত্রে 'বিকল্প সরকার' কাকে বলা হয় এবং BELA কী বিষয়ে আইনি লড়াই করে?", options: ["চাপ সৃষ্টিকারী গোষ্ঠীকে - দুর্নীতি দমন", "বিরোধী দলকে - পরিবেশ রক্ষা", "নির্বাচন কমিশনকে - ভোটার অধিকার", "সুশীল সমাজকে - নারী অধিকার"], correct: 1, exp: "বিরোধী দলকে 'বিকল্প সরকার' বলা হয় এবং BELA পরিবেশ রক্ষায় আইনি লড়াইয়ের জন্য পরিচিত[cite: 46]।" },
+            { id: 23, section: "সংবিধান পরিচিতি", q: "পৃথিবীর প্রাচীনতম আইনি সংস্করণ 'কোড অব জাস্টিস' কে রচনা করেন এবং ইতিহাসের প্রথম পূর্ণাঙ্গ আইন সংকলন কোনটি?", options: ["হাম্মুরাবি - কোড অব জাস্টিস", "রাজা উরুকাজিনা - কোড অব হাম্মুরাবি", "সাইরাস - মদিনা সনদ", "সলোমন - বিল অব রাইটস"], correct: 1, exp: "'কোড অব জাস্টিস' রচনা করেন রাজা উরুকাজিনা এবং প্রথম পূর্ণাঙ্গ আইন সংকলন হলো 'কোড অব হাম্মুরাবি'[cite: 43]।" },
+            { id: 24, section: "অনুচ্ছেদ ও ভাগ", q: "স্বাধীনতার ঘোষণাপত্র সংবিধানের কততম তফসিলে সংযোজন করা হয়েছে এবং বর্তমানে তফসিল সংখ্যা কতটি?", options: ["৫ম তফসিলে - ৫টি", "৭ম তফসিলে - ৭টি", "৬ষ্ঠ তফসিলে - ৬টি", "১ম তফসিলে - ৭টি"], correct: 1, exp: "স্বাধীনতার ঘোষণাপত্র ৭ম তফসিলে সংযোজন করা হয়েছে এবং সংবিধানে মোট তফসিল ৭টি[cite: 42, 43]।" },
+            { id: 25, section: "সংশোধনীসমূহ", q: "কোন সংশোধনীতে বাংলাদেশের উপ-রাষ্ট্রপতি পদ বিলুপ্ত হয় এবং কোন সংশোধনীতে ঢাকায় হাইকোর্টের ৬টি বেঞ্চ স্থাপন করা হয়?", options: ["চতুর্থ - পঞ্চম", "দ্বাদশ - অষ্টম", "ত্রয়োদশ - দ্বাদশ", "পঞ্চম - ত্রয়োদশ"], correct: 1, exp: "দ্বাদশ সংশোধনীতে উপ-রাষ্ট্রপতি পদ বিলুপ্ত হয় এবং অষ্টম সংশোধনীতে ঢাকার বাইরে ৬টি হাইকোর্ট বেঞ্চ স্থাপনের বিধান হয়[cite: 44]।" },
+            { id: 26, section: "সরকার ও শাসনব্যবস্থা", q: "বাংলাদেশে বর্তমানে মোট মন্ত্রণালয়ের সংখ্যা কতটি এবং মন্ত্রণালয়ের রাজনৈতিক ও প্রশাসনিক প্রধান যথাক্রমে কারা?", options: ["৪২টি - সচিব ও মন্ত্রী", "৫৭টি - মন্ত্রী ও সচিব", "৫০টি - উপদেষ্টা ও সচিব", "৬১টি - প্রধানমন্ত্রী ও মন্ত্রী"], correct: 1, exp: "মোট মন্ত্রণালয় ৫৭টি; মন্ত্রণালয়ের রাজনৈতিক প্রধান মন্ত্রী এবং প্রশাসনিক বা নির্বাহী প্রধান সচিব[cite: 46]।" },
+            { id: 27, section: "নির্বাচন ও রাজনীতি", q: "Transparency International-এর প্রধান কার্যালয় কোথায় অবস্থিত এবং টিআইবি কী নিয়ে কাজ করে?", options: ["লন্ডন - মানবাধিকার", "বার্লিন - দুর্নীতির বিরুদ্ধে সামাজিক আন্দোলন", "জেনেভা - পরিবেশ রক্ষা", "নিউইয়র্ক - সুশাসন"], correct: 1, exp: "Transparency International-এর প্রধান কার্যালয় বার্লিনে এবং টিআইবি দুর্নীতির বিরুদ্ধে সামাজিক আন্দোলন গড়ে তোলে[cite: 46]।" },
+            { id: 28, section: "সংবিধান পরিচিতি", q: "মদিনা সনদে মোট কতটি ধারা ছিল এবং ইংল্যান্ডে 'বিল অব রাইটস' কত সালে স্বাক্ষরিত হয়?", options: ["৪৫টি - ১২১৫ সাল", "৪৭টি - ১৬৮৯ সাল", "৫০টি - ১৭৮৯ সাল", "৪০টি - ১৬৮৮ সাল"], correct: 1, exp: "মদিনা সনদে ৪৭টি ধারা ছিল এবং ইংল্যান্ডে 'বিল অব রাইটস' ১৬৮৯ সালে স্বাক্ষরিত হয়[cite: 43]।" },
+            { id: 29, section: "অনুচ্ছেদ ও ভাগ", q: "সংবিধানের কোন অনুচ্ছেদে 'ফ্লোর ক্রসিং' ও 'বাজেট (বার্ষিক আর্থিক বিবরণ)' উল্লেখ আছে?", options: ["অনুচ্ছেদ ৬৫ ও ৮১", "অনুচ্ছেদ ৭০ ও ৮৭", "অনুচ্ছেদ ৭৭ ও ৯৩", "অনুচ্ছেদ ৬৪ ও ৮৮"], correct: 1, exp: "ফ্লোর ক্রসিং ৭০ নং অনুচ্ছেদে এবং বাজেট ৮৭ নং অনুচ্ছেদে বর্ণিত আছে[cite: 43]।" },
+            { id: 30, section: "সংশোধনীসমূহ", q: "বাংলাদেশের সংবিধানের প্রথম সংশোধনী কবে গৃহীত হয় এবং সংবিধান সংশোধনী বিল পাসে সংসদে কত সমর্থন লাগে?", options: ["১৬ ডিসেম্বর ১৯৭২ - সাধারণ সংখ্যাগরিষ্ঠতা", "১৫ জুলাই ১৯৭৩ - দুই-তৃতীয়াংশ", "০৪ নভেম্বর ১৯৭২ - তিন-চতুর্থাংশ", "০৭ মার্চ ১৯৭৩ - দুই-তৃতীয়াংশ"], correct: 1, exp: "প্রথম সংশোধনী গৃহীত হয় ১৫ জুলাই ১৯৭৩ এবং সংশোধনী বিল পাসে দুই-তৃতীয়াংশ সংসদ সদস্যের সমর্থন প্রয়োজন[cite: 44]।" },
+            { id: 31, section: "সরকার ও শাসনব্যবস্থা", q: "সংবিধানের ৫০(৩) অনুচ্ছেদ অনুযায়ী রাষ্ট্রপতি কার কাছে পদত্যাগ করেন এবং রাষ্ট্রপতির মেয়াদ কত বছর?", options: ["প্রধানমন্ত্রী - ৪ বছর", "স্পিকার - ৫ বছর", "প্রধান বিচারপতি - ৫ বছর", "প্রধান নির্বাচন কমিশনার - ৬ বছর"], correct: 1, exp: "রাষ্ট্রপতি স্পিকারের কাছে পদত্যাগ করেন এবং রাষ্ট্রপতি পদের মেয়াদ ৫ বছর[cite: 46]।" },
+            { id: 32, section: "নির্বাচন ও রাজনীতি", q: "বাংলাদেশে ভোটার হওয়ার ক্ষেত্রে নিবন্ধিত প্রবাসী ভোটারগণ কোন পদ্ধতিতে ভোট দিতে পারেন?", options: ["ইভিএম", "পোস্টাল ব্যালট", "প্রক্সি ভোট", "অনলাইন ভোট"], correct: 1, exp: "জাতীয় সংসদ নির্বাচনে নিবন্ধিত প্রবাসী ভোটারগণ পোস্টাল ব্যালট পদ্ধতিতে ভোট দিতে পারেন[cite: 46]।" },
+            { id: 33, section: "সংবিধান পরিচিতি", q: "বাংলাদেশের সংবিধান নিয়ে ভাস্কর্য 'ধ্রুব-৭২' কোথায় অবস্থিত এবং জরুরি অবস্থাকালীন বিধানাবলি কোন ভাগে আছে?", options: ["ঢাবি - অষ্টম ভাগ", "জাতীয় কবি কাজী নজরুল ইসলাম বিশ্ববিদ্যালয় - নবম (ক) ভাগ", "রাবি - সপ্তম ভাগ", "চবি - ষষ্ঠ ভাগ"], correct: 1, exp: "'ধ্রুব-৭২' ভাস্কর্য জাতীয় কবি কাজী নজরুল ইসলাম বিশ্ববিদ্যালয়ে অবস্থিত এবং জরুরি বিধান নবম (ক) ভাগে আছে[cite: 43]।" },
+            { id: 34, section: "অনুচ্ছেদ ও ভাগ", q: "সংবিধানের কোন অনুচ্ছেদে 'অধ্যাদেশ প্রণয়ন-ক্ষমতা' ও 'নির্বাচন কমিশন প্রতিষ্ঠা' রয়েছে?", options: ["অনুচ্ছেদ ৮৭ ও ১১৭", "অনুচ্ছেদ ৯৩ ও ১১৮", "অনুচ্ছেদ ৯৪ ও ১২৭", "অনুচ্ছেদ ১০২ ও ১৩৭"], correct: 1, exp: "অধ্যাদেশ প্রণয়ন ক্ষমতা ৯৩ নং অনুচ্ছেদে এবং নির্বাচন কমিশন প্রতিষ্ঠা ১১৮ নং অনুচ্ছেদে উল্লেখ আছে[cite: 44]।" },
+            { id: 35, section: "সংশোধনীসমূহ", q: "পঞ্চদশ সংশোধনীর আংশিক বাতিলের ফলে সংবিধানের কোন অনুচ্ছেদগুলো বাতিল ঘোষিত হয় এবং আপিল বিভাগের রায় কবে আসে?", options: ["২৭, ২৮ ও ৩৯ - ১৭ ডিসেম্বর ২০২৪", "৭(ক), ৭(খ) ও ৪৪(২) - ০৯ জুলাই ২০২৬", "৪৮, ৫৫ ও ৬৫ - ০৯ জুলাই ২০২৬", "৯৩, ৯৪ ও ১০২ - ১৫ জুলাই ২০২৬"], correct: 1, exp: "পঞ্চদশ সংশোধনী আংশিক বাতিলে ৭(ক), ৭(খ) ও ৪৪(২) বাতিল ঘোষিত হয় এবং হাইকোর্টের রায় বহাল রেখে ০৯ জুলাই ২০২৬ আপিল বিভাগের রায় আসে[cite: 44]।" },
+            { id: 36, section: "সরকার ও শাসনব্যবস্থা", q: "নির্বাহী বিভাগ থেকে বিচার বিভাগ পৃথকীকরণ মামলার বাদী কে এবং বিচার বিভাগ কবে স্বাধীন বিভাগ হিসেবে স্বীকৃতি পায়?", options: ["আব্দুল মান্নান খান - ০৭ মার্চ ১৯৭৩", "মাসদার হোসেন - ০১ নভেম্বর ২০০৭", "এ.এস.এম সায়েম - ১৬ ডিসেম্বর ১৯৭২", "রুহুল কুদ্দুস কাজল - ০১ নভেম্বর ২০০৮"], correct: 1, exp: "মাসদার হোসেন মামলার প্রেক্ষিতে ০১ নভেম্বর ২০০৭ বিচার বিভাগ নির্বাহী বিভাগ থেকে আলাদা হয়ে স্বাধীন বিভাগ হয়[cite: 46]।" },
+            { id: 37, section: "নির্বাচন ও রাজনীতি", q: "কোন কারণে সংসদ ভেঙে গেলে পরবর্তী কত দিনের মধ্যে সংসদ নির্বাচন অনুষ্ঠিত হবে এবং নির্বাচন কমিশনের মেয়াদ কত বছর?", options: ["৬০ দিন - ৪ বছর", "৯০ দিন - পাঁচ বছর", "১২০ দিন - ৫ বছর", "৩০ দিন - ৩ বছর"], correct: 1, exp: "সংসদ ভেঙে গেলে পরবর্তী ৯০ দিনের মধ্যে নির্বাচন হতে হবে এবং নির্বাচন কমিশনের স্থায়িত্বকাল পাঁচ বছর[cite: 46]।" },
+            { id: 38, section: "সংবিধান পরিচিতি", q: "সংবিধানের ১০৮ অনুচ্ছেদ অনুযায়ী 'কোর্ট অব রেকর্ড' বলা হয় কোনটিকে এবং বাংলাদেশের সংবিধানে মৌলিক অধিকার বিষয়ক অনুচ্ছেদ কয়টি?", options: ["হাইকোর্ট বিভাগ - ১৫টি", "সুপ্রিম কোর্ট - ১৮টি", "আপিল বিভাগ - ১২টি", "প্রশাসনিক ট্রাইব্যুনাল - ২০টি"], correct: 1, exp: "অনুচ্ছেদ ১০৮ অনুযায়ী সুপ্রিম কোর্ট 'কোর্ট অব রেকর্ড' এবং মৌলিক অধিকার বিষয়ক অনুচ্ছেদ রয়েছে ১৮টি[cite: 43]।" },
+            { id: 39, section: "অনুচ্ছেদ ও ভাগ", q: "সংবিধানের কোন অনুচ্ছেদে 'মহা হিসাব-নিরীক্ষক' ও 'সরকারি কর্ম কমিশন' প্রতিষ্ঠার কথা বলা হয়েছে?", options: ["অনুচ্ছেদ ১১৮ ও ১৩৭", "অনুচ্ছেদ ১২৭ ও ১৩৭", "অনুচ্ছেদ ১২৭ ও ১৪২", "অনুচ্ছেদ ১১৭ ও ১২৭"], correct: 1, exp: "১২৭ নং অনুচ্ছেদে মহা হিসাব-নিরীক্ষক (CAG) এবং ১৩৭ নং অনুচ্ছেদে সরকারি কর্ম কমিশন প্রতিষ্ঠার বিধান আছে[cite: 44]।" },
+            { id: 40, section: "সংশোধনীসমূহ", q: "২০২৪ সালের ১৭ ডিসেম্বর হাইকোর্টের একটি বেঞ্চ পঞ্চদশ সংশোধনী আইনের কোন ধারাগুলো বাতিল করেন?", options: ["১, ২ ও ৩ নং ধারা", "২০, ২১ ও ৪৭ নং ধারা", "১০, ১৫ ও ২০ নং ধারা", "৫, ৮ ও ১২ নং ধারা"], correct: 1, exp: "১৭ ডিসেম্বর ২০২৪ হাইকোর্টের একটি বেঞ্চ পঞ্চদশ সংশোধনী আইনের ২০, ২১ ও ৪৭ নং ধারা বাতিল করেন[cite: 44]।" },
+            { id: 41, section: "সরকার ও শাসনব্যবস্থা", q: "বাংলাদেশের প্রথম প্রধান বিচারপতি কে ছিলেন এবং প্রধান বিচারপতির পদ শূন্য থাকলে কে দায়িত্ব পালন করবেন?", options: ["জুবায়ের রহমান চৌধুরী - স্পিকার", "এ.এস.এম সায়েম - আপিল বিভাগের প্রবীণতম বিচারক", "মাসদার হোসেন - অ্যাটর্নি জেনারেল", "হাবিবুর রহমান - হাইকোর্টের প্রবীণতম বিচারক"], correct: 1, exp: "প্রথম প্রধান বিচারপতি ছিলেন এ.এস.এম সায়েম এবং পদ শূন্য থাকলে আপিল বিভাগের প্রবীণতম বিচারক দায়িত্ব পালন করেন[cite: 46]।" },
+            { id: 42, section: "নির্বাচন ও রাজনীতি", q: "জাতীয় সংসদ নির্বাচনে 'রিটার্নিং অফিসার' হিসেবে সাধারণত কে দায়িত্ব পালন করেন এবং 'আইন ও সালিশ কেন্দ্র' কী ধরনের সংস্থা?", options: ["উপজেলা নির্বাহী অফিসার - পরিবেশবাদী", "জেলা প্রশাসক - মানবাধিকার ও আইনি সহায়তা সংস্থা", "নির্বাচন কমিশনার - গবেষণা সংস্থা", "বিভাগীয় কমিশনার - সাংস্কৃতিক"], correct: 1, exp: "সাধারণত জেলা প্রশাসক রিটার্নিং অফিসার হিসেবে দায়িত্ব পালন করেন এবং আইন ও সালিশ কেন্দ্র মানবাধিকার ও আইনি সহায়তা সংস্থা[cite: 46]।" },
+            { id: 43, section: "সংবিধান পরিচিতি", q: "বাংলাদেশের সংবিধান অনুযায়ী নাগরিকগণ কোন অনুচ্ছেদ অনুযায়ী 'বাংলাদেশি' বলে পরিচিত হবেন এবং নাগরিকত্ব অর্জনের নীতি কী?", options: ["অনুচ্ছেদ ৬(১) - জন্মসূত্রে", "অনুচ্ছেদ ৬(২) - জন্মসূত্রে ও অনুমোদনসূত্রে", "অনুচ্ছেদ ৭ - বংশসূত্রে", "অনুচ্ছেদ ৮ - বিবাহসূত্রে"], correct: 1, exp: "৬(২) অনুচ্ছেদ অনুযায়ী নাগরিকগণ বাংলাদেশি পরিচিত হবেন এবং নাগরিকত্ব অর্জনে জন্মসূত্র ও অনুমোদনসূত্র অনুসৃত হয়[cite: 43]।" },
+            { id: 44, section: "অনুচ্ছেদ ও ভাগ", q: "সংবিধানের কোন অনুচ্ছেদে 'রাষ্ট্রপতির ক্ষমা প্রদর্শনের অধিকার' ও 'অভিশংসন' উল্লেখ আছে?", options: ["অনুচ্ছেদ ৪৮ ও ৫০", "অনুচ্ছেদ ৪৯ ও ৫২", "অনুচ্ছেদ ৫২ ও ৫৫", "অনুচ্ছেদ ৫৪ ও ৬৩"], correct: 1, exp: "রাষ্ট্রপতির ক্ষমা প্রদর্শনের অধিকার ৪৯ নং অনুচ্ছেদে এবং অভিশংসন ৫২ নং অনুচ্ছেদে বর্ণিত আছে[cite: 43]।" },
+            { id: 45, section: "সংশোধনীসমূহ", q: "কোন সংশোধনীর মাধ্যমে সংবিধানে পরিবেশ সম্পর্কিত বিধান সন্নিবেশিত করা হয় এবং বর্তমানে সংরক্ষিত নারী আসন কতটি?", options: ["দ্বাদশ - ৪৫টি", "পঞ্চদশ - ৫০টি", "ষোড়শ - ৫০টি", "সপ্তদশ - ৪৫টি"], correct: 1, exp: "পঞ্চদশ সংশোধনীতে পরিবেশ সম্পর্কিত বিধান যুক্ত হয় এবং বর্তমানে সংরক্ষিত নারী আসন ৫০টি[cite: 44]।" },
+            { id: 46, section: "সরকার ও শাসনব্যবস্থা", q: "সংবিধানের কত ধারায় আইনের সংজ্ঞা দেওয়া হয়েছে এবং 'Judicial Precedent' কী?", options: ["১৪২ ধারা - নির্বাহী আদেশ", "১৫২ ধারা - বিচারপতি সৃষ্ট আইন", "১০৮ ধারা - সংসদ প্রণীত আইন", "৯৩ ধারা - অধ্যাদেশ"], correct: 1, exp: "১৫২ ধারায় আইনের সংজ্ঞা দেওয়া হয়েছে এবং 'Judicial Precedent' হলো বিচারপতি সৃষ্ট আইন[cite: 46]।" },
+            { id: 47, section: "নির্বাচন ও রাজনীতি", q: "'Representation of the People's Order, 1972' কীসের সাথে সম্পর্কিত এবং জাতীয় নির্বাচনে ভোটের পদ্ধতি কী?", options: ["স্থানীয় সরকার - আনুপাতিক প্রতিনিধিত্ব", "জাতীয় সংসদ নির্বাচন সংক্রান্ত - First Past The Post (FPTP)", "রাষ্ট্রপতি নির্বাচন - পরোক্ষ ভোট", "গণভোট - একক স্থানান্তরযোগ্য"], correct: 1, exp: "RPO 1972 জাতীয় সংসদ নির্বাচন সংক্রান্ত এবং ভোটের পদ্ধতি হলো First Past The Post (FPTP)[cite: 46]।" },
+            { id: 48, section: "সংবিধান পরিচিতি", q: "বাংলাদেশের সংবিধানে জাতীয় সংসদে সংরক্ষিত নারী আসন প্রথম কোন সালে যুক্ত হয়?", options: ["১৯৭১", "১৯৭২", "১৯৭৩", "১৯৭৯"], correct: 1, exp: "বাংলাদেশের সংবিধানে জাতীয় সংসদে সংরক্ষিত নারী আসন প্রথম ১৯৭২ সালে যুক্ত হয়[cite: 44]।" },
+            { id: 49, section: "সরকার ও শাসনব্যবস্থা", q: "বাংলাদেশের সাংবিধানিক প্রতিষ্ঠানের সংখ্যা কতটি এবং কোনটি সাংবিধানিক প্রতিষ্ঠান নয়?", options: ["৫টি - নির্বাচন কমিশন", "৪টি - দুর্নীতি দমন কমিশন", "৪টি - সরকারি কর্ম কমিশন", "৬টি - অ্যাটর্নি জেনারেল"], correct: 1, exp: "সাংবিধানিক প্রতিষ্ঠান ৪টি (অ্যাটর্নি জেনারেল, নির্বাচন কমিশন, CAG ও PSC); দুর্নীতি দমন কমিশন সাংবিধানিক নয়[cite: 44]।" },
+            { id: 50, section: "সরকার ও শাসনব্যবস্থা", q: "জাতীয় সংসদের ১নং আসন ও ৩০০তম আসন কোন জেলায় অবস্থিত এবং সর্বশেষ (১৩তম) সিটি কর্পোরেশন কোনটি?", options: ["ঠাকুরগাঁও ও কক্সবাজার - গাজীপুর", "পঞ্চগড় ও বান্দরবান - বগুড়া", "দিনাজপুর ও রাঙামাটি - ময়মনসিংহ", "নীলফামারী ও খাগড়াছড়ি - কুমিল্লা"], correct: 1, exp: "১নং আসন পঞ্চগড়ে, ৩০০তম আসন বান্দরবানে এবং সর্বশেষ ১৩তম সিটি কর্পোরেশন হলো বগুড়া[cite: 46]।" },
+            { id: 51, section: "সরকার ও শাসনব্যবস্থা", q: "প্রতিটি ইউনিয়ন পরিষদে কয়টি ওয়ার্ড আছে এবং সংরক্ষিত নারী আসনের সদস্য কতটি ওয়ার্ডের প্রতিনিধিত্ব করেন?", options: ["১২টি ও ৪টি", "৯টি ও ৩টি", "৬টি ও ২টি", "১৫টি ও ৫টি"], correct: 1, exp: "প্রতিটি ইউনিয়ন পরিষদে ৯টি ওয়ার্ড থাকে এবং সংরক্ষিত নারী সদস্য ৩টি ওয়ার্ডের প্রতিনিধিত্ব করেন[cite: 46]।" },
+            { id: 52, section: "সরকার ও শাসনব্যবস্থা", q: "জরুরি অবস্থায় মোট কয়টি মৌলিক অধিকার স্থগিত থাকে এবং জরুরি অবস্থা ঘোষণার পূর্বে কার প্রতিস্বাক্ষর লাগে?", options: ["৪টি - স্পিকার", "৬টি - প্রধানমন্ত্রী", "৮টি - প্রধান বিচারপতি", "সবগুলো - রাষ্ট্রপতি"], correct: 1, exp: "জরুরি অবস্থায় ৬টি মৌলিক অধিকার স্থগিত থাকে এবং ঘোষণার পূর্বে প্রধানমন্ত্রীর প্রতিস্বাক্ষর প্রয়োজন হয়[cite: 45, 46]।" },
+            { id: 53, section: "সরকার ও শাসনব্যবস্থা", q: "জাতীয় সংসদে কাস্টিং ভোট প্রদানের ক্ষমতা কার এবং সরকারি দলের মুখপাত্র হিসেবে কে কাজ করেন?", options: ["প্রধানমন্ত্রী - ডেপুটি স্পিকার", "স্পিকার - চিফ হুইপ", "ডেপুটি স্পিকার - বিরোধী দলীয় নেতা", "রাষ্ট্রপতি - চিফ হুইপ"], correct: 1, exp: "কাস্টিং ভোট দেওয়ার ক্ষমতা স্পিকারের এবং সরকারি দলের মুখপাত্র হিসেবে কাজ করেন চিফ হুইপ[cite: 45]।" },
+            { id: 54, section: "সরকার ও শাসনব্যবস্থা", q: "পদমর্যাদার মানক্রম (ওয়ারেন্ট অব প্রিসিডেন্স) অনুযায়ী সর্বপ্রথম কে এবং স্পিকারের স্থান কততম?", options: ["প্রধানমন্ত্রী - দ্বিতীয়", "রাষ্ট্রপতি - তৃতীয়", "রাষ্ট্রপতি - চতুর্থ", "প্রধান বিচারপতি - প্রথম"], correct: 1, exp: "ওয়ারেন্ট অব প্রিসিডেন্স অনুযায়ী সর্বপ্রথম রাষ্ট্রপতি এবং জাতীয় সংসদের স্পিকারের স্থান তৃতীয়[cite: 45]।" },
+            { id: 55, section: "সরকার ও শাসনব্যবস্থা", q: "পার্বত্য জেলা বাদে এলজিআরডি মন্ত্রণালয়ের অধীনে মোট জেলা পরিষদ কয়টি এবং প্রথম ইউপি নির্বাচন কবে হয়?", options: ["৬৪টি - ১৯৭২", "৬১টি - ১৯৭৩", "৫৭টি - ১৯৭৫", "৬১টি - ১৯৮২"], correct: 1, exp: "পার্বত্য ৩ জেলা বাদে জেলা পরিষদ ৬১টি এবং স্বাধীন বাংলাদেশে প্রথম ইউনিয়ন পরিষদ নির্বাচন হয় ১৯৭৩ সালে[cite: 46]।" },
+            { id: 56, section: "সরকার ও শাসনব্যবস্থা", q: "বাংলাদেশে উপজেলা ব্যবস্থার সূচনা হয় কত সালে এবং নারীরা ইউপির সংরক্ষিত আসনে প্রথম সরাসরি ভোটে নির্বাচিত হন কবে?", options: ["১৯৮৫ - ১৯৯১", "১৯৮২ - ১৯৯৭ সালে", "১৯৮২ - ১৯৯৫", "১৯৮০ - ১৯৯৭"], correct: 1, exp: "উপজেলা ব্যবস্থার সূচনা ১৯৮২ সালে এবং নারীরা ইউপির সংরক্ষিত আসনে প্রথম সরাসরি ভোটে নির্বাচিত হন ১৯৯৭ সালে[cite: 46]।" },
+            { id: 57, section: "সরকার ও শাসনব্যবস্থা", q: "জেলা প্রশাসক সচিবালয় কর্মরত কোন পদমর্যাদার সমতুল্য এবং জেলাভিত্তিক সবচেয়ে ছোট বিভাগ কোনটি?", options: ["যুগ্মসচিব - সিলেট বিভাগ", "উপসচিব - ময়মনসিংহ বিভাগ", "সিনিয়র সহকারী সচিব - রংপুর বিভাগ", "অতিরিক্ত সচিব - বরিশাল বিভাগ"], correct: 1, exp: "জেলা প্রশাসক উপসচিবের সমতুল্য এবং জেলাভিত্তিক সবচেয়ে ছোট প্রশাসনিক বিভাগ হলো ময়মনসিংহ বিভাগ[cite: 46]।" },
+            { id: 58, section: "সরকার ও শাসনব্যবস্থা", q: "'আব্দুল মান্নান খান বনাম বাংলাদেশ' মামলাটি কীসের সাথে সম্পর্কিত এবং বিশেষ ক্ষমতা আইন কত সালে প্রণীত হয়?", options: ["অষ্টম সংশোধনী - ১৯৭৩", "তত্ত্বাবধায়ক সরকার ব্যবস্থা - ১৯৭৪", "ষোড়শ সংশোধনী - ১৯৭৫", "সংবিধান সংশোধন - ১৯৭২"], correct: 1, exp: "'আব্দুল মান্নান খান বনাম বাংলাদেশ' মামলা তত্ত্বাবধায়ক সরকার ব্যবস্থার সাথে সম্পর্কিত এবং বিশেষ ক্ষমতা আইন ১৯৭৪ সালের[cite: 46]।" },
+            { id: 59, section: "সরকার ও শাসনব্যবস্থা", q: "'অ্যামিকাস কিউরি' ও 'প্যারোল'-এর অর্থ যথাক্রমে কী এবং সুপ্রিম কোর্টের বিচারকদের অভিযোগ তদন্ত করে কে?", options: ["আদালতের বন্ধু ও জামিন - সংসদ", "আদালতের বন্ধু ও নির্বাহী আদেশে মুক্তি - সুপ্রিম জুডিশিয়াল কাউন্সিল", "আইনি পরামর্শক ও পেনশন - রাষ্ট্রপতি", "বিচারিক পর্যালোচনা ও ক্ষমা - স্পিকার"], correct: 1, exp: "'অ্যামিকাস কিউরি' অর্থ আদালতের বন্ধু, 'প্যারোল' অর্থ নির্বাহী আদেশে মুক্তি এবং তদন্ত কর্তৃপক্ষ সুপ্রিম জুডিশিয়াল কাউন্সিল[cite: 46]।" },
+            { id: 60, section: "নির্বাচন ও রাজনীতি", q: "বাংলাদেশে মোট কতবার জাতীয় সংসদ নির্বাচন অনুষ্ঠিত হয়েছে এবং প্রথম উপজেলা নির্বাচন কবে হয়?", options: ["১২ বার - ১৯৮২", "১৩ বার - ১৯৮৫ সাল", "১১ বার - ১৯৮৫", "১৩ বার - ১৯৯১"], correct: 1, exp: "বাংলাদেশে মোট ১৩ বার জাতীয় সংসদ নির্বাচন অনুষ্ঠিত হয়েছে এবং প্রথম উপজেলা নির্বাচন হয় ১৯৮৫ সালে[cite: 46]।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let totalTimeSeconds = 1500; // 25 minutes
+        let timeLeft = 1500; 
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-emerald-600 text-white border border-emerald-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const badge = document.getElementById('section-badge');
+            badge.innerText = q.section;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-emerald-600/30 border-emerald-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-emerald-500 border-emerald-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let timeSpent = totalTimeSeconds - timeLeft;
+            let spentMins = Math.floor(timeSpent / 60);
+            let spentSecs = timeSpent % 60;
+            document.getElementById('time-taken-text').innerText = `সময় লেগেছে: ${spentMins} মিনিট ${spentSecs} সেকেন্ড`;
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let html = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400">প্রশ্ন #${qIdx + 1}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold rounded border bg-emerald-900 text-emerald-200 border-emerald-700">${q.section}</span>
+                </div>`;
+                html += `<p class="font-semibold text-slate-200 text-sm md:text-base">${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                html += `<div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 text-xs text-slate-300">
+                    <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${q.exp}
+                </div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1500;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

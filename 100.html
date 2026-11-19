@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রাকৃতিক সম্পদ - DU B-Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-teal-800 via-emerald-800 to-cyan-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">প্রাকৃতিক সম্পদ</h1>
+            <p class="text-sm text-teal-100 mt-1">বাংলাদেশ বিষয়াবলি | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>অধ্যায়: প্রাকৃতিক সম্পদ।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের নিচে ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-teal-900 text-teal-200 border border-teal-700">কৃষি ও ফসল</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 25:00
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-teal-600 hover:bg-teal-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "কৃষি ও মাটি", q: "বাংলাদেশের প্রধান বীজ উৎপাদনকারী সরকারি প্রতিষ্ঠান কোনটি এবং 'রুটির ঝুড়ি' বলা হয় কোন জেলাকে?", options: ["BARI - দিনাজপুর", "BADC - ঠাকুরগাঁও", "BRRI - ময়মনসিংহ", "BFRI - পঞ্চগড়"], correct: 1, exp: "প্রধান বীজ উৎপাদনকারী সরকারি প্রতিষ্ঠান BADC এবং 'রুটির ঝুড়ি' বলা হয় ঠাকুরগাঁও জেলাকে[cite: 34]।" },
+            { id: 2, section: "ধান ও শস্য", q: "বছরে পাঁচবার ফলন দেওয়া পঞ্চব্রীহি ধান আবিষ্কার করেন কে এবং ধানের উচ্চ ফলনশীল জাত 'হরিধান'-এর উদ্ভাবক কে?", options: ["মাকসুদুল আলম - ড. মোবারক আহমেদ", "ড. আবেদ চৌধুরী - হরিপদ কাপালী", "হরিপদ কাপালী - ড. আবেদ চৌধুরী", "শামসুল আলম - হরিপদ কাপালী"], correct: 1, exp: "পঞ্চব্রীহি ধান আবিষ্কার করেন ড. আবেদ চৌধুরী এবং হরিধানের উদ্ভাবক হরিপদ কাপালী[cite: 34]।" },
+            { id: 3, section: "চা ও পাট", q: "পাট থেকে তৈরি পচনশীল পলিমার ব্যাগের (সোনালি ব্যাগ) উদ্ভাবক কে এবং পাটের জীবনরহস্য উদ্ভাবনকারী দলের নেতা কে?", options: ["মাকসুদুল আলম - ড. মোবারক আহমেদ খান", "ড. মোবারক আহমেদ খান - মাকসুদুল আলম", "ড. মোহাম্মদ সিদ্দিকুল্লা - ড. মোবারক আহমেদ", "মাকসুদুল আলম - ড. মোহাম্মদ সিদ্দিকুল্লা"], correct: 1, exp: "সোনালি ব্যাগের উদ্ভাবক ড. মোবারক আহমেদ খান এবং পাটের জীবনরহস্য উদ্ভাবনকারী দলের নেতা মাকসুদুল আলম[cite: 35]।" },
+            { id: 4, section: "বন ও বনায়ন", q: "সুন্দরবনের কত শতাংশ বাংলাদেশে পড়েছে, আয়তন কত বর্গকিমি এবং সুন্দরবন দিবস কবে পালিত হয়?", options: ["৬০% - ৫০০০ বর্গকিমি - ১৬ ফেব্রুয়ারি", "৬২ শতাংশ - প্রায় ৬০০০ বর্গকিমি (৬০১৭ বর্গকিমি) - ১৪ ফেব্রুয়ারি", "৬৫% - ৬০১৭ বর্গকিমি - ১ ফেব্রুয়ারি", "৫৮% - ৫৮০০ বর্গকিমি - ১৪ এপ্রিল"], correct: 1, exp: "সুন্দরবনের ৬২% বাংলাদেশে, আয়তন প্রায় ৬০০০ (৬০১৭) বর্গকিমি এবং সুন্দরবন দিবস ১৪ ফেব্রুয়ারি[cite: 36]।" },
+            { id: 5, section: "খনিজ ও জ্বালানি", q: "বাংলাদেশে আবিষ্কৃত গ্যাসক্ষেত্র কতটি এবং প্রাকৃতিক গ্যাসের প্রধান উপাদান কী ও প্রাপ্ত গ্যাসে মিথেনের পরিমাণ কত?", options: ["২৮টি - ইথেন - ৮০-৮৫%", "৩০টি - মিথেন - ৯৫-৯৯%", "২৫টি - প্রোপেন - ৯০-৯৫%", "৩২টি - বিউটেন - ৮৫-৯০%"], correct: 1, exp: "আবিষ্কৃত গ্যাসক্ষেত্র ৩০টি; প্রধান উপাদান মিথেন এবং প্রাপ্ত গ্যাসে মিথেনের পরিমাণ ৯৫-৯৯%[cite: 37]।" },
+            { id: 6, section: "মৎস্য ও প্রাণিসম্পদ", q: "ইলিশ উৎপাদনে বিশ্বে বাংলাদেশের অবস্থান কত, মোট ইলিশ উৎপাদনের কত শতাংশ বাংলাদেশে হয় এবং 'ইলিশের বাড়ি' কোন জেলা?", options: ["২য় - ৮০% - ভোলা", "১ম - ৮৬ শতাংশ - চাঁদপুর", "৩য় - ৭৫% - বরিশাল", "১ম - ৮২% - পটুয়াখালী"], correct: 1, exp: "ইলিশে বাংলাদেশ বিশ্বে ১ম, বৈশ্বিক উৎপাদনের ৮৬% বাংলাদেশে হয় এবং 'ইলিশের বাড়ি' চাঁদপুর।" },
+            { id: 7, section: "পানি ও সমুদ্র সম্পদ", q: "ব্লু-ইকোনমিতে '3P' বলতে কী বোঝায় এবং 'The Blue Economy' বইটির লেখক কে?", options: ["People, Power, Profit - পল ক্রুগম্যান", "People, Planet, Profit - গুন্টার পাওলি", "Planet, Peace, Profit - অমর্ত্য সেন", "People, Planet, Progress - গুন্টার পাওলি"], correct: 1, exp: "3P অর্থ People, Planet, Profit এবং 'The Blue Economy' বইটির লেখক গুন্টার পাওলি।" },
+            { id: 8, section: "কৃষি ও মাটি", q: "কোন মাটির পানি ধারণ ক্ষমতা সবচেয়ে বেশি এবং কৃষি কাজের জন্য সবচেয়ে উপযুক্ত মাটি কোনটি?", options: ["দো-আঁশ মাটি - এঁটেল মাটি", "এঁটেল মাটি - দো-আঁশ মাটি", "বেলে মাটি - পলি মাটি", "পলি মাটি - দো-আঁশ মাটি"], correct: 1, exp: "পানি ধারণ ক্ষমতা সবচেয়ে বেশি এঁটেল মাটির এবং কৃষির জন্য সবচেয়ে উপযুক্ত দো-আঁশ মাটি[cite: 34]।" },
+            { id: 9, section: "ধান ও শস্য", q: "জিংক (Zn) সমৃদ্ধ ধানের জাত কোনটি এবং কোন ধানের জাতটি লবণসহিষ্ণু ও কোনটি 'জি আই' পণ্য হিসেবে স্বীকৃত?", options: ["ব্রি ধান-৪৭ - ব্রি ধান-৬২ - বাংলামতি", "ব্রি ধান-৬২ - ব্রি-৪৭ - কাটারিভোগ", "বিআর-৩৩ - ব্রি ধান-৫৬ - হরিধান", "ব্রি ধান-৫৭ - ব্রি-৩৩ - কাটারিভোগ"], correct: 1, exp: "জিংক সমৃদ্ধ ব্রি ধান-৬২, লবণসহিষ্ণু ব্রি-৪৭ এবং জিআই স্বীকৃত কাটারিভোগ[cite: 34]।" },
+            { id: 10, section: "চা ও পাট", q: "বাংলাদেশে চা নিলাম কেন্দ্র কয়টি ও কী কী এবং সবচেয়ে বেশি চা বাগান রয়েছে কোন জেলায়?", options: ["২টি - চট্টগ্রাম ও সিলেট - মৌলভীবাজার", "৩টি - চট্টগ্রাম, মৌলভীবাজার ও পঞ্চগড় - মৌলভীবাজার জেলা", "৩টি - ঢাকা, চট্টগ্রাম, পঞ্চগড় - পঞ্চগড়", "৪টি - শ্রীমঙ্গল, চট্টগ্রাম, সিলেট, পঞ্চগড় - সিলেট"], correct: 1, exp: "চা নিলাম কেন্দ্র ৩টি (চট্টগ্রাম, মৌলভীবাজার ও পঞ্চগড়) এবং সবচেয়ে বেশি চা বাগান মৌলভীবাজারে[cite: 35]।" },
+            { id: 11, section: "বন ও বনায়ন", q: "বাংলাদেশের কত শতাংশ এলাকায় বনাঞ্চল রয়েছে, সুন্দরবনের অপর নাম কী এবং রাতারগুল কী ধরনের বন?", options: ["১৪.৫০% - সুন্দর বন - ম্যানগ্রোভ", "১৫.৫৮% - বাদা বন - সোয়াম্প ফরেস্ট", "১৭.০৮% - পাতাঝরা বন - চিরহরিৎ", "১২.৮০% - বাদা বন - পাতাঝরা"], correct: 1, exp: "বনাঞ্চল ১৫.৫৮%, সুন্দরবনের অপর নাম বাদা বন এবং রাতারগুল একটি সোয়াম্প ফরেস্ট[cite: 36]।" },
+            { id: 12, section: "খনিজ ও জ্বালানি", q: "বাংলাদেশে আবিষ্কৃত কয়লা খনি কয়টি এবং সবচেয়ে নিম্নমানের কয়লা কোনটি?", options: ["৪টি - বিটুমিনাস", "৫টি - পিট কয়লা", "৬টি - লিগনাইট", "৩টি - অ্যানথ্রাসাইট"], correct: 1, exp: "আবিষ্কৃত কয়লা খনি ৫টি (জামালগঞ্জ, বড়পুকুরিয়া, খালাশপীর, দীঘিপাড়া, ফুলবাড়ী) এবং সবচেয়ে নিম্নমানের কয়লা পিট কয়লা[cite: 37]।" },
+            { id: 13, section: "মৎস্য ও প্রাণিসম্পদ", q: "বাংলাদেশের 'হোয়াইট গোল্ড' নামে পরিচিত কোনটি এবং বৈদেশিক মুদ্রা অর্জনে চিংড়ির অবস্থান কততম?", options: ["ইলিশ - ১ম", "চিংড়ি - ২য়", "রুই - ৩য়", "পাঙ্গাস - ২য়"], correct: 1, exp: "'হোয়াইট গোল্ড' নামে পরিচিত চিংড়ি এবং বৈদেশিক মুদ্রা অর্জনে চিংড়ির অবস্থান ২য়[cite: 37]।" },
+            { id: 14, section: "পানি ও সমুদ্র সম্পদ", q: "বাংলাদেশের পানিতে ও WHO-এর মতে আর্সেনিকের গ্রহণযোগ্য মাত্রা যথাক্রমে কত?", options: ["০.০১ ও ০.০৫ মিগ্রা/লিটার", "০.০৫ মিলি/লিটার ও ০.০১ মি.গ্রা./লিটার", "০.০২ ও ০.০১ মিগ্রা/লিটার", "০.০৫ ও ০.০৫ মিগ্রা/লিটার"], correct: 1, exp: "বাংলাদেশের গ্রহণযোগ্য মাত্রা ০.০৫ মিলি/লিটার এবং WHO-এর মতে ০.০১ মি.গ্রা./লিটার।" },
+            { id: 15, section: "কৃষি ও মাটি", q: "'খরিপ শস্য' বলতে কী বোঝায় এবং রবি মৌসুম কোনটি?", options: ["শীতকালীন শস্য - বৈশাখ-আশ্বিন", "গ্রীষ্মকালীন শস্য - কার্তিক-ফাল্গুন", "বর্ষাকালীন শস্য - চৈত্র-ভাদ্র", "গ্রীষ্মকালীন শস্য - আষাঢ়-আশ্বিন"], correct: 1, exp: "খরিপ শস্য হলো গ্রীষ্মকালীন শস্য এবং রবি মৌসুম হলো কার্তিক-ফাল্গুন[cite: 34]।" },
+            { id: 16, section: "ধান ও শস্য", q: "ধান উৎপাদনে বাংলাদেশের বৈশ্বিক অবস্থান কত এবং বাংলাদেশ ধান গবেষণা ইনস্টিটিউট (BRRI) কতটি ধানের জাত আবিষ্কার করেছে?", options: ["২য় - ১১৫টি", "৩য় - ১২৭টি ধানের জাত", "৪য় - ১২০টি", "৩য় - ১৩০টি"], correct: 1, exp: "ধান উৎপাদনে বাংলাদেশ ৩য় এবং BRRI ১২৭টি ধানের জাত আবিষ্কার করেছে[cite: 34, 35]।" },
+            { id: 17, section: "চা ও পাট", q: "চা উৎপাদনে বিশ্বে বাংলাদেশের অবস্থান কত এবং বর্তমানে চা বাগানের সংখ্যা কত?", options: ["৮ম - ১৬৮টি", "৯ম - ১৭২টি", "৭ম - ১৭৫টি", "১০ম - ১৬৫টি"], correct: 1, exp: "চা উৎপাদনে বাংলাদেশ ৯ম এবং বর্তমানে চা বাগানের সংখ্যা ১৭২টি[cite: 35]।" },
+            { id: 18, section: "বন ও বনায়ন", q: "বাংলাদেশের কয়টি জেলায় কোন রাষ্ট্রীয় বনভূমি নেই এবং বিভাগ অনুসারে সবচেয়ে কম বনভূমি কোন বিভাগে?", options: ["২৫টি - খুলনা", "২৮টি - রাজশাহীতে", "৩০টি - বরিশাল", "২২টি - সিলেট"], correct: 1, exp: "২৮টি জেলায় রাষ্ট্রীয় বনভূমি নেই এবং বিভাগ অনুসারে সবচেয়ে কম বনভূমি রাজশাহীতে[cite: 36]।" },
+            { id: 19, section: "খনিজ ও জ্বালানি", q: "বাংলাদেশের প্রথম গ্যাসক্ষেত্র কোনটি ও প্রথম গ্যাস উত্তোলন শুরু হয় কবে এবং দৈনিক সবচেয়ে বেশি গ্যাস উত্তোলিত হয় কোন ক্ষেত্র থেকে?", options: ["তিতাস - ১৯৬২ - বাখরাবাদ", "হরিপুর গ্যাসক্ষেত্র (১৯৫৫) - ১৯৫৭ সালে - বিবিয়ানা গ্যাসক্ষেত্র", "টেংরাটিলা - ১৯৫৯ - তিতাস", "হরিপুর - ১৯৫৭ - হরিপুর"], correct: 1, exp: "প্রথম গ্যাসক্ষেত্র হরিপুর (১৯৫৫), উত্তোলন ১৯৫৭ সালে এবং দৈনিক সবচেয়ে বেশি গ্যাস উত্তোলিত হয় বিবিয়ানা থেকে[cite: 37]।" },
+            { id: 20, section: "মৎস্য ও প্রাণিসম্পদ", q: "চাষের মাছ উৎপাদনে ও মিঠা পানির মাছ উৎপাদনে বাংলাদেশের বৈশ্বিক অবস্থান যথাক্রমে কততম?", options: ["৩য় ও ৫ম", "৫ম ও ৩য়", "৪ম ও ২য়", "২য় ও ৪ম"], correct: 1, exp: "চাষের মাছ উৎপাদনে বাংলাদেশ ৫ম এবং মিঠা পানির মাছ উৎপাদনে ৩য়।" },
+            { id: 21, section: "পানি ও সমুদ্র সম্পদ", q: "বাংলাদেশে প্রথম আর্সেনিক ধরা পড়ে কবে ও কোথায় এবং কোন জেলা আর্সেনিক আক্রান্ত সর্বাধিক?", options: ["১৯৯৫ - যশোর - খুলনা", "চাঁপাইনবাবগঞ্জ (১৯৯৩) - চাঁদপুর", "১৯৯৩ - চাঁদপুর - চাঁপাইনবাবগঞ্জ", "১৯৯২ - কুষ্টিয়া - সাতক্ষীরা"], correct: 1, exp: "প্রথম আর্সেনিক ধরা পড়ে চাঁপাইনবাবগঞ্জে (১৯৯৩) এবং সর্বাধিক আক্রান্ত জেলা চাঁদপুর।" },
+            { id: 22, section: "কৃষি ও মাটি", q: "বাংলাদেশ 'পরমাণু কৃষি গবেষণা ইনস্টিটিউট' কোথায় অবস্থিত এবং মোট দেশজ উৎপাদনে কৃষিখাতের অবদান কত?", options: ["গাজীপুর - ১২.৫০%", "ময়মনসিংহ - ১১.৩৮%", "রাজশাহী - ১০.৯০%", "ঢাকা - ১১.৮০%"], correct: 1, exp: "বিনা (পরমাণু কৃষি গবেষণা ইনস্টিটিউট) ময়মনসিংহে এবং জিডিপিতে কৃষিখাতের অবদান ১১.৩৮%[cite: 34]।" },
+            { id: 23, section: "ধান ও শস্য", q: "বোরো ধান ও সামগ্রিকভাবে ধান উৎপাদনে শীর্ষ জেলা কোনটি এবং খরা সহনশীল জাতের ধান কোনগুলো?", options: ["দিনাজপুর - ব্রি-৪৭", "ময়মনসিংহ - ব্রি ধান ৫৬, ব্রি ধান ৫৭", "বগুড়া - বিআর-৩৩", "রংপুর - ব্রি ধান-৬২"], correct: 1, exp: "বোরো ও সামগ্রিক ধান উৎপাদনে শীর্ষ ময়মনসিংহ; খরা সহনশীল জাত ব্রি ধান ৫৬ ও ব্রি ধান ৫৭[cite: 34, 35]।" },
+            { id: 24, section: "চা ও পাট", q: "পাট পঁচানোর পদ্ধতিকে কী বলা হয় এবং পাটের জিন প্রযুক্তি কাজে লাগিয়ে তৈরি নতুন জাতের নাম কী?", options: ["রেটিং - সোনালি-১", "রিবন রেটিং - রবি-১", "ওয়াটার রেটিং - তোষা-২", "বায়ো রেটিং - দেশি-১"], correct: 1, exp: "পাট পঁচানোর পদ্ধতিকে রিবন রেটিং বলে এবং জিন প্রযুক্তি কাজে লাগিয়ে তৈরি নতুন জাত রবি-১[cite: 35]।" },
+            { id: 25, section: "বন ও বনায়ন", q: "বাংলাদেশের বৃহত্তম বনাঞ্চল কোনটি এবং জেলা অনুসারে সবচেয়ে বেশি বনভূমি রয়েছে কোন জেলায়?", options: ["সুন্দরবন - খুলনা", "পার্বত্য চট্টগ্রাম বনাঞ্চল - বাগেরহাটে", "মধুপুর গড় - রাঙ্গামাটি", "ভাওয়াল গড় - সাতক্ষীরা"], correct: 1, exp: "বৃহত্তম বনাঞ্চল পার্বত্য চট্টগ্রাম বনাঞ্চল এবং জেলা অনুসারে সবচেয়ে বেশি বনভূমি বাগেরহাটে[cite: 36]।" },
+            { id: 26, section: "খনিজ ও জ্বালানি", q: "বাংলাদেশের প্রথম কয়লাখনি কোনটি, মজুতে সবচেয়ে বড় ও গভীরতম কোনটি এবং প্রথম কয়লা শোধনাগার কোনটি?", options: ["জামালগঞ্জ - দীঘিপাড়া - ফুলবাড়ী কয়লাখনি", "বড়পুকুরিয়া (দিনাজপুর) - বড়পুকুরিয়া কোল মাইনিং কোম্পানি লিমিটেড", "খালাশপীর - বড়পুকুরিয়া - জামালগঞ্জ শোধনাগার", "দীঘিপাড়া - খালাশপীর - বড়পুকুরিয়া শোধনাগার"], correct: 1, exp: "বড়পুকুরিয়া প্রথম, মজুতে বড় ও গভীরতম এবং প্রথম কয়লা শোধনাগার বড়পুকুরিয়া কোল মাইনিং কোম্পানি লিমিটেড[cite: 37]।" },
+            { id: 27, section: "মৎস্য ও প্রাণিসম্পদ", q: "জাটকা বলতে কত ইঞ্চির কম দৈর্ঘ্যের ইলিশ বোঝায় এবং মৎস্য আইনে কত সেমির কম ইলিশ ধরা নিষিদ্ধ?", options: ["১২ ইঞ্চি - ৩০ সেমি", "১০ ইঞ্চি - ২৫ সেমি", "৮ ইঞ্চি - ২০ সেমি", "৯ ইঞ্চি - ২৪ সেমি"], correct: 1, exp: "১০ ইঞ্চির কম ইলিশকে জাটকা বলে এবং ২৫ সেন্টিমিটারের কম দৈর্ঘ্যের ইলিশ ধরা নিষিদ্ধ।" },
+            { id: 28, section: "পানি ও সমুদ্র সম্পদ", q: "বাংলাদেশের প্রথম ও বৃহত্তম সেচ প্রকল্প যথাক্রমে কোন দুটি?", options: ["তিস্তা ও গঙ্গা-কপোতাক্ষ", "গঙ্গা-কপোতাক্ষ সেচ প্রকল্প ও তিস্তা সেচ প্রকল্প", "মুহুরী ও তিস্তা", "বরিশাল ও গঙ্গা-কপোতাক্ষ"], correct: 1, exp: "প্রথম সেচ প্রকল্প গঙ্গা-কপোতাক্ষ এবং বৃহত্তম সেচ প্রকল্প তিস্তা সেচ প্রকল্প।" },
+            { id: 29, section: "কৃষি ও মাটি", q: "নদী ছাড়া 'মহানন্দা' কীসের নাম এবং আম উৎপাদনে বর্তমানে শীর্ষ জেলা কোনটি?", options: ["কলা - রাজশাহী", "আম - চাঁপাইনবাবগঞ্জ", "লিচু - দিনাজপুর", "তরমুজ - নওগাঁ"], correct: 1, exp: "নদী ছাড়া 'মহানন্দা' একটি আমের নাম এবং আম উৎপাদনে শীর্ষ জেলা চাঁপাইনবাবগঞ্জ[cite: 34]।" },
+            { id: 30, section: "ধান ও শস্য", q: "আদমজী পাটকল কবে বন্ধ হয় এবং কাঁচা পাট রপ্তানিতে বিশ্বে বাংলাদেশের অবস্থান কত?", options: ["০১ জুলাই ২০০১ - ২য়", "৩০ জুন, ২০০২ - ১ম", "১৫ আগস্ট ২০০২ - ১ম", "৩০ জুন ২০০৩ - ২য়"], correct: 1, exp: "আদমজী পাটকল বন্ধ হয় ৩০ জুন ২০০২ সালে এবং কাঁচা পাট রপ্তানিতে বাংলাদেশ বিশ্বে ১ম[cite: 35]।" },
+            { id: 31, section: "চা ও পাট", q: "বাংলাদেশের প্রথম অর্গানিক চা বাগান কোথায় স্থাপিত হয় এবং বাংলাদেশ চা বোর্ড কোন মন্ত্রণালয়ের অধীন ও কোথায় অবস্থিত?", options: ["শ্রীমঙ্গল - কৃষি মন্ত্রণালয় - মৌলভীবাজার", "তেঁতুলিয়া (পঞ্চগড়) - বাণিজ্য মন্ত্রণালয় - চট্টগ্রাম", "বড়লেখা - বাণিজ্য মন্ত্রণালয় - সিলেট", "হবিগঞ্জ - ভূমি মন্ত্রণালয় - চট্টগ্রাম"], correct: 1, exp: "প্রথম অর্গানিক চা বাগান তেঁতুলিয়ায়; চা বোর্ড বাণিজ্য মন্ত্রণালয়ের অধীন এবং চট্টগ্রামে অবস্থিত[cite: 35]।" },
+            { id: 32, section: "বন ও বনায়ন", q: "সুন্দরবনের 'গেওয়া' কাঠ কী কাজে ব্যবহৃত হয় এবং 'গোলপাতা' কী কাজে লাগে?", options: ["পেন্সিল ও আসবাবপত্র - নৌকা", "খুলনার নিউজপ্রিন্ট মিল, দিয়াশলাই ও কাগজের মন্ড - ঘরের ছাউনি তৈরিতে", "রং ও কয়লা - বাক্স তৈরি", "খুঁটি ও দরজা - কয়লা"], correct: 1, exp: "গেওয়া নিউজপ্রিন্ট মিল, দিয়াশলাই ও কাগজের মন্ডে এবং গোলপাতা ঘরের ছাউনি তৈরিতে ব্যবহৃত হয়[cite: 36]।" },
+            { id: 33, section: "খনিজ ও জ্বালানি", q: "বাংলাদেশের একমাত্র পারমাণবিক বিদ্যুৎকেন্দ্র কোথায়, কোন মন্ত্রণালয়ের অধীন এবং বিশ্বে বাংলাদেশের অবস্থান কততম?", options: ["ঈশ্বরদী - বিদ্যুৎ মন্ত্রণালয় - ৩২তম", "রূপপুর, পাবনা - বিজ্ঞান ও প্রযুক্তি - ৩৩তম", "মাতারবাড়ী - বিজ্ঞান ও প্রযুক্তি - ৩৫তম", "পায়রা - জ্বালানি মন্ত্রণালয় - ৩৪তম"], correct: 1, exp: "রূপপুর পারমাণবিক বিদ্যুৎকেন্দ্র পাবনায়, বিজ্ঞান ও প্রযুক্তি মন্ত্রণালয়ের অধীন এবং বাংলাদেশ ৩৩তম দেশ[cite: 37]।" },
+            { id: 34, section: "মৎস্য ও প্রাণিসম্পদ", q: "বাংলাদেশের একমাত্র সরকারি কুমির প্রজনন খামার ও প্রথম ঘড়িয়াল প্রজনন কেন্দ্র যথাক্রমে কোথায়?", options: ["রাজশাহী ও ময়মনসিংহ", "ময়মনসিংহ ও রাজশাহী", "খুলনা ও চট্টগ্রাম", "সিলেট ও বাগেরহাট"], correct: 1, exp: "কুমির প্রজনন খামার ময়মনসিংহে এবং প্রথম ঘড়িয়াল প্রজনন কেন্দ্র রাজশাহীতে[cite: 37]।" },
+            { id: 35, section: "পানি ও সমুদ্র সম্পদ", q: "বৈশ্বিক জিডিপিতে ব্লু-ইকোনমির অবদান কত এবং 'সোনোফিল্টার' আবিষ্কার করেন কে?", options: ["প্রায় ৪০ ট্রিলিয়ন ডলার - ড. রফিকুল ইসলাম", "প্রায় ৬০ ট্রিলিয়ন ডলার - অধ্যাপক আবুল হুসসাম", "প্রায় ৫০ ট্রিলিয়ন ডলার - ড. মোবারক আহমেদ", "প্রায় ৭০ ট্রিলিয়ন ডলার - অধ্যাপক আবুল হুসসাম"], correct: 1, exp: "বৈশ্বিক জিডিপিতে ব্লু-ইকোনমির অবদান প্রায় ৬০ ট্রিলিয়ন ডলার এবং 'সোনোফিল্টার' আবিষ্কার করেন অধ্যাপক আবুল হুসসাম।" },
+            { id: 36, section: "কৃষি ও মাটি", q: "নদী ছাড়া 'পদ্মা' ও 'যমুনা' কীসের নাম এবং চিনি কল থেকে প্রাপ্ত উপজাত 'চিটাগুড়' কী তৈরিতে ব্যবহৃত হয়?", options: ["আম - চিনি ও গুড়", "তরমুজ - অ্যালকোহল ও জৈব সার", "কলা - কাগজ ও সার", "ভুট্টা - ইথানল ও পশুখাদ্য"], correct: 1, exp: "নদী ছাড়া 'পদ্মা' ও 'যমুনা' তরমুজের নাম এবং চিটাগুড় অ্যালকোহল ও জৈব সার তৈরিতে ব্যবহৃত হয়[cite: 36]।" },
+            { id: 37, section: "ধান ও শস্য", q: "পাটের তৈরি বস্ত্র 'জুটন' আবিষ্কার করেন কে এবং এতে পাটের পরিমাণ কত শতাংশ?", options: ["ড. মোবারক আহমেদ খান - ৮০%", "ড. মোহাম্মদ সিদ্দিকুল্লা - ৭০%", "মাকসুদুল আলম - ৬৫%", "ড. মোহাম্মদ সিদ্দিকুল্লা - ৭৫%"], correct: 1, exp: "'জুটন' আবিষ্কার করেন ড. মোহাম্মদ সিদ্দিকুল্লা এবং এতে পাটের পরিমাণ ৭০%[cite: 35]।" },
+            { id: 38, section: "চা ও পাট", q: "চা গবেষণা কেন্দ্র ও বাংলাদেশের একমাত্র চা মিউজিয়াম কোথায় অবস্থিত?", options: ["চট্টগ্রাম ও পঞ্চগড়", "শ্রীমঙ্গলে ও শ্রীমঙ্গল", "মৌলভীবাজার ও চট্টগ্রাম", "তেঁতুলিয়া ও সিলেট"], correct: 1, exp: "চা গবেষণা কেন্দ্র ও একমাত্র চা মিউজিয়াম উভয়ই শ্রীমঙ্গলে অবস্থিত[cite: 35]।" },
+            { id: 39, section: "বন ও বনায়ন", q: "বাংলাদেশের প্রথম ইকো পার্ক, সাফারি পার্ক ও প্রজাপতি পার্ক যথাক্রমে কোথায় অবস্থিত?", options: ["কক্সবাজার, চট্টগ্রাম, সীতাকুণ্ড", "সীতাকুণ্ড, কক্সবাজার ও চট্টগ্রাম", "চট্টগ্রাম, সীতাকুণ্ড, কক্সবাজার", "বড়লেখা, কক্সবাজার, চট্টগ্রাম"], correct: 1, exp: "প্রথম ইকো পার্ক সীতাকুণ্ডে, সাফারি পার্ক কক্সবাজারে এবং প্রজাপতি পার্ক চট্টগ্রামে[cite: 36]।" },
+            { id: 40, section: "খনিজ ও জ্বালানি", q: "তেল-গ্যাস সম্পদ অনুসন্ধানের জন্য বাংলাদেশকে কয়টি ব্লকে বিভক্ত করা হয়েছে এবং BAPEX কবে প্রতিষ্ঠিত হয়?", options: ["৪৫টি - ১৯৮৫", "৪৯টি - ১৯৮৯", "৫২টি - ১৯৯১", "৪৮টি - ১৯৮৭"], correct: 1, exp: "তেল-গ্যাস অনুসন্ধানে বাংলাদেশ ৪৯টি ব্লকে বিভক্ত এবং BAPEX প্রতিষ্ঠিত হয় ১৯৮৯ সালে[cite: 37]।" },
+            { id: 41, section: "মৎস্য ও প্রাণিসম্পদ", q: "ইলিশ মাছের জিনোম আবিষ্কারের সাথে যুক্ত ছিলেন কে এবং ইলিশ 'GI' পণ্যের স্বীকৃতি পায় কত সালে?", options: ["মাকসুদুল আলম - ২০১৬", "শামসুল আলম - ২০১৭ সালে", "ড. আবেদ চৌধুরী - ২০১৮", "শামসুল আলম - ২০১৯"], correct: 1, exp: "ইলিশের জিনোম আবিষ্কারে যুক্ত ছিলেন শামসুল আলম এবং ইলিশ GI স্বীকৃতি পায় ২০১৭ সালে।" },
+            { id: 42, section: "পানি ও সমুদ্র সম্পদ", q: "জাতীয় পানি পরিকল্পনা সংস্থা কী নামে পরিচিত এবং ১ কিউসেক সমান কত লিটার?", options: ["BWDB - ২৮.৩১৭ লি.", "WARPO - ২৮.৩১৭ লি.", "WARPO - ২৫.৪৫০ লি.", "BADC - ২৮.৩১৭ লি."], correct: 1, exp: "জাতীয় পানি পরিকল্পনা সংস্থা WARPO এবং ১ কিউসেক সমান ২৮.৩১৭ লিটার।" },
+            { id: 43, section: "কৃষি ও মাটি", q: "কোন জেলার আনারস জিআই পণ্যের স্বীকৃতি পেয়েছে এবং বাংলাদেশের কোন জায়গা রাবার চাষের জন্য বিখ্যাত?", options: ["মৌলভীবাজার - শ্রীমঙ্গল", "টাঙ্গাইল - রামু", "সিলেট - বড়লেখা", "রাঙ্গামাটি - রামু"], correct: 1, exp: "টাঙ্গাইলের আনারস জিআই স্বীকৃতি পেয়েছে এবং রামু রাবার চাষের জন্য বিখ্যাত[cite: 36]।" },
+            { id: 44, section: "ধান ও শস্য", q: "আলু উৎপাদনে বিশ্বে বাংলাদেশের অবস্থান কত, উন্নত জাত 'ডায়মন্ড' ও আলু গবেষণা কেন্দ্র কোথায়?", options: ["৬ষ্ঠ - বগুড়া - বগুড়া", "৭ম - ডায়মন্ড - মুন্সীগঞ্জ", "৮ম - কার্ডিনাল - রংপুর", "৭ম - এডিসন - দিনাজপুর"], correct: 1, exp: "আলু উৎপাদনে বাংলাদেশ ৭ম, উন্নত জাত ডায়মন্ড/কার্ডিনাল/এডিসন এবং গবেষণা কেন্দ্র মুন্সীগঞ্জে[cite: 35, 36]।" },
+            { id: 45, section: "চা ও পাট", q: "বর্তমানে পাটজাত মোড়ক ব্যবহার বাধ্যতামূলক করা হয়েছে কয়টি পণ্যে এবং 'মেস্তা' কী?", options: ["১৫টি - এক জাতীয় ধান", "১৯টি পণ্যে - এক জাতীয় পাট", "২০টি - এক জাতীয় চা", "১৭টি - এক জাতীয় গম"], correct: 1, exp: "১৯টি পণ্যে পাটজাত মোড়ক ব্যবহার বাধ্যতামূলক এবং 'মেস্তা' এক জাতীয় পাট[cite: 35]।" },
+            { id: 46, section: "বন ও বনায়ন", q: "সুন্দরবনে বর্তমানে বাঘ গণনা করা হয় কোন পদ্ধতিতে এবং সুন্দরবনকে কততম 'রামসার সাইট' স্বীকৃতি দেওয়া হয়?", options: ["ফুটপ্রিন্ট - ৫৫০তম", "ক্যামেরা ট্র্যাপিং - ৫৬০তম", "ড্রোন জরিপ - ৫৭০তম", "ক্যামেরা ট্র্যাপিং - ৫৪০তম"], correct: 1, exp: "সুন্দরবনে বাঘ গণনা হয় ক্যামেরা ট্র্যাপিং পদ্ধতিতে এবং এটি ৫৬০তম রামসার সাইট[cite: 36]।" },
+            { id: 47, section: "খনিজ ও জ্বালানি", q: "বাংলাদেশে প্রথম খনিজ তেল আবিষ্কৃত হয় কোথায় ও কত সালে এবং দেশের সর্বশেষ আবিষ্কৃত গ্যাসক্ষেত্র কোনটি?", options: ["তিতাস - ১৯৮৫ - শাহবাজপুর", "সিলেটের হরিপুরে - ১৯৮৬ - ইলিশা-১ (২০২৩)", "বিবিয়ানা - ১৯৮৬ - ভেদুরিয়া", "হরিপুর - ১৯৮৪ - সেমুতাং"], correct: 1, exp: "প্রথম খনিজ তেল সিলেটের হরিপুরে (১৯৮৬) এবং সর্বশেষ গ্যাসক্ষেত্র ইলিশা-১ (২০২৩)[cite: 37]।" },
+            { id: 48, section: "মৎস্য ও প্রাণিসম্পদ", q: "দেশের প্রথম মৎস্য অভয়াশ্রম 'হাইল হাওর' কোথায় এবং চাষের মাছ উৎপাদনে কোন জেলা প্রথম?", options: ["সুনামগঞ্জ - খুলনা", "শ্রীমঙ্গল, মৌলভীবাজার - ময়মনসিংহ", "সিলেট - বাগেরহাট", "হবিগঞ্জ - ভোলা"], correct: 1, exp: "প্রথম মৎস্য অভয়াশ্রম হাইল হাওর (শ্রীমঙ্গল, মৌলভীবাজার) এবং চাষের মাছে প্রথম ময়মনসিংহ[cite: 36, 37]।" },
+            { id: 49, section: "পানি ও সমুদ্র সম্পদ", q: "ঢাকা শহরে প্রথম পানি সরবরাহ কার্যক্রম কবে স্থাপিত হয় এবং যশলদিয়া পদ্মা পানি শোধনাগার কোন জেলায়?", options: ["১৮৮৪ - ঢাকা", "১৮৭৪ সালে - মুন্সীগঞ্জ", "১৮৭৬ - নারায়ণগঞ্জ", "১৯০১ - মুন্সীগঞ্জ"], correct: 1, exp: "ঢাকায় প্রথম পানি সরবরাহ স্থাপিত হয় ১৮৭৪ সালে এবং যশলদিয়া পানি শোধনাগার মুন্সীগঞ্জে।" },
+            { id: 50, section: "কৃষি ও মাটি", q: "বাংলাদেশে ফুলের রাজধানী বলা হয় কোন স্থানকে এবং 'সূর্যকন্যা' বলা হয় কোন গাছকে?", options: ["গদখালী - রাবার গাছ", "ঝিকরগাছা - তুলা গাছ", "রামু - চা গাছ", "ঝিকরগাছা - শাল গাছ"], correct: 1, exp: "ফুলের রাজধানী ঝিকরগাছা এবং 'সূর্যকন্যা' বলা হয় তুলা গাছকে[cite: 36]।" },
+            { id: 51, section: "ধান ও শস্য", q: "ব্রি ধান-৫০-এর অপর নাম কী এবং উত্তরাঞ্চলে 'মঙ্গার ধান' ও অ্যান্টি অক্সিডেন্ট সমৃদ্ধ ধান কোনটি?", options: ["কাটারিভোগ - ব্রি-৪৭", "বাংলামতি - বিআর-৩৩", "হরিধান - ব্রি ধান-৬২", "পঞ্চব্রীহি - ব্রি-৩৩"], correct: 1, exp: "ব্রি ধান-৫০-এর অপর নাম বাংলামতি এবং অ্যান্টি অক্সিডেন্ট সমৃদ্ধ ও উত্তরাঞ্চলে 'মঙ্গার ধান' বিআর-৩৩[cite: 34]।" },
+            { id: 52, section: "বন ও বনায়ন", q: "সামাজিক বনায়ন কর্মসূচি ও জাতীয় বৃক্ষমেলা যথাক্রমে কবে শুরু হয় এবং মধুপুর-ভাওয়াল গড়ের বনভূমি কোন ধরনের?", options: ["১৯৮১ ও ১৯৯২ - চিরহরিৎ বন", "১৯৭৯ ও ১৯৯৪ সালে - ক্রান্তীয় পতনশীল পত্রযুক্ত বৃক্ষের বনভূমি", "১৯৭৮ ও ১৯৯৫ - সোয়াম্প ফরেস্ট", "১৯৮০ ও ১৯৯৪ - ম্যানগ্রোভ"], correct: 1, exp: "সামাজিক বনায়ন ১৯৭৯, বৃক্ষমেলা ১৯৯৪ এবং মধুপুর-ভাওয়াল গড় ক্রান্তীয় পতনশীল পত্রযুক্ত বনভূমি[cite: 36]।" },
+            { id: 53, section: "খনিজ ও জ্বালানি", q: "বাংলাদেশের প্রথম লোহার খনি, চীনামাটি/সাদামাটি ও ইউরেনিয়াম যথাক্রমে কোথায় পাওয়া গেছে?", options: ["রংপুর, কক্সবাজার, সিলেট", "দিনাজপুর, বিজয়পুর (নেত্রকোনা) ও কুলাউড়া পাহাড়", "জয়পুরহাট, শেরপুর, বান্দরবান", "দিনাজপুর, দুর্গাপুর, জাফলং"], correct: 1, exp: "প্রথম লোহার খনি দিনাজপুরে, চীনামাটি বিজয়পুরে (নেত্রকোনা) এবং ইউরেনিয়াম কুলাউড়া পাহাড়ে[cite: 36, 37]।" },
+            { id: 54, section: "মৎস্য ও প্রাণিসম্পদ", q: "বাগদা চিংড়ির অন্য নাম কী, 'ব্ল্যাক বেঙ্গল' ছাগলের চামড়া কী নামে পরিচিত এবং বিজ্ঞানীগণ প্রথম কোন প্রাণীর জীবনরহস্য উন্মোচন করছেন?", options: ["হোয়াইট গোল্ড - খুলনা গ্রেড - গরু", "ব্ল্যাক টাইগার - কুষ্টিয়া গ্রেড - মহিষ", "রোজ টাইগার - কুষ্টিয়া গ্রেড - ছাগল", "ব্ল্যাক টাইগার - ঢাকা গ্রেড - মহিষ"], correct: 1, exp: "বাগদা চিংড়ির অন্য নাম ব্ল্যাক টাইগার, ছাগলের চামড়া কুষ্টিয়া গ্রেড এবং প্রথম জীবনরহস্য উন্মোচন করা প্রাণী মহিষ[cite: 37]।" },
+            { id: 55, section: "পানি ও সমুদ্র সম্পদ", q: "জাতীয় সমুদ্র গবেষণা ইনস্টিটিউট কোথায় অবস্থিত এবং তিস্তা ও মুহুরী সেচ প্রকল্প যথাক্রমে কোন জেলায়?", options: ["চট্টগ্রাম - রংপুর ও ফেনী", "কক্সবাজার - লালমনিরহাট ও ফেনী ও চট্টগ্রাম", "খুলনা - নীলফামারী ও চট্টগ্রাম", "কক্সবাজার - কুড়িগ্রাম ও নোয়াখালী"], correct: 1, exp: "জাতীয় সমুদ্র গবেষণা ইনস্টিটিউট কক্সবাজারে; তিস্তা প্রকল্প লালমনিরহাটে ও মুহুরী প্রকল্প ফেনী-চট্টগ্রামে।" },
+            { id: 56, section: "খনিজ ও জ্বালানি", q: "সিরামিক শিল্পের প্রধান কাঁচামাল, কাঁচ তৈরির উপযোগী উপাদান এবং সিমেন্টের প্রধান কাঁচামাল যথাক্রমে কী?", options: ["চুনাপাথর, সাদামাটি, সিলিকা বালি", "চীনামাটি, সিলিকা বালি ও চুনাপাথর", "সিলিকা বালি, চীনামাটি, কয়লা", "চীনামাটি, চুনাপাথর, সিলিকা বালি"], correct: 1, exp: "সিরামিকের প্রধান কাঁচামাল চীনামাটি, কাঁচ তৈরিতে সিলিকা বালি এবং সিমেন্টের প্রধান কাঁচামাল চুনাপাথর[cite: 36, 37]।" },
+            { id: 57, section: "খনিজ ও জ্বালানি", q: "কোনটিকে 'ব্ল্যাক গোল্ড' বলা হয় এবং কোনটি জীবাশ্ম জ্বালানি নয়?", options: ["কয়লা - প্রাকৃতিক গ্যাস", "তেজস্ক্রিয় বালু - জৈবগ্যাস", "খনিজ তেল - সৌরশক্তি", "ইউরেনিয়াম - কয়লা"], correct: 1, exp: "তেজস্ক্রিয় বালুকে 'ব্ল্যাক গোল্ড' বলা হয় এবং জৈবগ্যাস জীবাশ্ম জ্বালানি নয়[cite: 36, 37]।" },
+            { id: 58, section: "খনিজ ও জ্বালানি", q: "সাবমেরিন ক্যাবলের মাধ্যমে প্রথম কোন উপজেলায় বিদ্যুৎ যায় এবং প্রথম সরকারি ও সর্ববৃহৎ সৌরবিদ্যুৎ কেন্দ্র কোথায়?", options: ["হাতিয়া - পঞ্চগড় ও কুড়িগ্রাম", "সন্দ্বীপ - কাপ্তাই (রাঙ্গামাটি) ও গাইবান্ধা", "মহেশখালী - কক্সবাজার ও দিনাজপুর", "সন্দ্বীপ - চাঁপাইনবাবগঞ্জ ও পাবনা"], correct: 1, exp: "প্রথম সাবমেরিন ক্যাবলে বিদ্যুৎ যায় সন্দ্বীপে; প্রথম সরকারি সৌরকেন্দ্র কাপ্তাইয়ে ও সর্ববৃহৎ গাইবান্ধায়[cite: 36, 37]।" },
+            { id: 59, section: "খনিজ ও জ্বালানি", q: "দেশের প্রথম বায়ু বিদ্যুৎকেন্দ্র ও বৃহত্তম বায়ুবিদ্যুৎ কেন্দ্র যথাক্রমে কোথায় এবং প্রথম ভাসমান সৌরবিদ্যুৎ কেন্দ্র কোথায়?", options: ["কক্সবাজার ও ফেনী - কাপ্তাই", "ফেনী ও কক্সবাজার - চাঁপাইনবাবগঞ্জ", "চট্টগ্রাম ও কক্সবাজার - গাইবান্ধা", "পটুয়াখালী ও ফেনী - সিরাজগঞ্জ"], correct: 1, exp: "প্রথম বায়ু বিদ্যুৎকেন্দ্র ফেনীতে, বৃহত্তম কক্সবাজারে এবং প্রথম ভাসমান সৌরবিদ্যুৎ কেন্দ্র চাঁপাইনবাবগঞ্জে[cite: 37]।" },
+            { id: 60, section: "মৎস্য ও প্রাণিসম্পদ", q: "বাংলাদেশে চাষ নিষিদ্ধ মাছগুলোর মধ্যে কোনটি রয়েছে এবং BFRI কত সালে প্রতিষ্ঠিত হয় ও এর অধীনে কয়টি গবেষণা কেন্দ্র আছে?", options: ["রুই, কাতলা - ১৯৮২ - ৪টি", "পিরানহা, আফ্রিকান মাগুর, পাকু, সাকার - ১৯৮৪ সালে - ৫টি", "তেলাপিয়া, পাঙ্গাস - ১৯৮৫ - ৬টি", "কই, শিং - ১৯৮৪ - ৩টি"], correct: 1, exp: "চাষ নিষিদ্ধ মাছ পিরানহা, আফ্রিকান মাগুর, পাকু ও সাকার; BFRI প্রতিষ্ঠিত হয় ১৯৮৪ সালে এবং এর অধীনে ৫টি গবেষণা কেন্দ্র রয়েছে।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let totalTimeSeconds = 1500;
+        let timeLeft = 1500; 
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-teal-600 text-white border border-teal-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const badge = document.getElementById('section-badge');
+            badge.innerText = q.section;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-teal-600/30 border-teal-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-teal-500 border-teal-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let timeSpent = totalTimeSeconds - timeLeft;
+            let spentMins = Math.floor(timeSpent / 60);
+            let spentSecs = timeSpent % 60;
+            document.getElementById('time-taken-text').innerText = `সময় লেগেছে: ${spentMins} মিনিট ${spentSecs} সেকেন্ড`;
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let html = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400">প্রশ্ন #${qIdx + 1}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold rounded border bg-teal-900 text-teal-200 border-teal-700">${q.section}</span>
+                </div>`;
+                html += `<p class="font-semibold text-slate-200 text-sm md:text-base">${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                html += `<div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 text-xs text-slate-300">
+                    <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${q.exp}
+                </div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1500;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
