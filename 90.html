@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অর্থনীতি, শিল্প ও বাণিজ্য - DU B-Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-emerald-800 via-teal-800 to-cyan-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">অর্থনীতি, শিল্প ও বাণিজ্য</h1>
+            <p class="text-sm text-emerald-100 mt-1">বাংলাদেশ বিষয়াবলি | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>অধ্যায়: অর্থনীতি, শিল্প ও বাণিজ্য।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের নিচে ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-emerald-900 text-emerald-200 border border-emerald-700">অর্থনীতি ও বাজেট</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 25:00
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "অর্থনীতি ও বাজেট", q: "বাংলাদেশ কখন বিশ্ববাণিজ্য সংস্থার (WTO) সদস্যপদ লাভ করে এবং মানি লন্ডারিং প্রতিরোধ আইন কবে প্রবর্তন করা হয়?", options: ["০১ জানুয়ারি, ১৯৯৪ - ২০১১", "০১ জানুয়ারি, ১৯৯৫ - ২০১২ সালে", "০১ জুলাই, ১৯৯৫ - ২০১৩", "০১ জানুয়ারি, ১৯৯৬ - ২০১২"], correct: 1, exp: "বাংলাদেশ ০১ জানুয়ারি ১৯৯৫ সালে WTO-এর সদস্যপদ লাভ করে এবং মানি লন্ডারিং প্রতিরোধ আইন প্রবর্তিত হয় ২০১২ সালে[cite: 47]।" },
+            { id: 2, section: "ব্যাংক ও মুদ্রা", q: "স্বাধীন বাংলাদেশের প্রথম মুদ্রার ডিজাইন কে করেন এবং প্রথম মুদ্রার প্রচলন হয় কবে?", options: ["কামরুল হাসান - ০১ মার্চ ১৯৭২", "কে. জি. মোস্তফা - ০৪ মার্চ, ১৯৭২", "কে. জি. মোস্তফা - ২৬ মার্চ ১৯৭২", "জয়নুল আবেদিন - ০৪ মার্চ ১৯৭২"], correct: 1, exp: "স্বাধীন বাংলাদেশের প্রথম মুদ্রার ডিজাইন করেন কে. জি. মোস্তফা এবং প্রথম প্রচলন হয় ০৪ মার্চ ১৯৭২ সালে[cite: 47]।" },
+            { id: 3, section: "শিল্প ও কারখানা", q: "বাংলাদেশের শিল্প সেক্টরে জিডিপিতে সবচেয়ে বেশি অবদান রাখে কোন শিল্প এবং বাংলাদেশের একমাত্র রেয়ন মিল কোথায়?", options: ["ঔষধ শিল্প - খুলনা", "তৈরি পোশাক শিল্প - চন্দ্রঘোনা, রাঙামাটি (কর্ণফুলী রেয়ন মিল)", "পাট শিল্প - নারায়ণগঞ্জ", "সার শিল্প - নরসিংদী"], correct: 1, exp: "শিল্প সেক্টরে জিডিপিতে সবচেয়ে বেশি অবদান রাখে তৈরি পোশাক শিল্প এবং একমাত্র রেয়ন মিল চন্দ্রঘোনা, রাঙামাটিতে[cite: 49]।" },
+            { id: 4, section: "বাণিজ্য ও ইপিজেড", q: "বাংলাদেশের প্রধান রপ্তানি দ্রব্য কোনটি এবং বাংলাদেশ সবচেয়ে বেশি পণ্য রপ্তানি করে কোন দেশে?", options: ["চামড়া - চীন", "তৈরি পোশাক - যুক্তরাষ্ট্র", "পাট - যুক্তরাজ্য", "ঔষধ - মিয়ানমার"], correct: 1, exp: "বাংলাদেশের প্রধান রপ্তানি দ্রব্য তৈরি পোশাক এবং সবচেয়ে বেশি পণ্য রপ্তানি হয় যুক্তরাষ্ট্রে[cite: 48]।" },
+            { id: 5, section: "অর্থনীতি ও বাজেট", q: "২০২৬-২৭ অর্থবছরে ৫৫তম বাজেটের আকার কত এবং এডিপি (বার্ষিক উন্নয়ন পরিকল্পনা) বরাদ্দ কত?", options: ["৮ লাখ ৩৮ হাজার কোটি - ২ লাখ ৬৫ হাজার কোটি", "৯ লাখ ৩৮ হাজার কোটি টাকা - ৩ লাখ কোটি টাকা", "৯ লাখ কোটি - ২ লাখ ৮০ হাজার কোটি", "৯ লাখ ৫৮ হাজার কোটি - ৩ লাখ কোটি"], correct: 1, exp: "২০২৬-২৭ অর্থবছরে ৫৫তম বাজেটের আকার ৯ লাখ ৩৮ হাজার কোটি টাকা এবং এডিপি বরাদ্দ ৩ লাখ কোটি টাকা[cite: 47]।" },
+            { id: 6, section: "ব্যাংক ও মুদ্রা", q: "বাংলাদেশ ব্যাংকের বর্তমান গভর্নর কে (কততম) এবং প্রথম গভর্নর কে ছিলেন?", options: ["আ. ন. ম হামিদুল্লাহ - মোস্তাকুর রহমান", "মোঃ মোস্তাকুর রহমান (১৪তম) - আ. ন. ম হামিদুল্লাহ", "ফজলে কবির - আ. ন. ম হামিদুল্লাহ", "আতিউর রহমান - সালেহউদ্দিন আহমেদ"], correct: 1, exp: "বাংলাদেশ ব্যাংকের প্রথম গভর্নর ছিলেন আ. ন. ম হামিদুল্লাহ এবং বর্তমান (১৪তম) গভর্নর মোঃ মোস্তাকুর রহমান[cite: 47]।" },
+            { id: 7, section: "শিল্প ও কারখানা", q: "বাংলাদেশের বৃহত্তম সার কারখানা কোনটি এবং দেশের বাইরে (স্কয়ার ফার্মা কর্তৃক) প্রথম ঔষধ কারখানা স্থাপিত হয় কোথায়?", options: ["যমুনা সার কারখানা - নেপাল", "পলাশ ইউরিয়া সার কারখানা, ঘোড়াশাল, নরসিংদী - কেনিয়ায়", "চট্টগ্রাম ইউরিয়া সার কারখানা - শ্রীলঙ্কা", "ঘোড়াশাল সার কারখানা - ভুটান"], correct: 1, exp: "বৃহত্তম সার কারখানা পলাশ ইউরিয়া সার কারখানা (ঘোড়াশাল, নরসিংদী) এবং স্কয়ার ফার্মার প্রথম বিদেশি কারখানা কেনিয়ায়[cite: 49]।" },
+            { id: 8, section: "বাণিজ্য ও ইপিজেড", q: "বাংলাদেশে EPZ-এর সংখ্যা কত এবং প্রথম ও একমাত্র কৃষিভিত্তিক ইপিজেড যথাক্রমে কোনটি?", options: ["৮টি - ঢাকা ও ঈশ্বরদী", "১০টি - চট্টগ্রামে প্রথম ও উত্তরা ইপিজেড (নীলফামারী) একমাত্র কৃষিভিত্তিক", "১০টি - আদমজী ও মোংলা", "৯টি - চট্টগ্রাম ও যশোর"], correct: 1, exp: "EPZ ১০টি; প্রথম ইপিজেড চট্টগ্রামে এবং একমাত্র কৃষিভিত্তিক ইপিজেড উত্তরা ইপিজেড (নীলফামারী)[cite: 48]।" },
+            { id: 9, section: "অর্থনীতি ও বাজেট", q: "LDC তালিকা থেকে উত্তরণের যোগ্যতা অর্জনে প্রয়োজনীয় মাথাপিছু আয় কত এবং LDC উত্তরণের তিনটি মানদণ্ড কী কী?", options: ["১২৩০ ডলার - মাথাপিছু আয়, শিক্ষার হার, জিডিপি", "১৩০৬ মার্কিন ডলার - মাথাপিছু আয়, মানবসম্পদ, জলবায়ু ও অর্থনৈতিক ভঙ্গুরতা", "১৪০০ ডলার - মানবসম্পদ, রপ্তানি, ভঙ্গুরতা", "১৩০৬ ডলার - জিডিপি, মানবসম্পদ, দারিদ্র্য"], correct: 1, exp: "LDC উত্তরণে মাথাপিছু আয় লাগে ১৩০৬ মার্কিন ডলার এবং মানদণ্ড ৩টি: মাথাপিছু আয়, মানবসম্পদ ও জলবায়ু/অর্থনৈতিক ভঙ্গুরতা[cite: 47]।" },
+            { id: 10, section: "ব্যাংক ও মুদ্রা", q: "তফসিলভুক্ত ব্যাংকের মোট সংখ্যা কত এবং সম্প্রতি কতটি ব্যাংককে একীভূত করে 'সম্মিলিত ইসলামী ব্যাংক পিএলসি' গঠন করা হয়েছে?", options: ["৬১টি - ৪টি", "৬৩টি - ৫টি", "৬২টি - ৬টি", "৬৪টি - ৫টি"], correct: 1, exp: "তফসিলভুক্ত ব্যাংক ৬৩টি এবং ৫টি ব্যাংক একীভূত করে 'সম্মিলিত ইসলামী ব্যাংক পিএলসি' গঠন করা হয়েছে[cite: 47]।" },
+            { id: 11, section: "শিল্প ও কারখানা", q: "বাংলাদেশের প্রথম চিনিকল কোনটি এবং সবচেয়ে বেশি পাট উৎপাদিত হয় কোন জেলায়?", options: ["সেতাবগঞ্জ চিনিকল - রংপুর", "নর্থ বেঙ্গল চিনিকল লিমিটেড - ফরিদপুর", "কেরু অ্যান্ড কোং - দিনাজপুর", "জয়পুরহাট চিনিকল - কুষ্টিয়া"], correct: 1, exp: "প্রথম চিনিকল নর্থ বেঙ্গল চিনিকল লিমিটেড এবং সবচেয়ে বেশি পাট উৎপাদিত হয় ফরিদপুরে[cite: 49]।" },
+            { id: 12, section: "বাণিজ্য ও ইপিজেড", q: "দেশ ইনভেস্টমেন্ট সামিট কবে অনুষ্ঠিত হয় এবং দেশের সবচেয়ে বড় অর্থনৈতিক অঞ্চল কোনটি?", options: ["০৯ এপ্রিল, ২০২৪ - মহেশখালী", "০৯ এপ্রিল, ২০২৫ - চট্টগ্রামের মিরসরাই", "১০ এপ্রিল, ২০২৫ - মিরসরাই", "০৯ মে, ২০২৫ - সোনারগাঁও"], correct: 1, exp: "বাংলাদেশ ইনভেস্টমেন্ট সামিট হয় ০৯ এপ্রিল ২০২৫ এবং সবচেয়ে বড় অর্থনৈতিক অঞ্চল চট্টগ্রামের মিরসরাই[cite: 48]।" },
+            { id: 13, section: "অর্থনীতি ও বাজেট", q: "বাংলাদেশে কোন ধরনের অর্থব্যবস্থা বিদ্যমান এবং বিশ্বব্যাপী কয় ধরনের অর্থনৈতিক ব্যবস্থা চালু আছে?", options: ["পুঁজিবাদী - ৩ ধরনের", "মিশ্র - ৪ (ধনতান্ত্রিক, সমাজতান্ত্রিক, মিশ্র ও ইসলামি অর্থব্যবস্থা)", "সমাজতান্ত্রিক - ৪ ধরনের", "মিশ্র - ৩ ধরনের"], correct: 1, exp: "বাংলাদেশে মিশ্র অর্থব্যবস্থা বিদ্যমান এবং বিশ্বে ৪ ধরনের অর্থনৈতিক ব্যবস্থা চালু আছে[cite: 47]।" },
+            { id: 14, section: "ব্যাংক ও মুদ্রা", q: "সরকারি নোটে কে স্বাক্ষর করেন, ব্যাংক নোটে কে স্বাক্ষর করেন এবং কত টাকার নোটে গভর্নরের স্বাক্ষর থাকে না?", options: ["গভর্নর - অর্থ সচিব - ৫ টাকা", "অর্থ সচিব - গভর্নর - ২ টাকা", "অর্থমন্ত্রী - গভর্নর - ১ টাকা", "অর্থ সচিব - অর্থমন্ত্রী - ২ টাকা"], correct: 1, exp: "সরকারি নোটে অর্থ সচিব, ব্যাংক নোটে গভর্নর স্বাক্ষর করেন এবং ২ টাকার নোটে গভর্নরের স্বাক্ষর থাকে না[cite: 47]।" },
+            { id: 15, section: "শিল্প ও কারখানা", q: "বাংলাদেশের কয়টি পোশাক কারখানা ইউএস গ্রিনবিল্ডিং কাউন্সিল থেকে সবুজ কারখানার স্বীকৃতি পেয়েছে এবং পোশাক শিল্পে কোটা ব্যবস্থা বিলুপ্ত হয় কবে?", options: ["২৫০টি - ২০০৫", "২৭৩টি - ২০০৪ সালে", "২৮০টি - ২০০৪", "২৭৩টি - ২০০৬"], correct: 1, exp: "২৭৩টি পোশাক কারখানা সবুজ কারখানার স্বীকৃতি পেয়েছে এবং পোশাক শিল্পে কোটা ব্যবস্থা বিলুপ্ত হয় ২০০৪ সালে[cite: 49]।" },
+            { id: 16, section: "বাণিজ্য ও ইপিজেড", q: "দেশের নবম ও দশম নির্মাণাধীন EPZ যথাক্রমে কোথায়?", options: ["যশোর ও পটুয়াখালী", "পটুয়াখালী ও যশোর (বৃহত্তম EPZ)", "খুলনা ও বরিশাল", "পটুয়াখালী ও খুলনা"], correct: 1, exp: "দেশের নবম নির্মাণাধীন EPZ পটুয়াখালীতে এবং দশম নির্মাণাধীন EPZ যশোরে (বৃহত্তম EPZ)[cite: 48]।" },
+            { id: 17, section: "অর্থনীতি ও বাজেট", q: "আয় কর মূলত কোন করের অন্তর্ভুক্ত এবং পরোক্ষ করের উদাহরণ কোনগুলো?", options: ["পরোক্ষ কর - আয় কর, সম্পদ কর", "প্রত্যক্ষ কর - VAT, আমদানি শুল্ক, বিক্রয়কর, পণ্যকর, আবগারি শুল্ক", "প্রত্যক্ষ কর - টোল, লেভি, ফি", "পরোক্ষ কর - আয় কর, ভ্যাট"], correct: 1, exp: "আয় কর প্রত্যক্ষ কর; আর VAT, আমদানি শুল্ক, বিক্রয়কর, পণ্যকর ও আবগারি শুল্ক পরোক্ষ কর[cite: 47]।" },
+            { id: 18, section: "ব্যাংক ও মুদ্রা", q: "বাংলাদেশের প্রথম মোবাইল ব্যাংকিং কোনটি এবং প্রথম এজেন্ট ব্যাংকিং চালু করে কোন ব্যাংক?", options: ["বিকাশ - ডাচ বাংলা ব্যাংক", "রকেট (ডাচ বাংলা ব্যাংক) - ব্যাংক এশিয়া", "নগদ - ব্যাংক এশিয়া", "রকেট - ইসলামী ব্যাংক"], correct: 1, exp: "প্রথম মোবাইল ব্যাংকিং রকেট (ডাচ বাংলা ব্যাংক) এবং প্রথম এজেন্ট ব্যাংকিং চালু করে ব্যাংক এশিয়া[cite: 47]।" },
+            { id: 19, section: "শিল্প ও কারখানা", q: "বাংলাদেশের প্রথম তেল শোধনাগার 'ইস্টার্ন রিফাইনারি' কোথায় এবং দেশে হুন্দাই গাড়ি তৈরির কারখানা কোথায়?", options: ["পটুয়াখালী - টঙ্গী", "পতেঙ্গা, চট্টগ্রাম - কালিয়াকৈর, গাজীপুর", "চট্টগ্রাম - জয়দেবপুর", "মাতারবাড়ি - কালিয়াকৈর"], correct: 1, exp: "ইস্টার্ন রিফাইনারি চট্টগ্রামের পতেঙ্গায় এবং হুন্দাই গাড়ি তৈরির কারখানা গাজীপুরের কালিয়াকৈরে[cite: 49]।" },
+            { id: 20, section: "বাণিজ্য ও ইপিজেড", q: "দেশের সবচেয়ে বড় বেসরকারি ইপিজেড কোনটি এবং প্রথম বেসরকারি ইপিজেড কোনটি?", options: ["রাঙ্গুনিয়া ও কোরিয়ান", "কোরিয়ান ইপিজেড ও রাঙ্গুনিয়া ইপিজেড", "কোরিয়ান ইপিজেড ও উত্তরা", "আদমজী ও কোরিয়ান"], correct: 1, exp: "সবচেয়ে বড় বেসরকারি ইপিজেড কোরিয়ান ইপিজেড এবং প্রথম বেসরকারি ইপিজেড রাঙ্গুনিয়া ইপিজেড[cite: 48]।" },
+            { id: 21, section: "অর্থনীতি ও বাজেট", q: "২০২৬-২৭ অর্থবছরে পুরুষদের ও নারী/বয়স্ক ব্যক্তিদের করমুক্ত আয়সীমা যথাক্রমে কত?", options: ["৩,৫০,০০০ ও ৪,০০,০০০ টাকা", "৪,০০,০০০ টাকা ও ৪,৫০,০০০ টাকা", "৪,৫০,০০০ ও ৫,০০,০০০ টাকা", "৩,০০,০০০ ও ৩,৫০,০০০ টাকা"], correct: 1, exp: "২০২৬-২৭ অর্থবছরে পুরুষদের করমুক্ত আয়সীমা ৪,০০,০০০ টাকা এবং নারী ও বয়স্কদের ৪,৫০,০০০ টাকা[cite: 47]।" },
+            { id: 22, section: "ব্যাংক ও মুদ্রা", q: "কেন্দ্রীয় ব্যাংক ছাড়াও কোন ব্যাংক 'নিকাশঘর' বা Clearing House হিসেবে দায়িত্ব পালন করতে পারে এবং বাংলাদেশ ব্যাংক কোন ব্যাংককে পেপাল সেবা চালুর অনুমতি দিয়েছে?", options: ["ইসলামী ব্যাংক - ডাচ বাংলা", "সোনালী ব্যাংক পিএলসি - সোনালী ব্যাংক", "অগ্রণী ব্যাংক - ব্র্যাক ব্যাংক", "সোনালী ব্যাংক - ইসলামী ব্যাংক"], correct: 1, exp: "নিকাশঘর হিসেবে দায়িত্ব পালন করতে পারে সোনালী ব্যাংক পিএলসি এবং পেপাল চালুর অনুমতিও পেয়েছে সোনালী ব্যাংক[cite: 47]।" },
+            { id: 23, section: "শিল্প ও কারখানা", q: "বাংলাদেশের একমাত্র রাষ্ট্রীয় ঔষধ কোম্পানি কোনটি, কবে প্রতিষ্ঠিত হয় এবং অত্যাবশ্যকীয় ঔষধের সংখ্যা কত?", options: ["স্কয়ার - ১৯৮২ - ১১০টি", "এসেনসিয়াল ড্রাগস কোম্পানি লিমিটেড - ১৯৮৩ সালে - ১১৭টি", "বেক্সিমকো - ১৯৮৩ - ১২০টি", "এসেনসিয়াল ড্রাগস - ১৯৮৫ - ১১৫টি"], correct: 1, exp: "একমাত্র রাষ্ট্রীয় ঔষধ কোম্পানি এসেনসিয়াল ড্রাগস কোম্পানি লিমিটেড (১৯৮৩) এবং অত্যাবশ্যকীয় ঔষধ ১১৭টি[cite: 49]।" },
+            { id: 24, section: "বাণিজ্য ও ইপিজেড", q: "TCB কর্তৃক বাজারে মূল্য স্থিতিশীল রাখার জন্য দ্রব্যের মজুতকে কী বলে এবং দেশে প্রচলিত মোট কাগজের নোট কতটি?", options: ["রিজার্ভ স্টক - ৯টি", "বাফার স্টক - ১০টি", "বাফার স্টক - ৮টি", "সেফটি স্টক - ১০টি"], correct: 1, exp: "TCB-এর দ্রব্য মজুতকে 'বাফার স্টক' বলে এবং দেশে প্রচলিত মোট কাগজের নোট ১০টি[cite: 48]।" },
+            { id: 25, section: "অর্থনীতি ও বাজেট", q: "চলতি অর্থবছরে সর্বোচ্চ বরাদ্দকৃত তিন খাত কোনগুলো এবং সরকারের মোট আয় ও মোট ব্যয় সমান হলে কী বলে?", options: ["শিক্ষা, স্বাস্থ্য, কৃষি - ঘাটতি বাজেট", "জনপ্রশাসন, শিক্ষা ও প্রযুক্তি ও পরিবহন ও যোগাযোগ - সুষম বাজেট", "পরিবহন, জনপ্রশাসন, বিদ্যুৎ - উদ্বৃত্ত বাজেট", "জনপ্রশাসন, স্বাস্থ্য, যোগাযোগ - সুষম বাজেট"], correct: 1, exp: "সর্বোচ্চ বরাদ্দকৃত ৩ খাত: জনপ্রশাসন, শিক্ষা ও প্রযুক্তি এবং পরিবহন ও যোগাযোগ; আয়-ব্যয় সমান হলে সুষম বাজেট[cite: 47]।" },
+            { id: 26, section: "ব্যাংক ও মুদ্রা", q: "বাংলাদেশের সবচেয়ে পুরনো বিদেশি ব্যাংক ও প্রথম 'অনলাইন ব্যাংকিং' সেবা চালুকারী ব্যাংক কোনটি?", options: ["এইচএসবিসি - সিটি ব্যাংক এনএ", "স্ট্যান্ডার্ড চার্টার্ড ব্যাংক - স্ট্যান্ডার্ড চার্টার্ড ব্যাংক", "সিটি ব্যাংক এনএ - স্ট্যান্ডার্ড চার্টার্ড", "স্ট্যান্ডার্ড চার্টার্ড - ইস্টার্ন ব্যাংক"], correct: 1, exp: "সবচেয়ে পুরনো বিদেশি ব্যাংক ও প্রথম অনলাইন ব্যাংকিং সেবা চালুকারী ব্যাংক হলো স্ট্যান্ডার্ড চার্টার্ড ব্যাংক[cite: 49]।" },
+            { id: 27, section: "শিল্প ও কারখানা", q: "বাংলাদেশে তৈরি জাহাজ 'স্টেলা ম্যারিস' রপ্তানি হয় কোন দেশে এবং জাহাজ ভাঙা শিল্পে বিশ্বে বাংলাদেশের অবস্থান কত?", options: ["নরওয়ে - ১ম", "ডেনমার্ক - ২য়", "সুইডেন - ৩য়", "জার্মানি - ২য়"], correct: 1, exp: "'স্টেলা ম্যারিস' রপ্তানি হয়েছে ডেনমার্কে এবং জাহাজ ভাঙা শিল্পে বাংলাদেশ বিশ্বে ২য়[cite: 49]।" },
+            { id: 28, section: "বাণিজ্য ও ইপিজেড", q: "বাংলাদেশের সাথে বাণিজ্য সম্পর্ক আছে কিন্তু কূটনৈতিক সম্পর্ক নেই কোন দেশের সাথে এবং প্রথম দ্বিপক্ষীয় বাণিজ্য চুক্তি হয় কোন দেশের সাথে?", options: ["ইসরায়েল - পাকিস্তান", "তাইওয়ান - ভারত", "তাইওয়ান - চীন", "কসোভো - ভারত"], correct: 1, exp: "তাইওয়ানের সাথে বাণিজ্য সম্পর্ক আছে কিন্তু কূটনৈতিক সম্পর্ক নেই; প্রথম দ্বিপক্ষীয় বাণিজ্য চুক্তি হয় ভারতের সাথে[cite: 49]।" },
+            { id: 29, section: "অর্থনীতি ও বাজেট", q: "বাংলাদেশকে সর্বাধিক ঋণ প্রদানকারী দেশ কোনটি এবং ECNEC-এর সভাপতি ও বিকল্প সভাপতি কারা?", options: ["চীন - অর্থমন্ত্রী ও পরিকল্পনামন্ত্রী", "জাপান - প্রধানমন্ত্রী এবং স্থানীয় সরকার, পল্লী উন্নয়ন ও সমবায় মন্ত্রী", "জাপান - অর্থমন্ত্রী ও স্থানীয় সরকার মন্ত্রী", "যুক্তরাষ্ট্র - প্রধানমন্ত্রী ও অর্থমন্ত্রী"], correct: 1, exp: "সর্বাধিক ঋণদাতা দেশ জাপান; ECNEC-এর সভাপতি প্রধানমন্ত্রী এবং বিকল্প সভাপতি স্থানীয় সরকার, পল্লী উন্নয়ন ও সমবায় মন্ত্রী[cite: 47]।" },
+            { id: 30, section: "ব্যাংক ও মুদ্রা", q: "বাংলাদেশে টাকার জাদুঘর কোথায় অবস্থিত এবং বাংলাদেশ ব্যাংকের প্রধান কার্যালয় ও ট্রেনিং একাডেমি কোথায়?", options: ["মতিঝিল - মিরপুর ও মতিঝিল", "বাংলাদেশ ব্যাংক ট্রেনিং একাডেমি, মিরপুর - প্রধান কার্যালয় মতিঝিল ও ট্রেনিং একাডেমি মিরপুর", "আগারগাঁও - মতিঝিল ও সাভার", "মিরপুর - মিরপুর ও মতিঝিল"], correct: 1, exp: "টাকার জাদুঘর ও ট্রেনিং একাডেমি মিরপুরে এবং প্রধান কার্যালয় ঢাকার মতিঝিলে[cite: 47]।" },
+            { id: 31, section: "শিল্প ও কারখানা", q: "বাংলাদেশ মেশিন টুলস ফ্যাক্টরি ও বাংলাদেশ টেলিফোন শিল্প কারখানা যথাক্রমে কোথায় অবস্থিত?", options: ["টঙ্গী ও জয়দেবপুর", "জয়দেবপুর, গাজীপুর ও টঙ্গী, গাজীপুর", "কালিয়াকৈর ও টঙ্গী", "গাজীপুর ও সাভার"], correct: 1, exp: "মেশিন টুলস ফ্যাক্টরি গাজীপুরের জয়দেবপুরে এবং টেলিফোন শিল্প কারখানা গাজীপুরের টঙ্গীতে[cite: 49]।" },
+            { id: 32, section: "বাণিজ্য ও ইপিজেড", q: "বাংলাদেশ থেকে সবচেয়ে বেশি ঔষধ রপ্তানি হয় কোন দেশে এবং আমেরিকা বাংলাদেশকে দেওয়া জিএসপি সুবিধা স্থগিত করে কবে?", options: ["যুক্তরাষ্ট্র - ২৬ জুন ২০১৩", "মিয়ানমার - ২৭ জুন ২০১৩", "শ্রীলঙ্কা - ২৭ জুন ২০১৪", "নেপাল - ২৭ জুন ২০১২"], correct: 1, exp: "সবচেয়ে বেশি ঔষধ রপ্তানি হয় মিয়ানমারে এবং যুক্তরাষ্ট্র জিএসপি সুবিধা স্থগিত করে ২৭ জুন ২০১৩ সালে[cite: 49]।" },
+            { id: 33, section: "অর্থনীতি ও বাজেট", q: "মুদ্রাস্ফীতি নির্ধারণে বর্তমান ভিত্তিবছর কোনটি এবং সবচেয়ে ব্যবহৃত সূচক কোনটি?", options: ["২০২৪-২৫ - PPI", "২০২৫-২৬ - CPI (Consumer Price Index)", "২০২৩-২৪ - CPI", "২০২৫-২৬ - GDP Deflator"], correct: 1, exp: "মুদ্রাস্ফীতি নির্ধারণে বর্তমান ভিত্তিবছর ২০২৫-২৬ এবং সবচেয়ে ব্যবহৃত সূচক CPI[cite: 47]।" },
+            { id: 34, section: "ব্যাংক ও মুদ্রা", q: "বাংলাদেশ ব্যাংকের প্রথম নারী ডেপুটি গভর্নর কে এবং বীমা খাতের নিয়ন্ত্রক সংস্থার (IDRA) প্রথম নারী চেয়ারম্যান কে (২০২৬)?", options: ["মীর নাদিয়া নিভিন - নাজনীন সুলতানা", "নাজনীন সুলতানা - মীর নাদিয়া নিভিন (২০২৬)", "রোকসানা ইসলাম - নাজনীন সুলতানা", "নাজনীন সুলতানা - ফারজানা রহমান"], correct: 1, exp: "বাংলাদেশ ব্যাংকের প্রথম নারী ডেপুটি গভর্নর নাজনীন সুলতানা এবং IDRA-এর প্রথম নারী চেয়ারম্যান মীর নাদিয়া নিভিন (২০২৬)[cite: 49]।" },
+            { id: 35, section: "শিল্প ও কারখানা", q: "জাতীয় শিল্প উন্নয়ন পরিষদ (NCID)-এর সভাপতি ও আহ্বায়ক যথাক্রমে কারা এবং প্রাইভেট সেক্টরে ব্যবসায়ীদের সর্বোচ্চ সংগঠন কোনটি?", options: ["শিল্পমন্ত্রী ও প্রধানমন্ত্রী - BGMEA", "প্রধানমন্ত্রী ও শিল্পমন্ত্রী - এফবিসিসিআই (FBCCI)", "অর্থমন্ত্রী ও বাণিজ্যমন্ত্রী - FBCCI", "প্রধানমন্ত্রী ও বাণিজ্যমন্ত্রী - BKMEA"], correct: 1, exp: "NCID-এর সভাপতি প্রধানমন্ত্রী ও আহ্বায়ক শিল্পমন্ত্রী; ব্যবসায়ীদের সর্বোচ্চ সংগঠন FBCCI[cite: 49]।" },
+            { id: 36, section: "বাণিজ্য ও ইপিজেড", q: "তৈরি পোশাক রপ্তানিতে শীর্ষ দেশ কোনটি এবং বাংলাদেশ সবচেয়ে বেশি আমদানি করে কী?", options: ["বাংলাদেশ - খাদ্যশস্য", "চীন - শিল্পজাত কাঁচামাল", "ভিয়েতনাম - যন্ত্রপাতি", "ভারত - শিল্পজাত কাঁচামাল"], correct: 1, exp: "তৈরি পোশাক রপ্তানিতে শীর্ষ দেশ চীন এবং বাংলাদেশ সবচেয়ে বেশি আমদানি করে শিল্পজাত কাঁচামাল[cite: 48]।" },
+            { id: 37, section: "অর্থনীতি ও বাজেট", q: "সমাজে ক্ষতিকর দ্রব্যের উৎপাদন নিরুৎসাহিত করতে আরোপিত আবগারি শুল্ককে কী বলে এবং কর-বহির্ভূত রাজস্ব কোনটি?", options: ["পাপ কর - আয় কর", "পাপ কর - টোল ও লেভি", "সবুজ কর - ভ্যাট", "পাপ কর - রেজিস্ট্রেশন ফি"], correct: 1, exp: "ক্ষতিকর দ্রব্যের ওপর আরোপিত আবগারি শুল্ককে 'পাপ কর' বলে এবং টোল ও লেভি কর-বহির্ভূত রাজস্ব[cite: 49]।" },
+            { id: 38, section: "ব্যাংক ও মুদ্রা", q: "বাংলাদেশের প্রথম বেসরকারি ব্যাংক কোনটি ও কবে প্রতিষ্ঠিত এবং বেসরকারি ব্যাংকে একই পরিবার হতে সর্বোচ্চ কতজন পরিচালক হতে পারে?", options: ["ইসলামী ব্যাংক - ১৯৮৩ - ৪জন", "আরব বাংলাদেশ ব্যাংক লি. (বর্তমান নাম AB Bank Limited, প্রতিষ্ঠা- ১৯৮২ সাল) - ৩জন", "ন্যাশনাল ব্যাংক - ১৯৮২ - ২জন", "ইউসিবি - ১৯৮৩ - ৩জন"], correct: 1, exp: "প্রথম বেসরকারি ব্যাংক AB Bank (১৯৮২) এবং একই পরিবার হতে সর্বোচ্চ ৩জন পরিচালক হতে পারেন[cite: 49]।" },
+            { id: 39, section: "শিল্প ও কারখানা", q: "পলাশ সার কারখানা কোথায় অবস্থিত এবং খুলনা কিসের জন্য বিখ্যাত?", options: ["গাজীপুর - টেক্সটাইল মিল", "নরসিংদী - শিপইয়ার্ড", "নরসিংদী - রেলওয়ে ওয়ার্কশপ", "সিরাজগঞ্জ - শিপইয়ার্ড"], correct: 1, exp: "পলাশ সার কারখানা নরসিংদীতে এবং খুলনা শিপইয়ার্ডের জন্য পরিচিত[cite: 49]।" },
+            { id: 40, section: "অর্থনীতি ও বাজেট", q: "মুদ্রাস্ফীতি হলে কেন্দ্রীয় ব্যাংক কোন পদক্ষেপ নেয় এবং স্থানীয় মুদ্রার অবমূল্যায়ন হলে কারা উপকৃত হয়?", options: ["ব্যাংক হার কমায় - আমদানিকারকরা", "ব্যাংক হার বাড়িয়ে দেবে - রপ্তানিকারকরা", "নোট ছাপায় - ঋণগ্রহীতারা", "ব্যাংক হার বাড়ায় - আমদানিকারকরা"], correct: 1, exp: "মুদ্রাস্ফীতি হলে কেন্দ্রীয় ব্যাংক ব্যাংক হার বাড়ায় এবং মুদ্রার অবমূল্যায়ন হলে রপ্তানিকারকরা উপকৃত হয়[cite: 47]।" },
+            { id: 41, section: "ব্যাংক ও মুদ্রা", q: "এক তফসিলি ব্যাংক অন্য তফসিলি ব্যাংক থেকে স্বল্প মেয়াদের জন্য যে নগদ অর্থ ঋণ নেয় তাকে কী বলে এবং বিহিত মুদ্রা কাকে বলে?", options: ["ব্যাংক হার - স্বর্ণমুদ্রা", "কলমানি - যে মুদ্রা বিনিময়ের মাধ্যম হিসেবে গ্রহণ করতে জনসাধারণ আইনত বাধ্য থাকে", "রেপো - কাগজি নোট", "কলমানি - বৈদেশিক মুদ্রা"], correct: 1, exp: "স্বল্পমেয়াদি আন্তঃব্যাংক ঋণকে 'কলমানি' বলে এবং যে মুদ্রা গ্রহণে জনসাধারণ আইনত বাধ্য থাকে তাকে 'বিহিত মুদ্রা' বলে[cite: 47]।" },
+            { id: 42, section: "ব্যাংক ও মুদ্রা", q: "সরকারি ও ব্যাংক নোট ছাপায় কোন প্রতিষ্ঠান, কত ধরনের সরকারি নোট আছে এবং সবচেয়ে বেশি রেমিটেন্স আসে কোন দেশ থেকে?", options: ["বিজি প্রেস - ২ - সংযুক্ত আরব আমিরাত", "SPCBL - ৩ - সৌদি আরব", "SPCBL - ৪ - সৌদি আরব", "বাংলাদেশ ব্যাংক - ৩ - যুক্তরাষ্ট্র"], correct: 1, exp: "নোট ছাপায় SPCBL; সরকারি নোট ৩ ধরনের এবং সবচেয়ে বেশি রেমিটেন্স আসে সৌদি আরব থেকে[cite: 47]।" },
+            { id: 43, section: "ব্যাংক ও মুদ্রা", q: "ঢাকা স্টক এক্সচেঞ্জ কবে নিবন্ধিত হয়, পুঁজিবাজার নিয়ন্ত্রক সংস্থা কোনটি এবং 'সেকেন্ডারি মার্কেট' কীসের সাথে সংশ্লিষ্ট?", options: ["১৯৫২ - BSEC - মুদ্রাবাজার", "১৯৫৪ - BSEC - স্টক মার্কেট", "১৯৫৪ - IDRA - স্টক মার্কেট", "১৯৫৬ - BSEC - বন্ড মার্কেট"], correct: 1, exp: "DSE নিবন্ধিত হয় ১৯৫৪ সালে; পুঁজিবাজার নিয়ন্ত্রক সংস্থা BSEC এবং সেকেন্ডারি মার্কেট স্টক মার্কেটের সাথে সংশ্লিষ্ট[cite: 47, 49]।" },
+            { id: 44, section: "ব্যাংক ও মুদ্রা", q: "বাংলাদেশের ১০০০ টাকা নোটের প্রতিপ্রভার বর্ণ কোনটি এবং 'সবার জন্য শিক্ষা' স্লোগান কোথায় মুদ্রিত আছে?", options: ["সবুজাভ - পাঁচ টাকার মুদ্রায়", "লালচে বেগুনি - দুই টাকার মুদ্রায়", "নীলাভ - এক টাকার মুদ্রায়", "লালচে বেগুনি - পাঁচ টাকার মুদ্রায়"], correct: 1, exp: "১০০০ টাকা নোটের প্রতিপ্রভার বর্ণ লালচে বেগুনি এবং 'সবার জন্য শিক্ষা' স্লোগান দুই টাকার মুদ্রায় মুদ্রিত[cite: 47, 49]।" },
+            { id: 45, section: "ব্যাংক ও মুদ্রা", q: "একটি বৈধ চেকের মেয়াদ সর্বোচ্চ কত এবং বাংলাদেশ ব্যাংকের পরিচালনা পরিষদের সদস্য সংখ্যা কত?", options: ["৩ মাস - ৭ জন", "সর্বোচ্চ ৬ মাস - ৯ জন", "৬ মাস - ১১ জন", "৯ মাস - ৯ জন"], correct: 1, exp: "একটি বৈধ চেকের মেয়াদ সর্বোচ্চ ৬ মাস এবং বাংলাদেশ ব্যাংকের পরিচালনা পরিষদের সদস্য ৯ জন[cite: 47, 49]।" },
+            { id: 46, section: "ব্যাংক ও মুদ্রা", q: "মানি লন্ডারিং প্রতিরোধে বাংলাদেশ ব্যাংকের গোয়েন্দা সংস্থার নাম কী এবং বাংলাদেশের দীর্ঘদিন মালদ্বীপের কেন্দ্রীয় ব্যাংক হিসেবে কাজ করে কোন ব্যাংক?", options: ["CID - এবি ব্যাংক", "BFIU - আইএফআইসি ব্যাংক (IFIC)", "BFIU - সোনালী ব্যাংক", "SPCBL - আইএফআইসি ব্যাংক"], correct: 1, exp: "গোয়েন্দা সংস্থা BFIU এবং দীর্ঘদিন মালদ্বীপের কেন্দ্রীয় ব্যাংক হিসেবে কাজ করে আইএফআইসি ব্যাংক[cite: 49]।" },
+            { id: 47, section: "ব্যাংক ও মুদ্রা", q: "গ্রামীণ ব্যাংক প্রতিষ্ঠিত হয় কোন বছর, বাংলাদেশ ব্যাংকের শাখা কয়টি এবং বীমা প্রতিষ্ঠার পথিকৃৎ কে?", options: ["১৯৮০ - ৮টি - নওয়াব আবদুল লতিফ", "১৯৮৩ - ১০টি - খুদা বক্স", "১৯৮৩ - ১২টি - খুদা বক্স", "১৯৮২ - ১০টি - ফজলে হাসান আবেদ"], correct: 1, exp: "গ্রামীণ ব্যাংক প্রতিষ্ঠিত হয় ১৯৮৩ সালে, বাংলাদেশ ব্যাংকের শাখা ১০টি এবং বীমা প্রতিষ্ঠার পথিকৃৎ খুদা বক্স[cite: 47, 49]।" },
+            { id: 48, section: "অর্থনীতি ও বাজেট", q: "সর্বনিম্ন মূল্যমানের ব্যাংক নোট কোনটি, বর্তমান মুদ্রানীতি কীভাবে ঘোষণা করা হবে এবং অর্থনৈতিক সমীক্ষা প্রকাশ করে কোন মন্ত্রণালয়?", options: ["৫ টাকা - অর্ধবার্ষিক - বাণিজ্য মন্ত্রণালয়", "১০ টাকার নোট - ত্রৈমাসিক ভিত্তিতে (বছরে ৪ বার) - অর্থ মন্ত্রণালয়", "১০ টাকা - বার্ষিক - পরিকল্পনা মন্ত্রণালয়", "২ টাকা - ত্রৈমাসিক - অর্থ মন্ত্রণালয়"], correct: 1, exp: "সর্বনিম্ন ব্যাংক নোট ১০ টাকার; মুদ্রানীতি ঘোষণা হয় ত্রৈমাসিক ভিত্তিতে এবং অর্থনৈতিক সমীক্ষা প্রকাশ করে অর্থ মন্ত্রণালয়[cite: 47]।" },
+            { id: 49, section: "অর্থনীতি ও বাজেট", q: "চতুর্থ অর্থনৈতিক শুমারি কখন অনুষ্ঠিত হয় এবং বাংলাদেশে প্রথম বাজেট ঘোষণা করেন কে?", options: ["১০-২৬ ডিসেম্বর, ২০১৩ - সৈয়দ নজরুল ইসলাম", "১০-২৬ ডিসেম্বর, ২০১৪ - তাজউদ্দিন আহমদ", "০১-১৫ ডিসেম্বর, ২০১৪ - তাজউদ্দিন আহমদ", "১০-২৬ ডিসেম্বর, ২০১৪ - এম. সাইফুর রহমান"], correct: 1, exp: "চতুর্থ অর্থনৈতিক শুমারি হয় ১০-২৬ ডিসেম্বর ২০১৪ এবং প্রথম বাজেট ঘোষণা করেন তাজউদ্দিন আহমদ[cite: 47]।" },
+            { id: 50, section: "অর্থনীতি ও বাজেট", q: "বাংলাদেশে প্রথম ভ্যাট চালু হয় কবে এবং ২০২১-২২ সালের উন্নয়ন বাজেটে ২য় সর্বোচ্চ বরাদ্দ কোন খাতে ছিল?", options: ["১৯৯০ - স্বাস্থ্য ও পরিবার কল্যাণ", "১৯৯১ সালে - শিক্ষা ও প্রযুক্তি", "১৯৯২ - পরিবহন ও যোগাযোগ", "১৯৯১ - জনপ্রশাসন"], correct: 1, exp: "প্রথম ভ্যাট চালু হয় ১৯৯১ সালে এবং ২০২১-২২ সালের উন্নয়ন বাজেটে ২য় সর্বোচ্চ বরাদ্দ ছিল শিক্ষা ও প্রযুক্তিতে[cite: 47]।" },
+            { id: 51, section: "অর্থনীতি ও বাজেট", q: "রাষ্ট্রপতি হিসেবে বাজেট পেশ করেন কে এবং GDP গণনায় অন্তর্ভুক্ত হয় না কোনটি?", options: ["হুসেইন মুহম্মদ এরশাদ - প্রবাসীদের রেমিটেন্স", "জিয়াউর রহমান - বিদেশে অবস্থানরত নিজ দেশের নাগরিকদের উৎপাদিত আয়", "জিয়াউর রহমান - দেশের অভ্যন্তরের বিদেশি আয়", "সৈয়দ নজরুল ইসলাম - কৃষি আয়"], correct: 1, exp: "রাষ্ট্রপতি হিসেবে বাজেট পেশ করেন জিয়াউর রহমান এবং GDP গণনায় বিদেশে অবস্থানরত নিজ দেশের নাগরিকদের উৎপাদিত আয় অন্তর্ভুক্ত হয় না[cite: 47]।" },
+            { id: 52, section: "বাণিজ্য ও ইপিজেড", q: "আমদানিকৃত দ্রব্যের ওপর মূল ট্যারিফের বাইরে অতিরিক্ত বর্ডার ফিস বা চার্জকে কী বলে এবং শেয়ার দর পতন নিয়ন্ত্রণ প্রক্রিয়াকে কী বলে?", options: ["কাউন্টারভেইলিং শুল্ক - ব্রেকার সার্কিট", "প্যারা ট্যারিফ - সার্কিট ব্রেকার", "অ্যান্টি-ডাম্পিং - সেফটি ভালভ", "প্যারা ট্যারিফ - স্টপ লস"], correct: 1, exp: "অতিরিক্ত বর্ডার চার্জকে 'প্যারা ট্যারিফ' বলে এবং শেয়ার দর পতন নিয়ন্ত্রণের প্রক্রিয়াকে 'সার্কিট ব্রেকার' বলে[cite: 47]।" },
+            { id: 53, section: "বাণিজ্য ও ইপিজেড", q: "কোন আন্তর্জাতিক সংস্থা GSP সুবিধা দেয়, কোন সেক্টরে সর্বাধিক জনশক্তি নিয়োজিত এবং ট্যারিফ কমিশন কোন মন্ত্রণালয়ের অধীনে?", options: ["WTO - শিল্প - অর্থ মন্ত্রণালয়", "WTO - কৃষি - বাণিজ্য মন্ত্রণালয়", "UNCTAD - সেবা - বাণিজ্য মন্ত্রণালয়", "ILO - কৃষি - শিল্প মন্ত্রণালয়"], correct: 1, exp: "GSP সুবিধা দেয় WTO, সর্বাধিক জনশক্তি কৃষি সেক্টরে এবং ট্যারিফ কমিশন বাণিজ্য মন্ত্রণালয়ের অধীনে[cite: 47, 49]।" },
+            { id: 54, section: "পূর্ণরূপসমূহ", q: "NEC, PPP ও FOB-এর পূর্ণরূপ যথাক্রমে কী কী?", options: ["National Economic Council, Public-Private Partnership, Free on Board", "National Executive Council, Public-Private Partnership, Freight on Board", "National Economic Commission, Private-Public Partnership, Free on Board", "National Economic Council, Public-Private Program, Free on Board"], correct: 0, exp: "NEC অর্থ National Economic Council, PPP অর্থ Public-Private Partnership এবং FOB অর্থ Free on Board[cite: 47]।" },
+            { id: 55, section: "পূর্ণরূপসমূহ", q: "IPO, SME ও TCB-এর পূর্ণরূপ যথাক্রমে কী কী?", options: ["Initial Public Offering, Small and Medium Enterprises, Trading Corporation of Bangladesh", "International Public Offering, Small and Medium Enterprises, Trade Corporation of Bangladesh", "Initial Private Offering, Small and Micro Enterprises, Trading Corporation of Bangladesh", "Initial Public Offering, Small and Medium Establishment, Trading Chamber of Bangladesh"], correct: 0, exp: "IPO অর্থ Initial Public Offering, SME অর্থ Small and Medium Enterprises এবং TCB অর্থ Trading Corporation of Bangladesh[cite: 47]।" },
+            { id: 56, section: "পূর্ণরূপসমূহ", q: "KPI, BELA ও VGF-এর পূর্ণরূপ যথাক্রমে কী কী?", options: ["Key Performance Indicator, Bangladesh Environmental Lawyers Association, Vulnerable Group Feeding", "Key Process Indicator, Bangladesh Environment Lawyers Association, Vulnerable Group Fund", "Key Performance Index, Bangladesh Environmental Law Association, Vulnerable Group Feeding", "Key Performance Indicator, Bangladesh Environmental Lawyers Agency, Village Group Feeding"], correct: 0, exp: "KPI অর্থ Key Performance Indicator, BELA অর্থ Bangladesh Environmental Lawyers Association এবং VGF অর্থ Vulnerable Group Feeding[cite: 47]।" },
+            { id: 57, section: "শিল্প ও কারখানা", q: "ব্রিটিশ পণ্য আমদানির ফলে আমাদের কোন শিল্প ধ্বংস হয় এবং বাংলাদেশের প্রথম ঔষধ পার্ক কোথায় স্থাপিত হচ্ছে?", options: ["পাট শিল্প - সাভার", "তাঁত শিল্প - গজারিয়া", "চিনি শিল্প - চট্টগ্রামে", "মৃৎশিল্প - মুন্সীগঞ্জ"], correct: 1, exp: "ব্রিটিশ পণ্য আমদানিতে তাঁত শিল্প ধ্বংস হয় এবং প্রথম ঔষধ পার্ক মুন্সীগঞ্জের গজারিয়ায় স্থাপিত হচ্ছে[cite: 49]।" },
+            { id: 58, section: "অর্থনীতি ও বাজেট", q: "বাংলাদেশ ব্যাংকের রিজার্ভ থেকে চুরি করা অর্থ কোন দুটি দেশে পাচার করা হয় এবং কত শতাংশ মানুষ হতদরিদ্র?", options: ["ভারত ও নেপাল - ৬.২%", "শ্রীলংকা ও ফিলিপাইনে - ৫.৬ শতাংশ", "সিঙ্গাপুর ও মালয়েশিয়া - ৫.৬%", "শ্রীলংকা ও থাইল্যান্ড - ৪.৮%"], correct: 1, exp: "রিজার্ভের চুরি করা অর্থ শ্রীলংকা ও ফিলিপাইনে পাচার হয় এবং হতদরিদ্রের হার ৫.৬ শতাংশ[cite: 47]।" },
+            { id: 59, section: "অর্থনীতি ও বাজেট", q: "বাংলাদেশের ২০২৭-২৮ ও ২০২৮-২৯ অর্থবছর শুরু ও শেষ হবে যথাক্রমে কবে?", options: ["০১ এপ্রিল-৩১ মার্চ ও ০১ জুলাই-৩০ জুন", "০১ জুলাই-৩১ মার্চ ও ০১ এপ্রিল-৩১ মার্চ", "০১ জুলাই-৩০ জুন ও ০১ এপ্রিল-৩১ মার্চ", "০১ জানুয়ারি-৩১ ডিসেম্বর ও ০১ এপ্রিল-৩১ মার্চ"], correct: 1, exp: "২০২৭-২৮ অর্থবছর ০১ জুলাই-৩১ মার্চ এবং ২০২৮-২৯ অর্থবছর ০১ এপ্রিল-৩১ মার্চ[cite: 47]।" },
+            { id: 60, section: "বাণিজ্য ও ইপিজেড", q: "২০২২-২৩ অর্থবছরে বাংলাদেশ সর্বাধিক পণ্য আমদানি করে কোন দেশ থেকে এবং রপ্তানিকারকদের সংগঠন কোনটি?", options: ["যুক্তরাষ্ট্র - FBCCI", "চীন থেকে - BGMEA", "ভারত - BGMEA", "জাপান - BSEC"], correct: 1, exp: "২০২২-২৩ অর্থবছরে সর্বাধিক আমদানি হয় চীন থেকে এবং রপ্তানিকারকদের সংগঠন হলো BGMEA[cite: 49]।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let totalTimeSeconds = 1500;
+        let timeLeft = 1500; 
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-emerald-600 text-white border border-emerald-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const badge = document.getElementById('section-badge');
+            badge.innerText = q.section;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-emerald-600/30 border-emerald-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-emerald-500 border-emerald-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let timeSpent = totalTimeSeconds - timeLeft;
+            let spentMins = Math.floor(timeSpent / 60);
+            let spentSecs = timeSpent % 60;
+            document.getElementById('time-taken-text').innerText = `সময় লেগেছে: ${spentMins} মিনিট ${spentSecs} সেকেন্ড`;
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let html = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400">প্রশ্ন #${qIdx + 1}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold rounded border bg-emerald-900 text-emerald-200 border-emerald-700">${q.section}</span>
+                </div>`;
+                html += `<p class="font-semibold text-slate-200 text-sm md:text-base">${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                html += `<div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 text-xs text-slate-300">
+                    <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${q.exp}
+                </div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1500;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

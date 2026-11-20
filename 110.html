@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>যোগাযোগ ব্যবস্থা ও তথ্য প্রযুক্তি অবকাঠামো - DU B-Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-sky-800 via-blue-800 to-indigo-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">যোগাযোগ ব্যবস্থা ও তথ্য প্রযুক্তি অবকাঠামো</h1>
+            <p class="text-sm text-sky-100 mt-1">বাংলাদেশ বিষয়াবলি | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>অধ্যায়: যোগাযোগ ব্যবস্থা ও তথ্য প্রযুক্তি অবকাঠামো।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের নিচে ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-sky-900 text-sky-200 border border-sky-700">যোগাযোগ ও অবকাঠামো</span>
+                </div>
+                <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                    সময়: 25:00
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-sky-600 hover:bg-sky-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "সড়ক ও সেতু", q: "ঢাকা শহরের প্রথম ফ্লাইওভার উদ্বোধন করেন কে এবং পদ্মা সেতুর দৈর্ঘ্য কত কিলোমিটার?", options: ["শেখ হাসিনা - ৬.০০ কিমি", "বেগম খালেদা জিয়া (মহাখালী ফ্লাইওভার ২০০৪) - ৬.১৫ কিমি", "বেগম খালেদা জিয়া - ৬.২৫ কিমি", "মইন ইউ আহমেদ - ৫.৫০ কিমি"], correct: 1, exp: "ঢাকার প্রথম ফ্লাইওভার (মহাখালী, ২০০৪) উদ্বোধন করেন বেগম খালেদা জিয়া এবং পদ্মা সেতুর দৈর্ঘ্য ৬.১৫ কিমি[cite: 38]।" },
+            { id: 2, section: "রেল ও মেট্রোরেল", q: "ঢাকা মেট্রোরেল ব্যবস্থার অফিসিয়াল নাম কী এবং দেশের প্রথম মেট্রোরেল কবে উদ্বোধন করা হয়?", options: ["ম্যাস র‍্যাপিড সিস্টেম - ২৬ জুন ২০২২", "ম্যাস র‍্যাপিড ট্রানজিট - ২৮ ডিসেম্বর, ২০২২", "ঢাকা মেট্রো লাইন - ৩১ ডিসেম্বর ২০২২", "ম্যাস ট্রানজিট লাইন - ১ জানুয়ারি ২০২৩"], correct: 1, exp: "ঢাকা মেট্রোরেলের অফিসিয়াল নাম ম্যাস র‍্যাপিড ট্রানজিট (MRT) এবং প্রথম উদ্বোধন হয় ২৮ ডিসেম্বর ২০২২ সালে[cite: 38, 39]।" },
+            { id: 3, section: "নৌ ও বন্দর", q: "বাংলাদেশের সবচেয়ে বড় স্থলবন্দর কোনটি এবং স্বাধীন বাংলাদেশে নির্মিত প্রথম সমুদ্রবন্দরের নাম কী?", options: ["হিলি - মোংলা", "বেনাপোল - পায়রা সমুদ্রবন্দর", "সোনা মসজিদ - মাতারবাড়ি", "বুড়িমারী - চট্টগ্রাম"], correct: 1, exp: "সবচেয়ে বড় স্থলবন্দর বেনাপোল এবং স্বাধীন বাংলাদেশে নির্মিত প্রথম সমুদ্রবন্দর পায়রা সমুদ্রবন্দর[cite: 38]।" },
+            { id: 4, section: "আকাশপথ ও রেল", q: "বাংলাদেশে চালু থাকা আন্তর্জাতিক বিমানবন্দরের সংখ্যা কত এবং সর্বমোট বিমানবন্দরের সংখ্যা কত?", options: ["২টি ও ১০টি", "৩টি ও ৮টি", "৪টি ও ৮টি", "৩টি ও ৯টি"], correct: 1, exp: "বাংলাদেশে চালু আন্তর্জাতিক বিমানবন্দর ৩টি এবং সর্বমোট বিমানবন্দরের সংখ্যা ৮টি[cite: 38]।" },
+            { id: 5, section: "আইসিটি ও স্যাটেলাইট", q: "বিশ্বে কততম দেশ হিসেবে বাংলাদেশ মহাকাশে স্যাটেলাইট পাঠায় এবং বাংলাদেশে নির্মিত প্রথম ন্যানো স্যাটেলাইটের নাম কী?", options: ["৫৫তম - বঙ্গবন্ধু-১", "৫৭তম - ব্র্যাক অন্বেষা", "৫৮তম - দোয়েল", "৫৭তম - বঙ্গোপসাগর-১"], correct: 1, exp: "বাংলাদেশ ৫৭তম দেশ হিসেবে মহাকাশে স্যাটেলাইট পাঠায় এবং নির্মিত প্রথম ন্যানো স্যাটেলাইট 'ব্র্যাক অন্বেষা'[cite: 38]।" },
+            { id: 6, section: "গণমাধ্যম ও ডাক", q: "বাংলাদেশ টেলিভিশন কত সালে সম্প্রচার শুরু করে এবং রঙিন পর্দায় সম্প্রচার শুরু হয় কত সালে?", options: ["১৯৬২ - ১৯৭৮", "১৯৬৪ সালে - ১৯৮০ সালে", "১৯৬৫ - ১৯৮১", "১৯৭১ - ১৯৮০"], correct: 1, exp: "BTV সম্প্রচার শুরু করে ১৯৬৪ সালে এবং রঙিন পর্দায় সম্প্রচার শুরু হয় ১৯৮০ সালে[cite: 38, 40]।" },
+            { id: 7, section: "সড়ক ও সেতু", q: "পদ্মা সেতু উদ্বোধন ও গণপরিবহন চলাচল শুরু হয় যথাক্রমে কোন তারিখে?", options: ["২৬ জুন ও ২৫ জুন ২০২২", "২৫ জুন, ২০২২ ও ২৬ জুন, ২০২২", "২৪ জুন ও ২৫ জুন ২০২২", "২৫ জুন ও ২৭ জুন ২০২২"], correct: 1, exp: "পদ্মা সেতু উদ্বোধন হয় ২৫ জুন ২০২২ এবং গণপরিবহন চলাচল শুরু হয় ২৬ জুন ২০২২ তারিখে[cite: 38, 39]।" },
+            { id: 8, section: "রেল ও মেট্রোরেল", q: "MRT Line-6-এর দৈর্ঘ্য কত এবং এটি কোথায় থেকে কোথায় বিস্তৃত?", options: ["২০.১০ কিমি - মতিঝিল থেকে উত্তরা", "২১.২৬ কি.মি. (কমলাপুর থেকে উত্তরা উত্তর)", "২২.০০ কিমি - শাহবাগ থেকে উত্তরা", "১৯.৫০ কিমি - মতিঝিল থেকে মিরপুর"], correct: 1, exp: "MRT Line-6-এর দৈর্ঘ্য ২১.২৬ কিমি এবং এটি কমলাপুর থেকে উত্তরা উত্তর পর্যন্ত[cite: 39]।" },
+            { id: 9, section: "নৌ ও বন্দর", q: "বাংলাদেশে প্রথম গভীর সমুদ্রবন্দর কোনটি এবং এটি কোন উদ্যোগের আওতায় নির্মিত হচ্ছে?", options: ["পায়রা - সিপেক", "মাতারবাড়ি বন্দর - BIG-BI", "মোংলা - বিবিআইএন", "চট্টগ্রাম - ওয়ান বেল্ট"], correct: 1, exp: "প্রথম গভীর সমুদ্রবন্দর মাতারবাড়ি বন্দর এবং এটি BIG-BI উদ্যোগের আওতায় নির্মিত হচ্ছে[cite: 38]।" },
+            { id: 10, section: "আকাশপথ ও রেল", q: "বাংলাদেশের সরকারি বিমান সংস্থার নাম কী, প্রতীকের নাম কী এবং প্রতীকের ডিজাইনার কে?", options: ["রিজেন্ট - শঙ্খচিল - জয়নুল আবেদিন", "বিমান বাংলাদেশ - বলাকা - কামরুল হাসান", "ইউএস-বাংলা - গাঙচিল - হাশেম খান", "নভোএয়ার - বলাকা - পটুয়া কামরুল"], correct: 1, exp: "সরকারি বিমান সংস্থা বিমান বাংলাদেশ, প্রতীকের নাম বলাকা এবং ডিজাইনার কামরুল হাসান[cite: 38]।" },
+            { id: 11, section: "আইসিটি ও স্যাটেলাইট", q: "বাংলাদেশে সর্বপ্রথম ইন্টারনেট সিস্টেম চালুর সন কোনটি এবং প্রথম মোবাইল ফোন সেবা চালু হয় কবে?", options: ["১৯৯৪ - ১৯৯২", "১৯৯৬ - ১৯৯৩", "১৯৯৫ - ১৯৯৪", "১৯৯৭ - ১৯৯৩"], correct: 1, exp: "বাংলাদেশে ইন্টারনেট চালু হয় ১৯৯৬ সালে এবং প্রথম মোবাইল ফোন সেবা চালু হয় ১৯৯৩ সালে[cite: 38]।" },
+            { id: 12, section: "গণমাধ্যম ও ডাক", q: "বাংলাদেশের প্রথম কমিউনিটি রেডিও এবং প্রথম বেসরকারি FM রেডিও যথাক্রমে কোন দুটি?", options: ["রেডিও টুডে ও রেডিও পদ্মা", "রেডিও পদ্মা ও রেডিও টুডে", "রেডিও ফূর্তি ও রেডিও পদ্মা", "রেডিও আমার ও রেডিও টুডে"], correct: 1, exp: "প্রথম কমিউনিটি রেডিও 'রেডিও পদ্মা' এবং প্রথম বেসরকারি FM রেডিও 'রেডিও টুডে'[cite: 38, 40]।" },
+            { id: 13, section: "সড়ক ও সেতু", q: "পদ্মা সেতুর দুই প্রান্তের জেলা দুটি কী কী এবং পদ্মা সেতুর মাধ্যমে ঢাকার সাথে সরাসরি যুক্ত হওয়া জেলার সংখ্যা কত?", options: ["মাওয়া-জাজিরা - ১৯টি", "মুন্সীগঞ্জ-শরীয়তপুর - ২১টি", "ফরিদপুর-মাদারীপুর - ২১টি", "মুন্সীগঞ্জ-মাদারীপুর - ২০টি"], correct: 1, exp: "পদ্মা সেতুর দুই প্রান্ত মুন্সীগঞ্জ-শরীয়তপুর এবং এর মাধ্যমে ঢাকার সাথে সরাসরি যুক্ত হয়েছে ২১টি জেলা[cite: 38, 39]।" },
+            { id: 14, section: "রেল ও মেট্রোরেল", q: "বাংলাদেশ রেলওয়ের সর্ববৃহৎ কারখানা কোথায় এবং দীর্ঘতম রেলপথ কোনটি?", options: ["পার্বতীপুর - ঢাকা-চট্টগ্রাম", "সৈয়দপুর - ঢাকা-পঞ্চগড়", "ঈশ্বরদী - খুলনা-ঢাকা", "নীলফামারী - ঢাকা-সিলেট"], correct: 1, exp: "রেলওয়ের সর্ববৃহৎ কারখানা সৈয়দপুরে এবং দীর্ঘতম রেলপথ ঢাকা-পঞ্চগড়[cite: 39]।" },
+            { id: 15, section: "নৌ ও বন্দর", q: "বাংলাদেশের বৃহত্তম নদীবন্দর কোন জেলায় এবং সর্ববৃহৎ লঞ্চঘাট কোথায় অবস্থিত?", options: ["চাঁদপুর - সদরঘাট", "নারায়ণগঞ্জ - ঢাকা", "খুলনা - বরিশাল", "ঢাকা - নারায়ণগঞ্জ"], correct: 1, exp: "বৃহত্তম নদীবন্দর নারায়ণগঞ্জে এবং সর্ববৃহৎ লঞ্চঘাট ঢাকায় অবস্থিত[cite: 38]।" },
+            { id: 16, section: "আকাশপথ ও রেল", q: "রেলওয়ে জাদুঘর কোথায় এবং কমলাপুর রেলওয়ে স্টেশনের স্থপতি কে?", options: ["ঢাকা - লুই আই কান", "চট্টগ্রাম - বব বুই", "রাজশাহী - মাজহারুল ইসলাম", "সিলেট - বব বুই"], correct: 1, exp: "রেলওয়ে জাদুঘর চট্টগ্রামে এবং কমলাপুর রেলওয়ে স্টেশনের স্থপতি বব বুই[cite: 38]।" },
+            { id: 17, section: "আইসিটি ও স্যাটেলাইট", q: "বাংলাদেশে আনুষ্ঠানিকভাবে স্টারলিংক কবে চালু হয় এবং দক্ষিণ এশিয়ার কততম দেশ হিসেবে চালু হয়?", options: ["০১ মে ২০২৫ - ১ম", "০৯ মে, ২০২৫ - ২য়", "১০ মে ২০২৫ - ২য়", "০৯ মে ২০২৫ - ৩য়"], correct: 1, exp: "বাংলাদেশে স্টারলিংক চালু হয় ০৯ মে ২০২৫ এবং দক্ষিণ এশিয়ার ২য় দেশ হিসেবে এটি চালু হয়[cite: 38]।" },
+            { id: 18, section: "গণমাধ্যম ও ডাক", q: "মুক্তিযুদ্ধের সময় বাংলাদেশ বেতারের নাম কী ছিল এবং বাংলাদেশ বেতারের সদর দপ্তর কোথায়?", options: ["আকাশবাণী - রামপুরা", "স্বাধীন বাংলা বেতার কেন্দ্র - আগারগাঁও", "মুক্তি বেতার - শাহবাগ", "স্বাধীন বেতার - তেজগাঁও"], correct: 1, exp: "মুক্তিযুদ্ধের সময় নাম ছিল স্বাধীন বাংলা বেতার কেন্দ্র এবং সদর দপ্তর ঢাকার আগারগাঁওয়ে[cite: 38, 40]।" },
+            { id: 19, section: "সড়ক ও সেতু", q: "'লালন শাহ সেতু' কোন নদীর উপর এবং কোন দুটি জেলাকে সংযুক্ত করেছে?", options: ["যমুনা - সিরাজগঞ্জ ও পাবনা", "পদ্মা - কুষ্টিয়া ও পাবনা", "মেঘনা - কুমিল্লা ও ব্রাহ্মণবাড়িয়া", "কর্ণফুলী - চট্টগ্রাম ও কক্সবাজার"], correct: 1, exp: "লালন শাহ সেতু পদ্মা নদীর উপর নির্মিত এবং কুষ্টিয়া ও পাবনাকে সংযুক্ত করেছে[cite: 38]।" },
+            { id: 20, section: "রেল ও মেট্রোরেল", q: "বাংলাদেশে প্রথম রেল যোগাযোগ চালু হওয়া দুটি জেলা কোনটি এবং দেশে রেল সংযোগ থাকা জেলার সংখ্যা কত?", options: ["ঢাকা ও নারায়ণগঞ্জ - ৪৮টি", "কুষ্টিয়া ও চুয়াডাঙ্গা - ৪৯টি", "চট্টগ্রাম ও কুমিল্লা - ৫০টি", "কুষ্টিয়া ও মেহেরপুর - ৪৭টি"], correct: 1, exp: "প্রথম রেল যোগাযোগ চালু হয় কুষ্টিয়া ও চুয়াডাঙ্গায় এবং বর্তমানে রেল সংযোগ আছে ৪৯টি জেলায়[cite: 39]।" },
+            { id: 21, section: "নৌ ও বন্দর", q: "মোংলা বন্দর কোন নদীর তীরে ও কোন জেলায় অবস্থিত এবং কবে প্রতিষ্ঠিত হয়?", options: ["রূপসা - খুলনা - ১৯৫২", "পশুর - বাগেরহাট - ১৯৫০ সালে", "কর্ণফুলী - চট্টগ্রাম - ১৯৫০", "রাবনাবাদ - পটুয়াখালী - ১৯৫৪"], correct: 1, exp: "মোংলা বন্দর বাগেরহাটে পশুর নদীর তীরে অবস্থিত এবং ১৯৫০ সালে প্রতিষ্ঠিত হয়[cite: 38]।" },
+            { id: 22, section: "আইসিটি ও স্যাটেলাইট", q: "বাংলাদেশে কয়টি ভূ-উপগ্রহ কেন্দ্র আছে এবং প্রথম স্যাটেলাইট স্টেশন কোনটি?", options: ["৩টি - তালিবাবাদ", "৪টি - বেতবুনিয়া", "৫টি - মহাখালী", "২টি - বেতবুনিয়া"], correct: 1, exp: "বাংলাদেশে ভূ-উপগ্রহ কেন্দ্র ৪টি এবং প্রথম স্যাটেলাইট স্টেশন বেতবুনিয়া[cite: 38]।" },
+            { id: 23, section: "গণমাধ্যম ও ডাক", q: "বাংলাদেশে তৈরি ল্যাপটপের নাম কী এবং এটি তৈরিকারী প্রতিষ্ঠান কোনটি?", options: ["কপোতাক্ষ - ওয়ালটন", "দোয়েল - টেলিফোন শিল্প সংস্থা (টেশিস)", "ময়না - বিটিআরসি", "দোয়েল - বেক্সিমকো"], correct: 1, exp: "বাংলাদেশে তৈরি ল্যাপটপ 'দোয়েল' এবং এটি তৈরি করে টেলিফোন শিল্প সংস্থা (টেশিস)[cite: 38]।" },
+            { id: 24, section: "সড়ক ও সেতু", q: "দেশের প্রথম 'এলিফ্যান্ট ওভারপাস' কোথায় অবস্থিত এবং 'জাতীয় নিরাপদ সড়ক দিবস' কবে?", options: ["কাপ্তাই - ২১ অক্টোবর", "লোহাগাড়া, চট্টগ্রাম - ২২ অক্টোবর", "মধুপুর - ২২ নভেম্বর", "সীতাকুণ্ড - ২ অক্টোবর"], correct: 1, exp: "প্রথম এলিফ্যান্ট ওভারপাস চট্টগ্রামের লোহাগাড়ায় এবং নিরাপদ সড়ক দিবস ২২ অক্টোবর[cite: 39]।" },
+            { id: 25, section: "রেল ও মেট্রোরেল", q: "এককভাবে বাংলাদেশের দীর্ঘতম রেলসেতু কোনটি এবং নির্মাণে অর্থায়নকারী প্রতিষ্ঠান কোনটি?", options: ["হার্ডিঞ্জ ব্রিজ - এডিবি", "যমুনা রেলসেতু - JICA", "ভৈরব ব্রিজ - বিশ্বব্যাংক", "পদ্মা রেলসেতু - চীন"], correct: 1, exp: "এককভাবে দীর্ঘতম রেলসেতু যমুনা রেলসেতু এবং এর অর্থায়নকারী প্রতিষ্ঠান JICA[cite: 38, 39]।" },
+            { id: 26, section: "নৌ ও বন্দর", q: "বাংলাদেশের কোন জেলায় তিনটি স্থলবন্দর রয়েছে এবং হিলি স্থলবন্দর কোন জেলায়?", options: ["দিনাজপুর - জয়পুরহাট", "সিলেট - দিনাজপুর", "চাঁপাইনবাবগঞ্জ - দিনাজপুর", "যশোর - সাতক্ষীরা"], correct: 1, exp: "সিলেটে তিনটি স্থলবন্দর রয়েছে এবং হিলি স্থলবন্দর দিনাজপুরে অবস্থিত[cite: 38]।" },
+            { id: 27, section: "আইসিটি ও স্যাটেলাইট", q: "SEA-ME-WE-এর পূর্ণরূপ কী এবং দেশের দ্বিতীয় সাবমেরিন ক্যাবল ল্যান্ডিং স্টেশন কোথায়?", options: ["South East Asia-Middle East-Western Europe - কক্সবাজার", "South East Asia-Middle East-Western Europe - কুয়াকাটা", "South East Asia-Middle East-World Europe - কুয়াকাটা", "South East Asia-Mediterranean-Western Europe - পটুয়াখালী"], correct: 1, exp: "SEA-ME-WE অর্থ South East Asia-Middle East-Western Europe এবং দ্বিতীয় ল্যান্ডিং স্টেশন কুয়াকাটায়[cite: 38]।" },
+            { id: 28, section: "গণমাধ্যম ও ডাক", q: "বাংলাদেশে প্রথম ডিজিটাল টেলিফোন ব্যবস্থা চালু হয় কবে এবং একমাত্র সরকারি মোবাইল অপারেটর কোনটি?", options: ["১৯৮৮ - গ্রামীণফোন", "১৯৯০ সালে - টেলিটক", "১৯৯২ - টেলিটক", "১৯৮৯ - সিটিসেল"], correct: 1, exp: "প্রথম ডিজিটাল টেলিফোন ব্যবস্থা চালু হয় ১৯৯০ সালে এবং একমাত্র সরকারি অপারেটর টেলিটক[cite: 38]।" },
+            { id: 29, section: "সড়ক ও সেতু", q: "খুলনা শহরের প্রবেশদ্বার নামে পরিচিত কোন সেতু এবং সর্বপ্রথম ছয় লেন বিশিষ্ট সেতু কোনটি?", options: ["মধুমতি ও রূপসা", "রূপসা সেতু/খান জাহান আলী সেতু ও মধুমতি সেতু", "লালন শাহ ও রূপসা", "ভৈরব ও মধুমতি"], correct: 1, exp: "খুলনার প্রবেশদ্বার রূপসা/খান জাহান আলী সেতু এবং প্রথম ছয় লেন বিশিষ্ট সেতু মধুমতি সেতু[cite: 39]।" },
+            { id: 30, section: "নৌ ও বন্দর", q: "পায়রা সমুদ্রবন্দর কোন নদীর মোহনায় ও তামাবিল কোথায় অবস্থিত?", options: ["পশুর - হবিগঞ্জ", "রাবনাবাদ - সিলেট", "কর্ণফুলী - সুনামগঞ্জ", "নাফ - মৌলভীবাজার"], correct: 1, exp: "পায়রা সমুদ্রবন্দর রাবনাবাদ মোহনায় এবং তামাবিল সিলেটে অবস্থিত[cite: 38]।" },
+            { id: 31, section: "নৌ ও বন্দর", q: "ভারতের মেঘালয়ের সাথে অবস্থিত স্থলবন্দর কোনটি এবং মিয়ানমারের সাথে অবস্থিত স্থলবন্দর কোনটি?", options: ["বেনাপোল ও বুড়িমারী", "তামাবিল ও টেকনাফ", "হিলি ও মংডু", "সোনা মসজিদ ও তামাবিল"], correct: 1, exp: "মেঘালয়ের সাথে তামাবিল এবং মিয়ানমারের সাথে টেকনাফ স্থলবন্দর অবস্থিত[cite: 38]।" },
+            { id: 32, section: "সড়ক ও সেতু", q: "তিস্তা মহাপরিকল্পনার মূল নাম কী এবং এতে সহায়তা প্রদানকারী চীনের সংস্থা কোনটি?", options: ["Teesta River Development Project - চায়না হারবার", "Teesta River Comprehensive Management and Restoration Project - ইয়েলো রিভার ইঞ্জিনিয়ারিং", "Teesta Basin Restoration Project - সিনোহাইড্রো", "Teesta Flood Control Project - ইয়েলো রিভার"], correct: 1, exp: "তিস্তা মহাপরিকল্পনার মূল নাম Teesta River Comprehensive Management and Restoration Project এবং সহায়তাকারী সংস্থা ইয়েলো রিভার ইঞ্জিনিয়ারিং[cite: 38]।" },
+            { id: 33, section: "আইসিটি ও স্যাটেলাইট", q: "দেশের প্রথম হাইটেক পার্ক কোথায় নির্মিত হয়েছে এবং একমাত্র ওশান স্যাটেলাইট স্টেশন কোথায়?", options: ["যশোর - ঢাকা বিশ্ববিদ্যালয়", "কালিয়াকৈর, গাজীপুর - চট্টগ্রাম বিশ্ববিদ্যালয়", "রাজশাহী - খুলনা বিশ্ববিদ্যালয়", "সিলেট - শাহজালাল বিশ্ববিদ্যালয়"], correct: 1, exp: "প্রথম হাইটেক পার্ক কালিয়াকৈর (গাজীপুর) এবং একমাত্র ওশান স্যাটেলাইট স্টেশন চট্টগ্রাম বিশ্ববিদ্যালয়ে[cite: 38]।" },
+            { id: 34, section: "গণমাধ্যম ও ডাক", q: "বাংলাদেশ ডাক বিভাগের স্লোগান কী এবং পোস্টাল একাডেমি কোথায় ও কবে প্রতিষ্ঠিত হয়?", options: ["সেবাই জীবন - ঢাকা - ১৯৮৪", "সেবাই আদর্শ - রাজশাহী - ১৯৮৬ সালে", "দ্রুত সেবাই লক্ষ্য - চট্টগ্রাম - ১৯৮৬", "জনগণের সেবা - রাজশাহী - ১৯৮৫"], correct: 1, exp: "ডাক বিভাগের স্লোগান 'সেবাই আদর্শ' এবং পোস্টাল একাডেমি রাজশাহীতে ১৯৮৬ সালে প্রতিষ্ঠিত হয়[cite: 38]।" },
+            { id: 35, section: "সড়ক ও সেতু", q: "BRTA ও BRTC-এর পূর্ণরূপ যথাক্রমে কী কী?", options: ["Bangladesh Road Transport Authority ও Bangladesh Road Transport Corporation", "Bangladesh Rail Transport Authority ও Bangladesh Road Transport Council", "Bangladesh Road Traffic Authority ও Bangladesh Road Transit Corporation", "Bangladesh Road Transport Agency ও Bangladesh Road Transport Corporation"], correct: 0, exp: "BRTA অর্থ Bangladesh Road Transport Authority এবং BRTC অর্থ Bangladesh Road Transport Corporation[cite: 38, 39]।" },
+            { id: 36, section: "সড়ক ও সেতু", q: "পদ্মা সেতুর মূল কাঠামো নির্মাণের কার্যাদেশ পায় কোন দেশের কোম্পানি এবং নির্মাণকাজে কাজ করা প্রতিষ্ঠান কোনটি?", options: ["জাপান - জাইকা", "চীন - চায়না মেজর ব্রিজ ইঞ্জিনিয়ারিং কোম্পানি লিমিটেড", "ভারত - লার্সেন অ্যান্ড টুব্রো", "দক্ষিণ কোরিয়া - হুন্দাই"], correct: 1, exp: "মূল কাঠামোর কার্যাদেশ পায় চীন এবং কাজ করে চায়না মেজর ব্রিজ ইঞ্জিনিয়ারিং কোম্পানি লিমিটেড[cite: 38, 39]।" },
+            { id: 37, section: "সড়ক ও সেতু", q: "পদ্মাসেতু নির্মাণে একমাত্র বাংলাদেশি নারী প্রকৌশলী কে এবং ঢাকা-আশুলিয়া এলিভেটেড এক্সপ্রেসওয়েতে ঋণ সহায়তা দেয় কোন দেশ?", options: ["রোকসানা বেগম - জাপান", "ইশরাত জাহান - চীন", "তাহমিনা হক - ভারত", "নাজনীন সুলতানা - চীন"], correct: 1, exp: "একমাত্র বাংলাদেশি নারী প্রকৌশলী ইশরাত জাহান এবং ঢাকা-আশুলিয়া এলিভেটেড এক্সপ্রেসওয়েতে ঋণ সহায়তা দেয় চীন[cite: 38, 39]।" },
+            { id: 38, section: "নৌ ও বন্দর", q: "বাংলাদেশের প্রথম উপকূলীয় নদীবন্দর কোনটি এবং উপকূলীয় নদীবন্দরসমূহ কোনগুলো?", options: ["হাতিয়া - সন্দ্বীপ, ভোলা", "সন্দ্বীপ নদীবন্দর - সন্দ্বীপ, হাতিয়া", "ভোলা - হাতিয়া, সন্দ্বীপ", "কুতুবদিয়া - সন্দ্বীপ, মহেশখালী"], correct: 1, exp: "প্রথম উপকূলীয় নদীবন্দর সন্দ্বীপ নদীবন্দর এবং উপকূলীয় নদীবন্দরসমূহ হলো সন্দ্বীপ ও হাতিয়া[cite: 38]।" },
+            { id: 39, section: "নৌ ও বন্দর", q: "বর্তমানে বাংলাদেশে নদীবন্দর কয়টি এবং বুড়িমারী স্থলবন্দর লালমনিরহাটের কোন উপজেলায়?", options: ["৫৪টি - হাতীবান্ধা", "৫৬টি - পাটগ্রাম", "৫৮টি - কালীগঞ্জ", "৫৫টি - আদিতমারী"], correct: 1, exp: "বর্তমানে নদীবন্দর ৫৬টি এবং বুড়িমারী স্থলবন্দর লালমনিরহাটের পাটগ্রামে অবস্থিত[cite: 38]।" },
+            { id: 40, section: "নৌ ও বন্দর", q: "সোনা মসজিদ স্থলবন্দর কোথায় এবং বিলোনিয়া সীমান্ত কোন জেলার অন্তর্গত?", options: ["দিনাজপুর - নোয়াখালী", "চাঁপাইনবাবগঞ্জ - ফেনী", "রংপুর - কুমিল্লা", "রাজশাহী - ফেনী"], correct: 1, exp: "সোনা মসজিদ স্থলবন্দর চাঁপাইনবাবগঞ্জে এবং বিলোনিয়া সীমান্ত ফেনী জেলার অন্তর্গত[cite: 38]।" },
+            { id: 41, section: "নৌ ও বন্দর", q: "রৌমারী-চিলমারী ফেরিঘাটের অবস্থান কোন জেলায় এবং বাংলাদেশের প্রবেশদ্বার বলা হয় কোন বন্দরকে?", options: ["রংপুর - মোংলা", "কুড়িগ্রাম - চট্টগ্রাম", "গাইবান্ধা - পায়রা", "লালমনিরহাট - চট্টগ্রাম"], correct: 1, exp: "রৌমারী-চিলমারী ফেরিঘাট কুড়িগ্রামে এবং বাংলাদেশের প্রবেশদ্বার বলা হয় চট্টগ্রাম বন্দরকে[cite: 38]।" },
+            { id: 42, section: "রেল ও মেট্রোরেল", q: "হার্ডিঞ্জ ব্রিজ ও ভৈরব ব্রিজ যথাক্রমে কোন নদীর উপর নির্মিত?", options: ["যমুনা ও পদ্মা", "পদ্মা ও মেঘনা", "মেঘনা ও যমুনা", "পদ্মা ও ব্রহ্মপুত্র"], correct: 1, exp: "হার্ডিঞ্জ ব্রিজ পদ্মা নদীর উপর এবং ভৈরব ব্রিজ মেঘনা নদীর উপর নির্মিত[cite: 38, 39]।" },
+            { id: 43, section: "রেল ও মেট্রোরেল", q: "ঝুলন্ত সেতু কোথায় অবস্থিত এবং নীলফামারী জেলায় কী অবস্থিত?", options: ["বান্দরবান - রেলওয়ে জংশন", "রাঙামাটি - রেলওয়ে কারখানা ও রেলওয়ে কারখানা জাদুঘর উভয়ই", "খাগড়াছড়ি - রেলওয়ে জাদুঘর", "সিলেট - রেলওয়ে কারখানা"], correct: 1, exp: "ঝুলন্ত সেতু রাঙামাটিতে এবং নীলফামারীতে রেলওয়ে কারখানা ও কারখানা জাদুঘর উভয়ই রয়েছে[cite: 38, 39]।" },
+            { id: 44, section: "আইসিটি ও স্যাটেলাইট", q: "বাংলাদেশে কবে বিজ্ঞান ও আইসিটি মন্ত্রণালয় স্থাপন করা হয় এবং SEA-ME-WE-4 সাবমেরিন ক্যাবলের দৈর্ঘ্য কত?", options: ["২০০১ - ১৫ হাজার কিমি", "২০০২ - ২০ হাজার কি.মি.", "২০০৩ - ২৫ হাজার কিমি", "২০০০ - ১৮ হাজার কিমি"], correct: 1, exp: "বিজ্ঞান ও আইসিটি মন্ত্রণালয় স্থাপিত হয় ২০০২ সালে এবং SEA-ME-WE-4 ক্যাবলের দৈর্ঘ্য প্রায় ২০ হাজার কিমি[cite: 38]।" },
+            { id: 45, section: "গণমাধ্যম ও ডাক", q: "'ফিলাটেলি' শব্দটি কোন বিষয়ের সাথে সম্পর্কিত এবং বীরশ্রেষ্ঠদের স্মরণে ডাকটিকিট কবে প্রকাশিত হয়?", options: ["টেলিযোগাযোগ - ১৯৮০", "ডাকবিভাগ - ১৯৮২ সালে", "রেডিও - ১৯৮১", "ডাকবিভাগ - ১৯৮৫"], correct: 1, exp: "ফিলাটেলি শব্দটি ডাকবিভাগের সাথে সম্পর্কিত এবং বীরশ্রেষ্ঠদের স্মরণে ডাকটিকিট প্রকাশিত হয় ১৯৮২ সালে[cite: 38]।" },
+            { id: 46, section: "গণমাধ্যম ও ডাক", q: "বাংলাদেশের ডাক জাদুঘর কোথায় এবং ডাকবিভাগের সাম্প্রতিক আলোচিত সার্ভিস কোনটি?", options: ["চট্টগ্রাম - ই-পোস্ট", "ঢাকায় - স্পিড পোস্ট পার্সেল", "রাজশাহী - পোস্টাল কার্ড", "ঢাকা - মানি অর্ডার"], correct: 1, exp: "ডাক জাদুঘর ঢাকায় এবং সাম্প্রতিক আলোচিত সার্ভিস স্পিড পোস্ট পার্সেল[cite: 38]।" },
+            { id: 47, section: "গণমাধ্যম ও ডাক", q: "বাংলাদেশ টেলিভিশনে প্রচারিত প্রথম নাটক কোনটি এবং লোগোর ডিজাইনার কে?", options: ["একতলা - কামরুল হাসান", "একতলা দোতলা - ইমদাদ হোসেন", "সকাল সন্ধ্যা - জয়নুল আবেদিন", "কোথাও কেউ নেই - ইমদাদ হোসেন"], correct: 1, exp: "BTV-তে প্রচারিত প্রথম নাটক 'একতলা দোতলা' এবং লোগোর ডিজাইনার ইমদাদ হোসেন[cite: 38]।" },
+            { id: 48, section: "গণমাধ্যম ও ডাক", q: "বাংলাদেশের সরকারি টেলিভিশন চ্যানেলের সংখ্যা কত এবং টেলিভিশন কেন্দ্র কোথায় অবস্থিত?", options: ["৩টি - আগারগাঁও", "৪টি - রামপুরা", "৫টি - তেজগাঁও", "৪টি - মিরপুর"], correct: 1, exp: "সরকারি টেলিভিশন চ্যানেল ৪টি এবং টেলিভিশন কেন্দ্র রামপুরায় অবস্থিত[cite: 38, 40]।" },
+            { id: 49, section: "সড়ক ও সেতু", q: "কর্ণফুলী নদীর উপর নির্মিত সেতুর নাম কী এবং ঢাকা মেট্রোরেল প্রকল্পের সার্বিক তত্ত্বাবধানে থাকা সংস্থা কোনটি?", options: ["লালন শাহ - বিআরটিসি", "শাহ আমানত সেতু - ঢাকা ম্যাস ট্রানজিট কোম্পানি লিমিটেড", "রূপসা - বিআরটিএ", "ভৈরব - ডিএমপি"], correct: 1, exp: "কর্ণফুলী নদীর উপর শাহ আমানত সেতু এবং মেট্রোরেলের তত্ত্বাবধানে ঢাকা ম্যাস ট্রানজিট কোম্পানি লিমিটেড (DMTCL)[cite: 38, 39]।" },
+            { id: 50, section: "নৌ ও বন্দর", q: "বাংলাদেশের একমাত্র নৌ পরিবহন সংস্থা BIWTA-এর পূর্ণরূপ কী এবং মাওয়া ফেরিঘাট কোন জেলায়?", options: ["Bangladesh Inland Water Transport Authority - শরীয়তপুর", "Bangladesh Inland Water Transport Authority - মুন্সীগঞ্জ", "Bangladesh International Water Transport Authority - মুন্সীগঞ্জ", "Bangladesh Inland Waterways Transport Authority - ফরিদপুর"], correct: 1, exp: "BIWTA অর্থ Bangladesh Inland Water Transport Authority এবং মাওয়া ফেরিঘাট মুন্সীগঞ্জে অবস্থিত[cite: 38, 39]।" },
+            { id: 51, section: "সড়ক ও সেতু", q: "বাংলাদেশের প্রথম বহুমুখী ফ্লাইওভার কোনটি এবং যমুনা রেল সেতুর মাধ্যমে যুক্ত হওয়া দুটি জেলা কোনটি?", options: ["মহাখালী - টাঙ্গাইল-জামালপুর", "খিলগাঁও ফ্লাইওভার - সিরাজগঞ্জ-টাঙ্গাইল", "কুড়িল - সিরাজগঞ্জ-পাবনা", "মগবাজার - টাঙ্গাইল-ময়মনসিংহ"], correct: 1, exp: "প্রথম বহুমুখী ফ্লাইওভার খিলগাঁও ফ্লাইওভার এবং যমুনা রেলসেতু যুক্ত করেছে সিরাজগঞ্জ-টাঙ্গাইলকে[cite: 39]।" },
+            { id: 52, section: "রেল ও মেট্রোরেল", q: "বাংলাদেশের দীর্ঘতম সড়ক ও রেল সেতু কোনটি এবং বৃহত্তম রেল জংশন কোনটি?", options: ["যমুনা - কমলাপুর", "পদ্মা সেতু - ঈশ্বরদী", "হার্ডিঞ্জ - পার্বতীপুর", "পদ্মা - সৈয়দপুর"], correct: 1, exp: "দীর্ঘতম সড়ক ও রেল সেতু পদ্মা সেতু এবং বৃহত্তম রেল জংশন ঈশ্বরদী[cite: 38, 39]।" },
+            { id: 53, section: "নৌ ও বন্দর", q: "মাতারবাড়ি গভীর সমুদ্র বন্দর নির্মাণে কোন দেশ সহায়তা করছে এবং চট্টগ্রাম সমুদ্র বন্দর কোন নদীর তীরে?", options: ["চীন - হালদা", "জাপান - কর্ণফুলী", "ভারত - পশুর", "জাপান - সাঙ্গু"], correct: 1, exp: "মাতারবাড়ি নির্মাণে সহায়তা করছে জাপান এবং চট্টগ্রাম সমুদ্র বন্দর কর্ণফুলী নদীর তীরে[cite: 38]।" },
+            { id: 54, section: "আইসিটি ও স্যাটেলাইট", q: "SEA-ME-WE-5 ও SEA-ME-WE-6 সাবমেরিন ক্যাবলের ল্যান্ডিং স্টেশন যথাক্রমে কোথায়?", options: ["কক্সবাজার ও কুয়াকাটা", "কুয়াকাটা, পটুয়াখালী ও কক্সবাজার", "পটুয়াখালী ও চট্টগ্রাম", "চট্টগ্রাম ও কুয়াকাটা"], correct: 1, exp: "SEA-ME-WE-5-এর ল্যান্ডিং স্টেশন কুয়াকাটা (পটুয়াখালী) এবং SEA-ME-WE-6-এর ল্যান্ডিং স্টেশন কক্সবাজারে[cite: 38]।" },
+            { id: 55, section: "আইসিটি ও স্যাটেলাইট", q: "BTRC-এর পূর্ণরূপ কী?", options: ["Bangladesh Telecom Regulatory Commission", "Bangladesh Telecommunication Regulatory Commission", "Bangladesh Telephone Regulatory Corporation", "Bangladesh Telecommunication Regulation Council"], correct: 1, exp: "BTRC-এর ইংরেজি পূর্ণরূপ হলো Bangladesh Telecommunication Regulatory Commission[cite: 38, 40]।" },
+            { id: 56, section: "সড়ক ও সেতু", q: "ঢাকা মেট্রোরেল প্রকল্পে অর্থায়ন করেছে কোন প্রতিষ্ঠান?", options: ["বিশ্বব্যাংক ও এডিবি", "জাইকা ও বাংলাদেশ সরকার", "এআইআইবি ও জাইকা", "চীন ও বাংলাদেশ সরকার"], correct: 1, exp: "ঢাকা মেট্রোরেল প্রকল্পে জাইকা ও বাংলাদেশ সরকার অর্থায়ন করেছে[cite: 39]।" },
+            { id: 57, section: "সড়ক ও সেতু", q: "হার্ডিঞ্জ ব্রিজ মূলত কী ধরনের সেতু?", options: ["সড়ক সেতু", "রেল সেতু", "সড়ক ও রেল সেতু", "ঝুলন্ত সেতু"], correct: 1, exp: "হার্ডিঞ্জ ব্রিজটি মূলত একটি রেল সেতু[cite: 38]।" },
+            { id: 58, section: "সড়ক ও সেতু", q: "ড্রাইভিং লাইসেন্স প্রদানকারী সংস্থা কোনটি?", options: ["BRTC", "বাংলাদেশ সড়ক পরিবহণ অথরিটি (BRTA)", "DMTCL", "BIWTA"], correct: 1, exp: "ড্রাইভিং লাইসেন্স প্রদান করে বাংলাদেশ সড়ক পরিবহণ অথরিটি (BRTA)[cite: 38, 39]।" },
+            { id: 59, section: "নৌ ও বন্দর", q: "বাংলাদেশের উপকূলীয় নদীবন্দরগুলোর মধ্যে কোনটি অন্তর্ভুক্ত?", options: ["নারায়ণগঞ্জ", "সন্দ্বীপ ও হাতিয়া", "চাঁদপুর", "খুলনা"], correct: 1, exp: "দেশের উপকূলীয় নদীবন্দরসমূহ হলো সন্দ্বীপ ও হাতিয়া[cite: 38]।" },
+            { id: 60, section: "আইসিটি ও স্যাটেলাইট", q: "বাংলাদেশে আনুষ্ঠানিকভাবে স্টারলিংক চালু হওয়ার তারিখ কোনটি?", options: ["০১ মে, ২০২৫", "০৯ মে, ২০২৫", "১৫ মে, ২০২৫", "০৯ এপ্রিল, ২০২৫"], correct: 1, exp: "বাংলাদেশে আনুষ্ঠানিকভাবে স্টারলিংক চালু হয় ০৯ মে ২০২৫ তারিখে[cite: 38]।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let totalTimeSeconds = 1500;
+        let timeLeft = 1500; 
+        let currentTab = 'correct';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            buildPalette();
+            loadQuestion(currentQuestion);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').innerText = `সময়: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function buildPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                let btn = document.createElement('button');
+                btn.id = `palette-${idx}`;
+                btn.innerText = idx + 1;
+                btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 transition duration-150";
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+            updatePalette();
+        }
+
+        function updatePalette() {
+            questions.forEach((q, idx) => {
+                let btn = document.getElementById(`palette-${idx}`);
+                if (!btn) return;
+                if (userAnswers[idx] !== null) {
+                    btn.className = "h-8 rounded text-xs font-bold bg-sky-600 text-white border border-sky-500 shadow-sm";
+                } else {
+                    btn.className = "h-8 rounded text-xs font-bold bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300";
+                }
+                if (idx === currentQuestion) {
+                    btn.classList.add('ring-2', 'ring-amber-400', 'ring-offset-1', 'ring-offset-slate-900');
+                }
+            });
+        }
+
+        function loadQuestion(idx) {
+            currentQuestion = idx;
+            const q = questions[idx];
+            document.getElementById('current-q-num').innerText = idx + 1;
+            document.getElementById('total-q-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${idx + 1}. ${q.q}`;
+
+            const badge = document.getElementById('section-badge');
+            badge.innerText = q.section;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[idx] === optIdx;
+                let div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition duration-150 flex items-center space-x-3 ${isSelected ? 'bg-sky-600/30 border-sky-500 text-white font-medium shadow-md' : 'bg-slate-800/60 border-slate-600 hover:bg-slate-700 text-slate-200'}`;
+                div.onclick = () => selectOption(optIdx);
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border border-slate-400 flex items-center justify-center text-xs font-bold ${isSelected ? 'bg-sky-500 border-sky-400 text-white' : 'text-slate-300'}">${String.fromCharCode(65 + optIdx)}</div>
+                    <div class="flex-1">${opt}</div>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', idx === 0);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (idx === questions.length - 1) {
+                nextBtn.innerText = "জমা দিন (Submit) ✓";
+                nextBtn.className = "px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+                nextBtn.className = "px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md";
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestion] = optIdx;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    submitQuiz();
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(idx) {
+            loadQuestion(idx);
+        }
+
+        let evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let timeSpent = totalTimeSeconds - timeLeft;
+            let spentMins = Math.floor(timeSpent / 60);
+            let spentSecs = timeSpent % 60;
+            document.getElementById('time-taken-text').innerText = `সময় লেগেছে: ${spentMins} মিনিট ${spentSecs} সেকেন্ড`;
+
+            let correct = 0;
+            let wrong = 0;
+            let skipped = 0;
+
+            evaluatedResults = { correctList: [], wrongList: [], skippedList: [] };
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                    evaluatedResults.skippedList.push(idx);
+                } else if (ans === questions[idx].correct) {
+                    correct++;
+                    evaluatedResults.correctList.push(idx);
+                } else {
+                    wrong++;
+                    evaluatedResults.wrongList.push(idx);
+                }
+            });
+
+            let score = (correct * 1.0) - (wrong * 0.25);
+            if (score < 0) score = 0;
+
+            document.getElementById('final-score').innerText = score.toFixed(2);
+            document.getElementById('final-correct').innerText = correct;
+            document.getElementById('final-wrong').innerText = wrong;
+            document.getElementById('final-skipped').innerText = skipped;
+
+            document.getElementById('count-correct').innerText = correct;
+            document.getElementById('count-wrong').innerText = wrong;
+            document.getElementById('count-skipped').innerText = skipped;
+
+            switchTab('correct');
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            ['correct', 'wrong', 'skipped'].forEach(t => {
+                let btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tabName) {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150";
+                } else {
+                    btn.className = "flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150";
+                }
+            });
+
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+
+            let listToRender = [];
+            if (currentTab === 'correct') listToRender = evaluatedResults.correctList;
+            else if (currentTab === 'wrong') listToRender = evaluatedResults.wrongList;
+            else if (currentTab === 'skipped') listToRender = evaluatedResults.skippedList;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>`;
+                return;
+            }
+
+            listToRender.forEach((qIdx) => {
+                const q = questions[qIdx];
+                const userAns = userAnswers[qIdx];
+
+                let card = document.createElement('div');
+                card.className = "bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3";
+                
+                let html = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400">প্রশ্ন #${qIdx + 1}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-semibold rounded border bg-sky-900 text-sky-200 border-sky-700">${q.section}</span>
+                </div>`;
+                html += `<p class="font-semibold text-slate-200 text-sm md:text-base">${q.q}</p>`;
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">`;
+
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-2 rounded-lg border border-slate-700 bg-slate-900/60 text-slate-300 flex items-center space-x-2";
+                    let badge = "";
+
+                    if (optIdx === q.correct) {
+                        optClass = "p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded">সঠিক উত্তর</span>`;
+                    } else if (optIdx === userAns && optIdx !== q.correct) {
+                        optClass = "p-2 rounded-lg border border-rose-500 bg-rose-950/40 text-rose-300 font-medium flex items-center space-x-2";
+                        badge = `<span class="ml-auto text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded">আপনার উত্তর</span>`;
+                    }
+
+                    html += `<div class="${optClass}">
+                        <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] font-bold">${String.fromCharCode(65 + optIdx)}</span>
+                        <span>${opt}</span>
+                        ${badge}
+                    </div>`;
+                });
+
+                html += `</div>`;
+                html += `<div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-700/80 text-xs text-slate-300">
+                    <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${q.exp}
+                </div>`;
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            if (confirm('আপনি কি পুনরায় পরীক্ষা দিতে চান?')) {
+                userAnswers.fill(null);
+                currentQuestion = 0;
+                timeLeft = 1500;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('start-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
