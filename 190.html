@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আন্তর্জাতিক বিষয়াবলি — বৈশ্বিক ও আঞ্চলিক জোট (Exam)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-indigo-800 via-blue-800 to-cyan-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">আন্তর্জাতিক বিষয়াবলি — বৈশ্বিক ও আঞ্চলিক জোট</h1>
+            <p class="text-sm text-blue-100 mt-1">অধ্যায়ভিত্তিক পরীক্ষা | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>বিষয়: বৈশ্বিক ও আঞ্চলিক জোট (SAARC, ASEAN, BIMSTEC, OIC, NAM, Commonwealth, GCC, AU, SCO, OAS, CIRDAP, APEC, ACU)।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের ৪টি অপশন ও ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm gap-2">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-blue-900 text-blue-200 border border-blue-700">বৈশ্বিক ও আঞ্চলিক জোট</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                        সময়: 25:00
+                    </div>
+                    <button onclick="confirmSubmit()" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition duration-200">
+                        সাবমিট করুন
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "SAARC-এর পূর্ণরূপ কী, সদর দপ্তর কোথায় এবং সার্ক গঠিত হয় কত সালে?", options: ["South Asian Association for Regional Cooperation - ঢাকা - ১৯৮৪", "South Asian Association for Regional Cooperation - কাঠমান্ডু, নেপাল - ১৯৮৫ সালে", "South Asia Association for Regional Cooperation - কাঠমান্ডু - ১৯৮৫", "South Asian Alliance for Regional Cooperation - নয়াদিল্লি - ১৯৮৫"], correct: 1, exp: "SAARC-এর পূর্ণরূপ South Asian Association for Regional Cooperation; সদর দপ্তর কাঠমান্ডু, নেপাল এবং গঠিত হয় ১৯৮৫ সালে।" },
+            { id: 2, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "ASEAN ও BIMSTEC-এর পূর্ণরূপ এবং সদর দপ্তর যথাক্রমে কী ও কোথায়?", options: ["Association of Southeast Asian Nations (ব্যাংকক) - Bay of Bengal Initiative for Multi-Sectoral Technical and Economic Cooperation (ঢাকা)", "Association of Southeast Asian Nations (জাকার্তা, ইন্দোনেশিয়া) - Bay of Bengal Initiative for Multi-Sectoral Technical and Economic Cooperation (ঢাকা, বাংলাদেশ)", "Association of South East Asian Nations (জাকার্তা) - Bay of Bengal Initiative for Multi-Sectoral Trade and Economic Cooperation (ঢাকা)", "Association of Southeast Asian Nations (সিঙ্গাপুর) - Bay of Bengal Initiative (ঢাকা)"], correct: 1, exp: "ASEAN-এর সদর দপ্তর জাকার্তা, ইন্দোনেশিয়া এবং BIMSTEC-এর সদর দপ্তর ঢাকা, বাংলাদেশ।" },
+            { id: 3, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "CIRDAP-এর সদর দপ্তর কোথায়, APEC-এর সদর দপ্তর কোথায় এবং ACU-এর পূর্ণরূপ ও সদর দপ্তর কী?", options: ["ঢাকা (চামেলি হাউজ) - ব্যাংকক - Asian Clearing Union (ঢাকা)", "চামেলি হাউজ, ঢাকা, বাংলাদেশ - সিঙ্গাপুর সিটি, সিঙ্গাপুর - Asian Clearing Union (তেহরান, ইরান)", "ঢাকা - টোকিও - Asian Currency Union (তেহরান)", "চামেলি হাউজ - সিঙ্গাপুর সিটি - Asian Clearing Union (রিয়াদ)"], correct: 1, exp: "CIRDAP-এর সদর দপ্তর চামেলি হাউজ (ঢাকা), APEC-এর সিঙ্গাপুর সিটি এবং ACU-এর পূর্ণরূপ Asian Clearing Union (সদর দপ্তর তেহরান, ইরান)।" },
+            { id: 4, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "OIC-এর সদর দপ্তর কোথায় এবং NAM-এর সদর দপ্তর আছে কি?", options: ["রিয়াদ, সৌদি আরব - জাকার্তা", "জেদ্দা, সৌদি আরব - সদর দপ্তর নেই", "জেদ্দা, সৌদি আরব - বেলগ্রেড", "কায়রো, মিশর - সদর দপ্তর নেই"], correct: 1, exp: "OIC-এর সদর দপ্তর জেদ্দা, সৌদি আরব এবং NAM-এর কোনো সদর দপ্তর নেই।" },
+            { id: 5, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "Commonwealth ও Arab League-এর সদর দপ্তর যথাক্রমে কোথায়?", options: ["বাকিংহাম প্যালেস, লন্ডন - জেদ্দা, সৌদি আরব", "মার্লবোরো হাউজ, লন্ডন, যুক্তরাজ্য - কায়রো, মিশর", "মার্লবোরো হাউজ, লন্ডন - দামেস্ক, সিরিয়া", "লন্ডন, যুক্তরাজ্য - কায়রো, মিশর"], correct: 1, exp: "Commonwealth-এর সদর দপ্তর মার্লবোরো হাউজ (লন্ডন, যুক্তরাজ্য) এবং Arab League-এর সদর দপ্তর কায়রো, মিশর।" },
+            { id: 6, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "GCC, AU, SCO ও OAS-এর সদর দপ্তর যথাক্রমে কোথায়?", options: ["দোহা, কায়রো, মস্কো, নিউইয়র্ক", "রিয়াদ (সৌদি আরব), আদ্দিস আবাবা (ইথিওপিয়া), বেইজিং (চীন), ওয়াশিংটন ডিসি (যুক্তরাষ্ট্র)", "রিয়াদ, আদ্দিস আবাবা, সমরকন্দ, ওয়াশিংটন ডিসি", "কুয়েত, নাইরোবি, বেইজিং, ওয়াশিংটন ডিসি"], correct: 1, exp: "GCC-এর সদর দপ্তর রিয়াদ, AU-এর আদ্দিস আবাবা, SCO-এর বেইজিং এবং OAS-এর ওয়াশিংটন ডিসি।" },
+            { id: 7, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "সার্কের সর্বশেষ সদস্য কোনটি (কত সালে যুক্ত হয়) এবং সার্কের প্রথম মহাসচিব কে ছিলেন?", options: ["মালদ্বীপ (১৯৮৫) - আবুল আহসান (বাংলাদেশ)", "আফগানিস্তান (২০০৭) - আবুল আহসান (বাংলাদেশ)", "আফগানিস্তান (২০০৫) - এ. কিউ. এ. এস. কাদের", "ভুটান (২০০৭) - আবুল আহসান"], correct: 1, exp: "সার্কের সর্বশেষ সদস্য আফগানিস্তান (২০০৭) এবং সার্কের প্রথম মহাসচিব আবুল আহসান (বাংলাদেশ)।" },
+            { id: 8, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "সার্কের প্রথম সম্মেলন কোথায় ও কবে অনুষ্ঠিত হয় এবং সার্ক বিশ্ববিদ্যালয় কোথায় অবস্থিত?", options: ["কাঠমান্ডু, ১৯৮৫ - ঢাকা, বাংলাদেশ", "১৯৮৫ সালে, ঢাকায় - নয়াদিল্লি, ভারত", "ঢাকা, ১৯৮৬ - নয়াদিল্লি, ভারত", "ইসলামাবাদ, ১৯৮৫ - কাঠমান্ডু, নেপাল"], correct: 1, exp: "সার্কের প্রথম সম্মেলন ১৯৮৫ সালে ঢাকায় হয় এবং সার্ক বিশ্ববিদ্যালয় ভারতের নয়াদিল্লিতে অবস্থিত।" },
+            { id: 9, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "SAARC-এর সদস্য দেশ ও স্থলবেষ্টিত রাষ্ট্র যথাক্রমে কয়টি ও কী কী, এবং সহযোগিতার ক্ষেত্র কয়টি?", options: ["৭টি - ২টি (নেপাল, ভুটান) - ১২টি", "৮টি সদস্য - ৩টি স্থলবেষ্টিত রাষ্ট্র (আফগানিস্তান, নেপাল, ভুটান) - ১৩টি সহযোগিতার ক্ষেত্র", "৮টি - ৩টি (আফগানিস্তান, নেপাল, মিয়ানমার) - ১৩টি", "৮টি - ২টি - ১৪টি"], correct: 1, exp: "SAARC-এর সদস্য দেশ ৮টি, স্থলবেষ্টিত রাষ্ট্র ৩টি (আফগানিস্তান, নেপাল, ভুটান) এবং সহযোগিতার ক্ষেত্র ১৩টি।" },
+            { id: 10, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "সার্কের একমাত্র পর্যবেক্ষক সংস্থা কোনটি এবং ASEAN কবে প্রতিষ্ঠিত হয় ও বর্তমান সদস্য কয়টি (সর্বশেষ কোনটি)?", options: ["জাতিসংঘ - ১৯৬৭ - ১০টি (লাওস)", "ইউরোপীয় ইউনিয়ন (EU) - ১৯৬৭ - ১১টি (সর্বশেষ- তিমুর লেসতে)", "EU - ১৯৬৮ - ১১টি (তিমুর লেসতে)", "জাপান - ১৯৬৭ - ১১টি (ব্রুনেই)"], correct: 1, exp: "সার্কের একমাত্র পর্যবেক্ষক সংস্থা EU; ASEAN প্রতিষ্ঠিত হয় ১৯৬৭ সালে এবং বর্তমান সদস্য ১১টি (সর্বশেষ তিমুর লেসতে)।" },
+            { id: 11, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "ASEAN+3 বলতে কী বোঝায় এবং বাংলাদেশ ASEAN Regional Forum (ARF)-এর কততম সদস্য (মোট সদস্য কয়টি)?", options: ["চীন, জাপান, ভারত ও ASEAN - ২৫তম (২৭টি)", "চীন, জাপান, দক্ষিন কোরিয়া ও ASEAN - ২৬তম সদস্য (মোট- ২৭টি)", "চীন, জাপান, দক্ষিণ কোরিয়া ও SAARC - ২৬তম (২৬টি)", "জাপান, দক্ষিণ কোরিয়া, অস্ট্রেলিয়া ও ASEAN - ২৬তম (২৭টি)"], correct: 1, exp: "ASEAN+3 বলতে চীন, জাপান, দক্ষিণ কোরিয়া ও ASEAN-কে বোঝায়; বাংলাদেশ ARF-এর ২৬তম সদস্য (মোট ২৭টি)।" },
+            { id: 12, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "BIMSTEC-এর বর্তমান সদস্য দেশ কয়টি, সহযোগিতার ক্ষেত্র কয়টি এবং বাংলাদেশের জন্য অগ্রাধিকার খাত কোনটি?", options: ["৬টি - ১২টি - Energy", "৭টি - ১৪টি - Trade and Investment, Development", "৭টি - ১৩টি - Connectivity", "৮টি - ১৪টি - Climate Change"], correct: 1, exp: "BIMSTEC-এর বর্তমান সদস্য ৭টি, সহযোগিতার ক্ষেত্র ১৪টি এবং বাংলাদেশের জন্য অগ্রাধিকার খাত Trade and Investment, Development।" },
+            { id: 13, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "CIRDAP-এর সদস্য সংখ্যা কত, প্রতিষ্ঠায় কোন সংস্থা গুরুত্বপূর্ণ অবদান রাখে এবং সর্বশেষ সদস্য কোনটি?", options: ["১৪ - UNDP - নেপাল", "১৫ - জাতিসংঘের খাদ্য ও কৃষি সংস্থা (FAO) - ফিজি", "১৬ - FAO - ফিজি", "১৫ - বিশ্বব্যাংক - ভানুয়াতু"], correct: 1, exp: "CIRDAP-এর সদস্য ১৫টি, প্রতিষ্ঠায় FAO গুরুত্বপূর্ণ অবদান রাখে এবং সর্বশেষ সদস্য ফিজি।" },
+            { id: 14, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "APEC-এর প্রতিষ্ঠাতা কে, প্রতিষ্ঠাকালীন ও বর্তমান সদস্য সংখ্যা কত?", options: ["মাহাথির মোহাম্মদ - ১০ ও ২১টি", "বব হক (অস্ট্রেলিয়ার সাবেক প্রধানমন্ত্রী) - ১২ ও ২১টি", "বব হক - ১২ ও ২০টি", "জন হাওয়ার্ড - ১৫ ও ২১টি"], correct: 1, exp: "APEC-এর প্রতিষ্ঠাতা অস্ট্রেলিয়ার সাবেক প্রধানমন্ত্রী বব হক; প্রতিষ্ঠাকালীন সদস্য ১২টি এবং বর্তমান সদস্য ২১টি।" },
+            { id: 15, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "OIC প্রতিষ্ঠিত হয় কত সালে ও কোথায়, কোন ঘটনার প্রেক্ষাপটে এবং প্রথম মহাসচিব কে ছিলেন?", options: ["১৯৭০, জেদ্দা - ছয় দিনের যুদ্ধ - হাবিব আল-চাত্তি", "১৯৬৯ সালে; মরক্কোর রাবাতে - ১৯৬৯ সালে আল-আকসা মসজিদে অগ্নিসংযোগের ঘটনার পর - টুংকু আবদুল রহমান", "১৯৬৯, রাবাত - সুয়েজ সংকট - টুংকু আবদুল রহমান", "১৯৭১, লাহোর - আল-আকসা অগ্নিসংযোগ - সৈয়দ শরীফউদ্দিন পিরজাদা"], correct: 1, exp: "১৯৬৯ সালে আল-আকসা মসজিদে অগ্নিসংযোগের পর মরক্কোর রাবাতে OIC গঠিত হয়; প্রথম মহাসচিব টুংকু আবদুল রহমান।" },
+            { id: 16, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "বাংলাদেশ OIC-এর সদস্যপদ লাভ করে কত সালে ও কততম সম্মেলনে, এবং বাংলাদেশের কোন বিশ্ববিদ্যালয় OIC-এর তত্ত্বাবধানে পরিচালিত হয়?", options: ["১৯৭৩, ১ম সম্মেলন - ঢাকা বিশ্ববিদ্যালয়", "১৯৭৪ সালে (লাহোর সম্মেলনে, ২য় সম্মেলনে) - Islamic University of Technology (গাজীপুর)", "১৯৭৪, ৩য় সম্মেলন - IUT (গাজীপুর)", "১৯৭৫, ২য় সম্মেলন - ইসলামী বিশ্ববিদ্যালয়, কুষ্টিয়া"], correct: 1, exp: "বাংলাদেশ ১৯৭৪ সালে লাহোরে ২য় OIC সম্মেলনে সদস্যপদ লাভ করে; গাজীপুরের Islamic University of Technology (IUT) OIC-এর তত্ত্বাবধানে পরিচালিত হয়।" },
+            { id: 17, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "উদ্যোক্তা রাষ্ট্র হয়েও কোন দেশ ১৯৭৯ থেকে ১৯৮৪ সাল পর্যন্ত OIC থেকে বহিষ্কৃত ছিল এবং OIC-এর দাপ্তরিক ভাষা কয়টি ও কী কী?", options: ["সৌদি আরব - ২টি (আরবি, ইংরেজি)", "মিশর - ৩টি (আরবি, ইংরেজি, ফরাসি)", "ইরান - ৩টি (আরবি, ফারসি, ইংরেজি)", "লিবিয়া - ৪টি"], correct: 1, exp: "উদ্যোক্তা রাষ্ট্র হয়েও মিশর ১৯৭৯-১৯৮৪ পর্যন্ত OIC থেকে বহিষ্কৃত ছিল; দাপ্তরিক ভাষা ৩টি: আরবি, ইংরেজি ও ফরাসি।" },
+            { id: 18, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "মুসলিম প্রধান দেশ না হয়েও OIC-এর সদস্য দেশগুলোর মধ্যে কোনগুলো তালিকায় রয়েছে (মোট সদস্য কয়টি)?", options: ["উগান্ডা, ক্যামেরুন, বেনিন, মোজাম্বিক, গায়ানা, সুরিনাম, গ্যাবন, টোগো, আইভরি কোস্ট (মোট- ৫৭টি)", "উগান্ডা, নাইজেরিয়া, ক্যামেরুন, গায়ানা, সুরিনাম (মোট- ৫৬টি)", "বেনিন, টোগো, কেনিয়া, গায়ানা, সুরিনাম (মোট- ৫৭টি)", "উগান্ডা, ক্যামেরুন, বেনিন, সুরিনাম, ফিজি (মোট- ৫৭টি)"], correct: 1, exp: "মুসলিম প্রধান না হয়েও OIC সদস্য: উগান্ডা, ক্যামেরুন, বেনিন, মোজাম্বিক, গায়ানা, সুরিনাম, গ্যাবন, টোগো ও আইভরি কোস্ট (মোট ৫৭টি)।" },
+            { id: 19, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "NAM গঠনের সিদ্ধান্ত গৃহীত হয় কোথায় ও কবে, এবং যাত্রা শুরু হয় কবে ও কোথায়?", options: ["বেলগ্রেড (১৯৫৫) - বান্দুং সম্মেলন (১৯৬১)", "ইন্দোনেশিয়ার বান্দুং সম্মেলনে (১৯৫৫ সালে) - ১৯৬১ সালে, বেলগ্রেড সম্মেলনে", "কায়রো (১৯৫৫) - বান্দুং সম্মেলন (১৯৬১)", "বান্দুং (১৯৫৬) - বেলগ্রেড সম্মেলন (১৯৬১)"], correct: 1, exp: "NAM গঠনের সিদ্ধান্ত ১৯৫৫ সালে ইন্দোনেশিয়ার বান্দুং সম্মেলনে গৃহীত হয় এবং যাত্রা শুরু হয় ১৯৬১ সালে বেলগ্রেড সম্মেলনে।" },
+            { id: 20, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "'পঞ্চশীল নীতি'-এর প্রবক্তা কে কে, NAM-এর বার্তা সংস্থার নাম কী এবং বাংলাদেশ NAM-এর সদস্যপদ লাভ করে কবে?", options: ["নেহেরু ও সুকর্ণ - NAM News Agency - ১৯৭২", "জওহরলাল নেহেরু (ভারত) এবং চৌ এন লাই (চীন) - NAM News Network (NNN) - ১৯৭৩ সালে", "নেহেরু ও নাসের - NNN - ১৯৭৪", "চৌ এন লাই ও টিটো - NAM Press - ১৯৭৩"], correct: 1, exp: "'পঞ্চশীল নীতি'-এর প্রবক্তা নেহেরু ও চৌ এন লাই; বার্তা সংস্থা NAM News Network (NNN) এবং বাংলাদেশ ১৯৭৩ সালে NAM সদস্য হয়।" },
+            { id: 21, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "কমনওয়েলথ কবে প্রতিষ্ঠিত হয়, প্রধান কে (বর্তমানে কে) এবং রাজা তৃতীয় চার্লস কয়টি দেশের রাষ্ট্রপ্রধান?", options: ["১৯৪৭ - রানি দ্বিতীয় এলিজাবেথ - ১৪", "১৯৪৯ - ব্রিটেনের রাজা/রানি (বর্তমানে-তৃতীয় চার্লস) - ১৫", "১৯৪৯ - ব্রিটেনের প্রধানমন্ত্রী - ১৫", "১৯৫০ - রাজা তৃতীয় চার্লস - ১৬"], correct: 1, exp: "কমনওয়েলথ প্রতিষ্ঠিত হয় ১৯৪৯ সালে; প্রধান ব্রিটেনের রাজা/রানি (বর্তমানে তৃতীয় চার্লস), যিনি ১৫টি দেশের রাষ্ট্রপ্রধান।" },
+            { id: 22, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "কমনওয়েলথভুক্ত ও জাতিসংঘভুক্ত (কিন্তু কমনওয়েলথভুক্ত নয় এমন) দেশসমূহের কূটনৈতিক কর্মকর্তাদের কী বলা হয়?", options: ["অ্যাম্বসেডর ও হাইকমিশনার", "হাইকমিশনার ও অ্যাম্বসেডর", "কনসাল ও হাইকমিশনার", "হাইকমিশনার ও ডেলিগেট"], correct: 1, exp: "কমনওয়েলথভুক্ত দেশগুলোর কূটনৈতিক কর্মকর্তাদের হাইকমিশনার এবং জাতিসংঘভুক্ত কিন্তু কমনওয়েলথভুক্ত নয় এমন দেশের কর্মকর্তাদের অ্যাম্বসেডর বলে।" },
+            { id: 23, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "আয়তনে ও জনসংখ্যায় কমনওয়েলথের ক্ষুদ্রতম দেশ কোনটি (পূর্বনাম কী) এবং কমনওয়েলথের বর্তমান সদস্য দেশ কয়টি?", options: ["মালদ্বীপ - ৫৪টি", "নাউয়েরো (পূর্বনাম: নাউরু) - ৫৬টি", "টুভালু - ৫৬টি", "নাউরু (পূর্বনাম: নাউয়েরো) - ৫৫টি"], correct: 1, exp: "তালিকায় ক্ষুদ্রতম দেশ নাউয়েরো (পূর্বনাম: নাউরু) এবং কমনওয়েলথের বর্তমান সদস্য দেশ ৫৬টি।" },
+            { id: 24, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "বাংলাদেশ ১৯৭২ সালে কমনওয়েলথের সদস্য হওয়ায় কোন দেশ কমনওয়েলথ ত্যাগ করেছিল এবং বাংলাদেশ প্রথম কোন আন্তর্জাতিক সংস্থার সদস্যপদ লাভ করে?", options: ["মালয়েশিয়া - জাতিসংঘ", "পাকিস্তান - কমনওয়েলথ", "পাকিস্তান - OIC", "ইরান - কমনওয়েলথ"], correct: 1, exp: "বাংলাদেশ ১৯৭২ সালে সদস্য হওয়ায় পাকিস্তান কমনওয়েলথ ত্যাগ করে এবং বাংলাদেশ প্রথম কমনওয়েলথের সদস্যপদ লাভ করে।" },
+            { id: 25, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "ব্রিটিশ উপনিবেশ না হয়েও কমনওয়েলথের সদস্য কোন দেশগুলো এবং ব্রিটিশ উপনিবেশ হয়েও সদস্য নয় কোনগুলো?", options: ["মোজাম্বিক, রুয়ান্ডা, গ্যাবন ও টোগো - যুক্তরাষ্ট্র, মিয়ানমার, সুদান, মিশর ও আয়ারল্যান্ড", "রুয়ান্ডা, গ্যাবন, কঙ্গো - যুক্তরাষ্ট্র, কানাডা, মিশর", "মোজাম্বিক, রুয়ান্ডা, টোগো - মিশর, ইরাক, আয়ারল্যান্ড", "গ্যাবন, টোগো, নামিবিয়া - যুক্তরাষ্ট্র, মিয়ানমার, সুদান"], correct: 1, exp: "ব্রিটিশ উপনিবেশ না হয়েও সদস্য: মোজাম্বিক, রুয়ান্ডা, গ্যাবন ও টোগো; ব্রিটিশ উপনিবেশ হয়েও সদস্য নয়: যুক্তরাষ্ট্র, মিয়ানমার, সুদান, মিশর ও আয়ারল্যান্ড।" },
+            { id: 26, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "কোন দেশ পূর্বে কমনওয়েলথের সদস্য ছিল বর্তমানে নেই, এবং কমনওয়েলথের প্রথম নারী মহাসচিব কে?", options: ["মিয়ানমার - প্যাট্রিসিয়া স্কটল্যান্ড", "আয়ারল্যান্ড - প্যাট্রিসিয়া আলী", "মালদ্বীপ - প্যাট্রিসিয়া আলী", "জিম্বাবুয়ে - শিরলে আয়োরকর ব্লেচওয়ে"], correct: 1, exp: "পূর্বে কমনওয়েলথের সদস্য ছিল কিন্তু বর্তমানে নেই আয়ারল্যান্ড; তালিকায় প্রথম নারী মহাসচিব হিসেবে প্যাট্রিসিয়া আলীর নাম উল্লেখ আছে।" },
+            { id: 27, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "আরব লিগ প্রতিষ্ঠিত হয় কত সালে, ভিত্তি কী ছিল এবং সদস্য সংখ্যা কতটি?", options: ["১৯৪৪ - কায়রো ঘোষণা - ২১টি", "১৯৪৫ সালে - আলেকজান্দ্রিয়া প্রোটোকল - ২২টি", "১৯৪৫ সালে - বাগদাদ চুক্তি - ২২টি", "১৯৪৬ - আলেকজান্দ্রিয়া প্রোটোকল - ২০টি"], correct: 1, exp: "আরব লিগ প্রতিষ্ঠিত হয় ১৯৪৫ সালে (ভিত্তি আলেকজান্দ্রিয়া প্রোটোকল) এবং সদস্য সংখ্যা ২২টি।" },
+            { id: 28, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "GCC-এর দাপ্তরিক ভাষা কী, মোট সদস্য কয়টি এবং পারস্য উপসাগরীয় দেশ হয়েও সদস্য নয় কোন দুটি দেশ?", options: ["ইংরেজি - ৭টি - ইরাক ও কুয়েত", "আরবি - ৬টি (পারস্য উপসাগরীয় দেশ হওয়া সত্ত্বেও সদস্য নয় ইরাক ও ইরান)", "আরবি - ৬টি - ইরাক ও জর্ডান", "ফারসি - ৬টি - ইরাক ও ইরান"], correct: 1, exp: "GCC-এর দাপ্তরিক ভাষা আরবি, সদস্য ৬টি; পারস্য উপসাগরীয় দেশ হয়েও সদস্য নয় ইরাক ও ইরান।" },
+            { id: 29, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "GCC ভুক্ত দেশগুলোর চালুকৃত ইউনিফাইড ট্যুরিস্ট ভিসার নাম কী?", options: ["GCC Unified Visa", "GCC Grand Tours Visa", "Gulf Tourist Pass", "Arabia Grand Visa"], correct: 1, exp: "GCC ভুক্ত দেশগুলোর চালুকৃত ইউনিফাইড ট্যুরিস্ট ভিসার নাম 'GCC Grand Tours Visa'।" },
+            { id: 30, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "AU-এর প্রতিষ্ঠাকালীন নাম কী ছিল, কোন আঞ্চলিক সংস্থার নিজস্ব সেনাবাহিনী রয়েছে এবং 'Agenda-2063' কোন সংস্থার সাথে সম্পর্কিত?", options: ["African Union - আরব লিগ - আরব লিগ", "Organization of African Unity (OAU) - আফ্রিকান ইউনিয়নের - AU", "OAU - NATO - AU", "United States of Africa - AU - NAM"], correct: 1, exp: "AU-এর প্রতিষ্ঠাকালীন নাম Organization of African Unity (OAU), নিজস্ব সেনাবাহিনী রয়েছে আফ্রিকান ইউনিয়নের এবং 'Agenda-2063' AU-এর সাথে সম্পর্কিত।" },
+            { id: 31, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "CIS প্রতিষ্ঠিত হয় কত সালে, CIS ত্যাগকারী দেশ কোনটি এবং মিয়ানমার সংকট নিরসনে আসিয়ান কোন প্রস্তাব করে?", options: ["১৯৯০ - ইউক্রেন - Four-Point Consensus", "১৯৯১ সালে - জর্জিয়া - Five-Point Consensus", "১৯৯১ সালে - বেলারুশ - Six-Point Consensus", "১৯৯২ - জর্জিয়া - Five-Point Plan"], correct: 1, exp: "CIS প্রতিষ্ঠিত হয় ১৯৯১ সালে, ত্যাগকারী দেশ জর্জিয়া এবং মিয়ানমার সংকটে আসিয়ানের প্রস্তাব 'Five-Point Consensus'।" },
+            { id: 32, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "এশীয় অঞ্চলে শান্তি ও নিরাপত্তা প্রতিষ্ঠার উদ্দেশ্যে গঠিত জোট কোনটি (সদর দপ্তর কোথায়) এবং ATIGA, RCEP ও ACFTA কীসের সাথে সম্পর্কিত?", options: ["ASEAN - ব্যাংকক - সামরিক জোট", "APA (Asian Parliamentary Assembly) - তেহরান, ইরান - আঞ্চলিক বাণিজ্য ও অর্থনৈতিক সহযোগিতা", "ARF - জাকার্তা - আঞ্চলিক বাণিজ্য ও অর্থনৈতিক সহযোগিতা", "SCO - বেইজিং - জ্বালানি সহযোগিতা"], correct: 1, exp: "APA (সদর দপ্তর তেহরান, ইরান) এশিয়ায় শান্তি ও নিরাপত্তা প্রতিষ্ঠার জোট; ATIGA, RCEP ও ACFTA আঞ্চলিক বাণিজ্য ও অর্থনৈতিক সহযোগিতার সাথে সম্পর্কিত।" },
+            { id: 33, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "সার্কভুক্ত দেশগুলোর মধ্যে শিক্ষার হার, মাথাপিছু আয় ও গড় আয়ু সবচেয়ে বেশি কোন দেশে এবং সবচেয়ে কম কোন দেশে?", options: ["ভারত - নেপাল", "মালদ্বীপ - আফগানিস্তানে", "শ্রীলংকা - আফগানিস্তানে", "মালদ্বীপ - ভুটান"], correct: 1, exp: "সার্কভুক্ত দেশগুলোর মধ্যে শিক্ষার হার, মাথাপিছু আয় ও গড় আয়ু সবচেয়ে বেশি মালদ্বীপের এবং মাথাপিছু আয় ও শিক্ষার হার সবচেয়ে কম আফগানিস্তানে।" },
+            { id: 34, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "সার্কভুক্ত কোন দেশে জনসংখ্যা বৃদ্ধির হার সর্বাধিক, সার্কের রূপকার কে এবং সার্ক শীর্ষ সম্মেলনে কোন বিষয়টি আলোচিত হতে পারে না?", options: ["নেপাল - জিয়াউর রহমান - অর্থনৈতিক বিষয়", "আফগানিস্তান - জিয়াউর রহমান - দ্বিপাক্ষিক সমস্যা", "বাংলাদেশ - হুসেইন মুহম্মদ এরশাদ - দ্বিপাক্ষিক সমস্যা", "আফগানিস্তান - শেখ মুজিবুর রহমান - বাণিজ্য"], correct: 1, exp: "সার্কভুক্ত দেশগুলোর মধ্যে আফগানিস্তানে জনসংখ্যা বৃদ্ধির হার সর্বাধিক; সার্কের রূপকার জিয়াউর রহমান এবং শীর্ষ সম্মেলনে দ্বিপাক্ষিক সমস্যা আলোচিত হতে পারে না।" },
+            { id: 35, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "'সার্ক'-এর বর্তমান মহাসচিবের নাম কী (কোন দেশের), ২০০৪ সালে সার্ক পদক পান কে এবং সার্ক ফোয়ারা কোথায় ও স্থপতি কে?", options: ["এস. এ. করিম - শেখ মুজিবুর রহমান - শাহবাগ, মৃণাল হক", "গোলাম সারোয়ার (বাংলাদেশ) - জিয়াউর রহমান - কারওয়ান বাজার, নিতুন কুন্ডু", "গোলাম সারোয়ার - জিয়াউর রহমান - মতিঝিল, নিতুন কুন্ডু", "ইসালা রুওয়ান উইরাকুন - জিয়াউর রহমান - কারওয়ান বাজার, হামিদুজ্জামান"], correct: 1, exp: "সার্কের বর্তমান মহাসচিব গোলাম সারোয়ার (বাংলাদেশ), ২০০৪ সালে সার্ক পদক পান জিয়াউর রহমান এবং সার্ক ফোয়ারা কারওয়ান বাজারে (স্থপতি নিতুন কুন্ডু)।" },
+            { id: 36, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "SAFTA-এর পূর্ণরূপ কী, চুক্তি কত সালে সম্পাদিত ও কার্যকর হয় এবং BIMSTEC কী ধরনের সংগঠন?", options: ["South Asian Free Trade Agreement - ২০০৪ (কার্যকর ২০০৫) - সামরিক", "South Asian Free Trade Area - ২০০৪ (কার্যকর- ২০০৬) - অর্থনৈতিক", "South Asia Free Trade Area - ২০০৬ (কার্যকর ২০০৭) - অর্থনৈতিক", "South Asian Free Trade Area - ২০০৪ (কার্যকর ২০০৬) - রাজনৈতিক"], correct: 1, exp: "SAFTA-এর পূর্ণরূপ South Asian Free Trade Area (সম্পাদিত ২০০৪, কার্যকর ২০০৬) এবং BIMSTEC একটি অর্থনৈতিক সংগঠন।" },
+            { id: 37, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "সার্ক দুর্যোগ ব্যবস্থাপনা কেন্দ্র, সার্ক শক্তি কেন্দ্র (SEC), সার্ক সাংস্কৃতিক কেন্দ্র (SCC) ও সার্ক কৃষি কেন্দ্র (SAC) যথাক্রমে কোথায় অবস্থিত?", options: ["নয়াদিল্লি, ইসলামাবাদ, কলম্বো, ঢাকা", "গুজরাট, ইসলামাবাদ, কলম্বো, ঢাকা, বাংলাদেশ", "কাঠমান্ডু, ইসলামাবাদ, ঢাকা, কলম্বো", "গুজরাট, নয়াদিল্লি, কলম্বো, ঢাকা"], correct: 1, exp: "সার্ক দুর্যোগ ব্যবস্থাপনা কেন্দ্র গুজরাটে, SEC ইসলামাবাদে, SCC কলম্বোতে এবং SAC ঢাকায় অবস্থিত।" },
+            { id: 38, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "OIC-এর বর্তমান মহাসচিব কে, RCEP-এর পূর্ণরূপ কী এবং আসিয়ানের কততম সম্মেলনে RCEP গঠনের সিদ্ধান্ত হয় (সদস্য কয়টি)?", options: ["হিসেন ব্রাহিম তাহা - Regional Comprehensive Economic Pact - ৩৪তম (১২টি)", "ইসমাইল উলদ শেখ আহমেদ (মৌরিতানিয়া) - Regional Comprehensive Economic Partnership - ৩৫তম (সদস্য-১৫)", "ইসমাইল উলদ শেখ আহমেদ - Regional Comprehensive Economic Partnership - ৩৫তম (সদস্য-১৬)", "তারিক আলী বাখীত - Regional Economic Partnership - ৩৫তম (১৫টি)"], correct: 1, exp: "OIC-এর বর্তমান মহাসচিব ইসমাইল উলদ শেখ আহমেদ; RCEP-এর পূর্ণরূপ Regional Comprehensive Economic Partnership এবং আসিয়ানের ৩৫তম সম্মেলনে গঠনের সিদ্ধান্ত হয় (সদস্য ১৫)।" },
+            { id: 39, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "SCO কত সালে প্রতিষ্ঠিত হয়, BCIM-এর পূর্ণরূপ ও ধারণাদাতা কে, এবং IOMed প্রতিষ্ঠা করেছে কোন দেশ?", options: ["২০০২ - Bangladesh, China, India, Myanmar (অমর্ত্য সেন) - জাপান", "২০০১ সালে - Bangladesh, China, India, Myanmar (ধারণা দেন- অর্থনীতিবিদ রেহমান সোবহান) - চীন", "২০০১ সালে - Bay of Bengal, China, India, Myanmar (রেহমান সোবহান) - চীন", "২০০০ - BCIM (রেহমান সোবহান) - সিঙ্গাপুর"], correct: 1, exp: "SCO প্রতিষ্ঠিত হয় ২০০১ সালে; BCIM-এর পূর্ণরূপ Bangladesh, China, India, Myanmar (ধারণাদাতা রেহমান সোবহান) এবং IOMed প্রতিষ্ঠা করেছে চীন।" },
+            { id: 40, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "২০২৬ সালে SCO Summit কোথায় অনুষ্ঠিত হয়েছে, BIMSTEC ও CIRDAP-এর বর্তমান সভাপতি দেশ কোনটি এবং গাজা পুনর্গঠনে ট্রাম্পের বিপরীতে বিকল্প প্রস্তাব দেয় কোন সংস্থা?", options: ["সমরকন্দ, উজবেকিস্তান - ভারত - OIC", "বিশকেক, কিরগিজস্তান - বাংলাদেশ - Arab League", "বিশকেক, কিরগিজস্তান - থাইল্যান্ড - Arab League", "আস্তানা, কাজাখস্তান - বাংলাদেশ - NAM"], correct: 1, exp: "২০২৬ সালে SCO Summit বিশকেক, কিরগিজস্তানে অনুষ্ঠিত হয়; BIMSTEC ও CIRDAP-এর বর্তমান সভাপতি বাংলাদেশ এবং গাজা পুনর্গঠনে বিকল্প প্রস্তাব দেয় Arab League।" },
+            { id: 41, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "ACU কী এবং OAS কোন অঞ্চলের জন্য গঠিত জোট?", options: ["এশিয়ার ব্যাংক জোট - ইউরোপ অঞ্চল", "এশিয়ার কিছু দেশের কেন্দ্রীয় ব্যাংকের সমন্বয়ে গড়ে ওঠা লেনদেন নিষ্পন্নকারী সংস্থা - আমেরিকা অঞ্চল", "এশিয়ার বাণিজ্য সংস্থা - আমেরিকা অঞ্চল", "এশিয়ার উন্নয়ন জোট - আফ্রিকা অঞ্চল"], correct: 1, exp: "ACU হলো এশিয়ার কিছু দেশের কেন্দ্রীয় ব্যাংকের সমন্বয়ে গড়ে ওঠা লেনদেন নিষ্পন্নকারী সংস্থা এবং OAS আমেরিকা অঞ্চলের জন্য গঠিত জোট।" },
+            { id: 42, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "ARF-এর সদর দপ্তর কোথায় অবস্থিত এবং আসিয়ানের বর্তমান সেক্রেটারি জেনারেল কে?", options: ["ব্যাংকক - লিম জক হোই", "জাকার্তা - কাও কিম হর্ন (কম্বোডিয়া)", "সিঙ্গাপুর - কাও কিম হর্ন", "জাকার্তা - সূরিন পিৎসুওয়ান"], correct: 1, exp: "ARF-এর সদর দপ্তর জাকার্তায় এবং আসিয়ানের বর্তমান সেক্রেটারি জেনারেল কাও কিম হর্ন।" },
+            { id: 43, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "SAARC-এর ১৮তম সম্মেলন কোথায় ও কবে হয় এবং ASEAN-এর ৪৮তম সম্মেলন কোথায় ও কবে অনুষ্ঠিত হয়?", options: ["ইসলামাবাদ, ২০১৪ - ব্যাংকক, মে ২০২৬", "১৮তম সম্মেল- কাঠমান্ডু, নেপাল (২৬-২৭ নভেম্বর, ২০১৪) - ৪৮তম সম্মেলন- সেবু, ফিলিপাইন (৬-৮ মে, ২০২৬)", "কাঠমান্ডু, ২০১৫ - সেবু, ফিলিপাইন (৬-৮ মে, ২০২৬)", "ঢাকা, ২০১৪ - ম্যানিলা, মে ২০২৬"], correct: 1, exp: "SAARC-এর ১৮তম সম্মেলন কাঠমান্ডুতে (২৬-২৭ নভেম্বর, ২০১৪) এবং ASEAN-এর ৪৮তম সম্মেলন সেবু, ফিলিপাইনে (৬-৮ মে, ২০২৬) অনুষ্ঠিত হয়।" },
+            { id: 44, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "Commonwealth-এর ২৮তম সম্মেলন কোথায় ও কবে এবং OIC-এর ১৬তম সম্মেলন কোথায় ও কবে নির্ধারিত?", options: ["লন্ডন, নভেম্বর ২০২৬ - রিয়াদ, জুন ২০২৭", "২৮তম সম্মেলন- অ্যান্টিগুয়া ও বারবুডা (১-৪ নভেম্বর, ২০২৬) - ১৬তম সম্মেলন- বাকু, আজারবাইজান (২৩-২৪ জুন, ২০২৭)", "অ্যান্টিগুয়া ও বারবুডা (১-৪ নভেম্বর, ২০২৬) - ইস্তানবুল, জুন ২০২৭", "কানাডা, নভেম্বর ২০২৬ - বাকু, আজারবাইজান (২০২৭)"], correct: 1, exp: "Commonwealth-এর ২৮তম সম্মেলন অ্যান্টিগুয়া ও বারবুডায় (১-৪ নভেম্বর, ২০২৬) এবং OIC-এর ১৬তম সম্মেলন বাকু, আজারবাইজানে (২৩-২৪ জুন, ২০২৭) নির্ধারিত।" },
+            { id: 45, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "কোন ঘটনা NAM প্রতিষ্ঠায় সবচেয়ে গুরুত্বপূর্ণ ভূমিকা পালন করে এবং জোট নিরপেক্ষ দেশসমূহের প্রথম সম্মেলন কোথায় হয়?", options: ["দ্বিতীয় বিশ্বযুদ্ধ - বান্দুংয়ে", "স্নায়ুযুদ্ধ - বেলগ্রেডে", "সুয়েজ সংকট - বেলগ্রেডে", "স্নায়ুযুদ্ধ - কায়রোতে"], correct: 1, exp: "NAM প্রতিষ্ঠায় স্নায়ুযুদ্ধ সবচেয়ে গুরুত্বপূর্ণ ভূমিকা পালন করে এবং প্রথম সম্মেলন বেলগ্রেডে অনুষ্ঠিত হয়।" },
+            { id: 46, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "বিমসটেক কোন উপসাগরীয় অঞ্চলকেন্দ্রিক জোট এবং সার্কের একমাত্র নারী মহাসচিব ফাতিমা দিয়ানা সাঈদ কোন দেশের নাগরিক?", options: ["আরব সাগর - শ্রীলংকা", "বঙ্গোপসাগর - মালদ্বীপ", "বঙ্গোপসাগর - নেপাল", "ভারত মহাসাগর - মালদ্বীপ"], correct: 1, exp: "বিমসটেক বঙ্গোপসাগর অঞ্চলকেন্দ্রিক জোট এবং সার্কের একমাত্র নারী মহাসচিব ফাতিমা দিয়ানা সাঈদ মালদ্বীপের নাগরিক।" },
+            { id: 47, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "সার্ক গঠিত হয় কত সালে এবং প্রথম মহাসচিব কে ছিলেন?", options: ["১৯৮৪ - আবুল আহসান", "১৯৮৫ সালে - আবুল আহসান (বাংলাদেশ)", "১৯৮৫ সালে - ইব্রাহিম হুসেইন জাকি", "১৯৮৬ - আবুল আহসান"], correct: 1, exp: "সার্ক গঠিত হয় ১৯৮৫ সালে এবং এর প্রথম মহাসচিব ছিলেন বাংলাদেশের আবুল আহসান।" },
+            { id: 48, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "সার্কের অন্তর্ভুক্ত স্থলবেষ্টিত রাষ্ট্র কয়টি ও কী কী?", options: ["২টি - নেপাল ও ভুটান", "৩টি (আফগানিস্তান, নেপাল, ভুটান)", "৩টি - নেপাল, ভুটান ও মিয়ানমার", "৪টি"], correct: 1, exp: "SAARC-এর অন্তর্ভুক্ত স্থলবেষ্টিত রাষ্ট্র ৩টি: আফগানিস্তান, নেপাল ও ভুটান।" },
+            { id: 49, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "ASEAN কবে প্রতিষ্ঠিত হয় এবং বর্তমান সদস্য দেশ কয়টি (সর্বশেষ সদস্য কোনটি)?", options: ["১৯৬৭ - ১০টি (লাওস)", "১৯৬৭ - ১১টি (সর্বশেষ- তিমুর লেসতে)", "১৯৬৮ - ১১টি (তিমুর লেসতে)", "১৯৬৭ - ১১টি (কম্বোডিয়া)"], correct: 1, exp: "ASEAN প্রতিষ্ঠিত হয় ১৯৬৭ সালে এবং এর বর্তমান সদস্য দেশ ১১টি (সর্বশেষ তিমুর লেসতে)।" },
+            { id: 50, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "বাংলাদেশ ARF-এর কততম সদস্য ও মোট সদস্য কতটি, এবং BIMSTEC-এর বর্তমান সদস্য কয়টি?", options: ["২৫তম (২৬টি) - ৬টি", "২৬তম সদস্য (মোট- ২৭টি) - ৭টি", "২৭তম (২৭টি) - ৭টি", "২৬তম (২৮টি) - ৭টি"], correct: 1, exp: "বাংলাদেশ ARF-এর ২৬তম সদস্য (মোট ২৭টি) এবং BIMSTEC-এর বর্তমান সদস্য ৭টি।" },
+            { id: 51, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "CIRDAP-এর সদস্য সংখ্যা কত ও সর্বশেষ সদস্য কোনটি, এবং APEC-এর প্রতিষ্ঠাতা কে?", options: ["১৫ - ফিজি - বব হক (অস্ট্রেলিয়ার সাবেক প্রধানমন্ত্রী)", "১৪ - নেপাল - বব হক", "১৫ - ভানুয়াতু - পল কিটিং", "১৬ - ফিজি - বব হক"], correct: 1, exp: "CIRDAP-এর সদস্য ১৫টি (সর্বশেষ ফিজি) এবং APEC-এর প্রতিষ্ঠাতা অস্ট্রেলিয়ার সাবেক প্রধানমন্ত্রী বব হক।" },
+            { id: 52, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "OIC প্রতিষ্ঠিত হয় কত সালে ও কোথায়, এবং বাংলাদেশ OIC-এর সদস্যপদ লাভ করে কত সালে?", options: ["১৯৬৯, রাবাত - ১৯৭৩", "১৯৬৯ সালে; মরক্কোর রাবাতে - ১৯৭৪ সালে (লাহোর সম্মেলনে)", "১৯৭০, জেদ্দা - ১৯৭৪", "১৯৬৯, জেদ্দা - ১৯৭৪"], correct: 1, exp: "OIC ১৯৬৯ সালে মরক্কোর রাবাতে প্রতিষ্ঠিত হয় এবং বাংলাদেশ ১৯৭৪ সালে লাহোর সম্মেলনে সদস্যপদ লাভ করে।" },
+            { id: 53, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "NAM গঠনের সিদ্ধান্ত গৃহীত হয় কোথায় ও যাত্রা শুরু হয় কবে কোথায়?", options: ["বেলগ্রেড - ১৯৬১, বান্দুং", "ইন্দোনেশিয়ার বান্দুং সম্মেলনে (১৯৫৫ সালে) - ১৯৬১ সালে, বেলগ্রেড সম্মেলনে", "কায়রো - ১৯৬১, বেলগ্রেড", "বান্দুং - ১৯৬০, বেলগ্রেড"], correct: 1, exp: "NAM গঠনের সিদ্ধান্ত ১৯৫৫ সালে বান্দুং সম্মেলনে এবং যাত্রা শুরু হয় ১৯৬১ সালে বেলগ্রেড সম্মেলনে।" },
+            { id: 54, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "'পঞ্চশীল নীতি'-এর প্রবক্তা কে কে এবং NAM-এর বার্তা সংস্থার নাম কী?", options: ["নেহেরু ও নাসের - NAM News", "জওহরলাল নেহেরু (ভারত) এবং চৌ এন লাই (চীন) - NAM News Network (NNN)", "চৌ এন লাই ও সুকর্ণ - NNN", "নেহেরু ও চৌ এন লাই - Non-Aligned News"], correct: 1, exp: "'পঞ্চশীল নীতি'-এর প্রবক্তা নেহেরু ও চৌ এন লাই এবং NAM-এর বার্তা সংস্থার নাম NAM News Network (NNN)।" },
+            { id: 55, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "কমনওয়েলথ কবে প্রতিষ্ঠিত হয়, প্রধান কে এবং কূটনৈতিক কর্মকর্তাদের কী বলা হয়?", options: ["১৯৪৯ - ব্রিটেনের রাজা/রানি - অ্যাম্বসেডর", "১৯৪৯ - ব্রিটেনের রাজা/রানি (বর্তমানে-তৃতীয় চার্লস) - হাইকমিশনার", "১৯৪৮ - রাজা তৃতীয় চার্লস - হাইকমিশনার", "১৯৪৯ - ব্রিটেনের প্রধানমন্ত্রী - হাইকমিশনার"], correct: 1, exp: "কমনওয়েলথ প্রতিষ্ঠিত হয় ১৯৪৯ সালে, প্রধান রাজা/রানি (বর্তমানে তৃতীয় চার্লস) এবং কূটনৈতিক কর্মকর্তাদের হাইকমিশনার বলা হয়।" },
+            { id: 56, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "APA-এর সদর দপ্তর কোথায়, কমনওয়েলথের বর্তমান সদস্য কয়টি এবং বাংলাদেশ ১৯৭২ সালে সদস্য হওয়ায় কোন দেশ তা ত্যাগ করে?", options: ["ব্যাংকক - ৫৫টি - ভারত", "তেহরান, ইরান - ৫৬টি - পাকিস্তান", "তেহরান - ৫৬টি - মালয়েশিয়া", "জাকার্তা - ৫৬টি - পাকিস্তান"], correct: 1, exp: "APA-এর সদর দপ্তর তেহরানে, কমনওয়েলথের সদস্য ৫৬টি এবং ১৯৭২ সালে বাংলাদেশ সদস্য হওয়ায় পাকিস্তান তা ত্যাগ করে।" },
+            { id: 57, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "আরব লিগ কবে প্রতিষ্ঠিত হয় ও সদস্য কয়টি, এবং GCC-এর দাপ্তরিক ভাষা ও সদস্য সংখ্যা কত?", options: ["১৯৪৫, ২২টি - আরবি, ৬টি", "১৯৪৪, ২১টি - আরবি, ৬টি", "১৯৪৫, ২২টি - ইংরেজি, ৬টি", "১৯৪৫, ২০টি - আরবি, ৭টি"], correct: 1, exp: "আরব লিগ প্রতিষ্ঠিত হয় ১৯৪৫ সালে (সদস্য ২২টি) এবং GCC-এর দাপ্তরিক ভাষা আরবি ও সদস্য ৬টি।" },
+            { id: 58, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "AU-এর প্রতিষ্ঠাকালীন নাম কী ছিল, কোন সংস্থার নিজস্ব সেনাবাহিনী আছে এবং CIS কবে প্রতিষ্ঠিত হয়?", options: ["OAU - AU - ১৯৯০", "Organization of African Unity (OAU) - আফ্রিকান ইউনিয়নের - ১৯৯১ সালে", "OAU - NATO - ১৯৯১ সালে", "AU - AU - ১৯৯২"], correct: 1, exp: "AU-এর প্রতিষ্ঠাকালীন নাম OAU, নিজস্ব সেনাবাহিনী আছে আফ্রিকান ইউনিয়নের এবং CIS প্রতিষ্ঠিত হয় ১৯৯১ সালে।" },
+            { id: 59, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "SCO কবে প্রতিষ্ঠিত হয়, BIMSTEC ও CIRDAP-এর বর্তমান সভাপতি কোন দেশ এবং BCIM-এর ধারণাদাতা কে?", options: ["২০০১ - ভারত - রেহমান সোবহান", "২০০১ সালে - বাংলাদেশ - অর্থনীতিবিদ রেহমান সোবহান", "২০০২ - বাংলাদেশ - রেহমান সোবহান", "২০০১ সালে - নেপাল - ওয়াহিদউদ্দিন মাহমুদ"], correct: 1, exp: "SCO ২০০১ সালে প্রতিষ্ঠিত হয়; BIMSTEC ও CIRDAP-এর বর্তমান সভাপতি বাংলাদেশ এবং BCIM-এর ধারণাদাতা রেহমান সোবহান।" },
+            { id: 60, section: "বৈশ্বিক ও আঞ্চলিক জোট", q: "২০২৬ সালে SCO Summit কোথায় হয়, OIC-এর প্রথম মহাসচিব কে এবং GCC-এর ইউনিফাইড ট্যুরিস্ট ভিসার নাম কী?", options: ["বিশকেক, কিরগিজস্তান - টুংকু আবদুল রহমান - GCC Grand Tours Visa", "সমরকন্দ - টুংকু আবদুল রহমান - GCC Grand Tours Visa", "বিশকেক - হাবিব আল-চাত্তি - Gulf Visa", "আস্তানা - টুংকু আবদুল রহমান - GCC Grand Visa"], correct: 1, exp: "২০২৬ সালে SCO Summit বিশকেকে হয়; OIC-এর প্রথম মহাসচিব টুংকু আবদুল রহমান এবং GCC-এর ইউনিফাইড ট্যুরিস্ট ভিসার নাম GCC Grand Tours Visa।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let timeLeft = 25 * 60;
+        let startTime;
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            renderPalette();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').textContent = `সময়: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const qObj = questions[index];
+            document.getElementById('current-q-num').textContent = index + 1;
+            document.getElementById('section-badge').textContent = qObj.section;
+            document.getElementById('question-text').textContent = `${index + 1}. ${qObj.q}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const labels = ['ক', 'খ', 'গ', 'ঘ'];
+            qObj.options.forEach((opt, i) => {
+                const isSelected = userAnswers[index] === i;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition duration-150 flex items-center gap-3 ${
+                    isSelected
+                        ? 'bg-emerald-700/60 border-emerald-400 text-white font-semibold'
+                        : 'bg-slate-800/80 hover:bg-slate-700 border-slate-600 text-slate-200'
+                }`;
+                btn.innerHTML = `<span class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${
+                    isSelected ? 'bg-emerald-500 text-slate-900' : 'bg-slate-700 text-slate-300'
+                }">${labels[i]}</span><span>${opt}</span>`;
+                btn.onclick = () => selectOption(i);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
+
+            const nextBtn = document.getElementById('next-btn');
+            if (index === questions.length - 1) {
+                nextBtn.textContent = 'সাবমিট করুন ✓';
+                nextBtn.className = 'px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            } else {
+                nextBtn.textContent = 'পরবর্তী →';
+                nextBtn.className = 'px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQuestion] = optIndex;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) loadQuestion(currentQuestion - 1);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                confirmSubmit();
+            }
+        }
+
+        function renderPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `pal-${idx}`;
+                btn.textContent = idx + 1;
+                btn.className = 'py-1.5 text-xs font-bold rounded bg-slate-800 border border-slate-600 text-slate-300 hover:bg-slate-700';
+                btn.onclick = () => loadQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        function updatePalette() {
+            questions.forEach((_, idx) => {
+                const btn = document.getElementById(`pal-${idx}`);
+                if (!btn) return;
+                btn.className = 'py-1.5 text-xs font-bold rounded border transition ';
+                if (idx === currentQuestion) {
+                    btn.className += 'ring-2 ring-amber-400 ';
+                }
+                if (userAnswers[idx] !== null) {
+                    btn.className += 'bg-emerald-700 border-emerald-500 text-white';
+                } else {
+                    btn.className += 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700';
+                }
+            });
+        }
+
+        function confirmSubmit() {
+            if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষাটি সাবমিট করতে চান?')) {
+                submitQuiz();
+            }
+        }
+
+        let correctList = [], wrongList = [], skippedList = [];
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('time-taken-text').textContent = `সময় লেগেছে: ${mins} মিনিট ${secs} সেকেন্ড`;
+
+            correctList = [];
+            wrongList = [];
+            skippedList = [];
+
+            questions.forEach((q, idx) => {
+                const ans = userAnswers[idx];
+                if (ans === null) {
+                    skippedList.push({ ...q, idx, userAns: null });
+                } else if (ans === q.correct) {
+                    correctList.push({ ...q, idx, userAns: ans });
+                } else {
+                    wrongList.push({ ...q, idx, userAns: ans });
+                }
+            });
+
+            const score = (correctList.length * 1) - (wrongList.length * 0.25);
+            document.getElementById('final-score').textContent = score.toFixed(2);
+            document.getElementById('final-correct').textContent = correctList.length;
+            document.getElementById('final-wrong').textContent = wrongList.length;
+            document.getElementById('final-skipped').textContent = skippedList.length;
+
+            document.getElementById('count-correct').textContent = correctList.length;
+            document.getElementById('count-wrong').textContent = wrongList.length;
+            document.getElementById('count-skipped').textContent = skippedList.length;
+
+            switchTab('correct');
+        }
+
+        function switchTab(type) {
+            const tabs = ['correct', 'wrong', 'skipped'];
+            const colors = {
+                correct: 'border-emerald-500 text-emerald-400',
+                wrong: 'border-rose-500 text-rose-400',
+                skipped: 'border-blue-500 text-blue-400'
+            };
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}-btn`);
+                if (t === type) {
+                    btn.className = `flex-1 py-3 text-sm font-bold text-center border-b-2 ${colors[t]} transition duration-150`;
+                } else {
+                    btn.className = 'flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150';
+                }
+            });
+
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+            const data = type === 'correct' ? correctList : type === 'wrong' ? wrongList : skippedList;
+
+            if (data.length === 0) {
+                container.innerHTML = '<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>';
+                return;
+            }
+
+            const labels = ['A', 'B', 'C', 'D'];
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800/95 p-5 rounded-2xl border border-slate-700 space-y-4 shadow-md';
+
+                const optionsGridHtml = item.options.map((opt, i) => {
+                    const isCorrectOpt = i === item.correct;
+                    const isUserWrongOpt = item.userAns !== null && item.userAns === i && !isCorrectOpt;
+
+                    let boxStyle = 'bg-slate-900/70 border-slate-700/90 text-slate-300';
+                    let badgeStyle = 'bg-slate-800 border-slate-600 text-slate-300';
+                    let statusTag = '';
+
+                    if (isCorrectOpt) {
+                        boxStyle = 'bg-emerald-950/55 border-emerald-500/80 text-emerald-200 font-semibold';
+                        badgeStyle = 'bg-emerald-600/30 border-emerald-400 text-emerald-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white">সঠিক উত্তর</span>`;
+                    } else if (isUserWrongOpt) {
+                        boxStyle = 'bg-rose-950/55 border-rose-500/80 text-rose-200 font-semibold';
+                        badgeStyle = 'bg-rose-600/30 border-rose-400 text-rose-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-rose-600 text-white">আপনার উত্তর</span>`;
+                    }
+
+                    return `
+                        <div class="p-3.5 rounded-xl border ${boxStyle} flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full border ${badgeStyle} flex items-center justify-center text-xs font-bold shrink-0">${labels[i]}</span>
+                            <span class="text-sm leading-snug">${opt}</span>
+                            ${statusTag}
+                        </div>
+                    `;
+                }).join('');
+
+                const skippedNotice = item.userAns === null
+                    ? `<p class="text-xs text-blue-400 font-medium">আপনার উত্তর: উত্তর দেওয়া হয়নি</p>`
+                    : '';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-3">
+                        <span class="font-bold text-amber-400 text-sm shrink-0">প্রশ্ন #${item.idx + 1}</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 shrink-0">${item.section}</span>
+                    </div>
+                    <p class="font-bold text-slate-100 text-base md:text-lg leading-relaxed">${item.q}</p>
+                    ${skippedNotice}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${optionsGridHtml}</div>
+                    <div class="text-sm text-slate-200 bg-slate-900/90 p-3.5 rounded-xl border border-slate-700 leading-relaxed">
+                        <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${item.exp}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            timeLeft = 25 * 60;
+            document.getElementById('timer').textContent = 'সময়: 25:00';
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            loadQuestion(0);
+            startTimer();
+        }
+    </script>
+</body>
+</html>

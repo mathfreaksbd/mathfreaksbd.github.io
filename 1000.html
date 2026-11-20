@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাংলাদেশ ও আন্তর্জাতিক বিষয়াবলি — পূর্ণাঙ্গ মডেল টেস্ট ০৩</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-indigo-800 via-blue-800 to-cyan-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">বাংলাদেশ ও আন্তর্জাতিক বিষয়াবলি — পূর্ণাঙ্গ মডেল টেস্ট ০৩</h1>
+            <p class="text-sm text-blue-100 mt-1">সব অধ্যায় মিশ্রিত | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>বিষয়: বাংলাদেশ বিষয়াবলি ও আন্তর্জাতিক বিষয়াবলি (সব অধ্যায় মিলিয়ে)।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের ৪টি অপশন ও ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm gap-2">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-blue-900 text-blue-200 border border-blue-700">সাধারণ জ্ঞান</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                        সময়: 25:00
+                    </div>
+                    <button onclick="confirmSubmit()" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition duration-200">
+                        সাবমিট করুন
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের সর্বদক্ষিণের দ্বীপ কোনটি?", options: ["মহেশখালী", "সেন্ট মার্টিন", "ছেঁড়াদ্বীপ", "হাতিয়া"], correct: 2, exp: "সেন্ট মার্টিন দ্বীপের দক্ষিণে অবস্থিত ছেঁড়াদ্বীপ বাংলাদেশের সর্বদক্ষিণের দ্বীপ।" },
+            { id: 2, section: "বাংলাদেশ বিষয়াবলি", q: "'মুজিবনগর দিবস' পালিত হয় কবে?", options: ["১০ এপ্রিল", "১৭ এপ্রিল", "২৬ মার্চ", "১৬ ডিসেম্বর"], correct: 1, exp: "১৯৭১ সালের ১৭ এপ্রিল মেহেরপুরের বৈদ্যনাথতলায় (মুজিবনগর) গণপ্রজাতন্ত্রী বাংলাদেশের প্রথম সরকার শপথ নেয়।" },
+            { id: 3, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের সংবিধানের কোন তফসিলে বঙ্গবন্ধুর ৭ই মার্চের ভাষণ অন্তর্ভুক্ত রয়েছে?", options: ["চতুর্থ তফসিল", "পঞ্চম তফসিল", "ষষ্ঠ তফসিল", "সপ্তম তফসিল"], correct: 1, exp: "বাংলাদেশের সংবিধানের পঞ্চম তফসিলে ৭ই মার্চের ঐতিহাসিক ভাষণ অন্তর্ভুক্ত আছে।" },
+            { id: 4, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের দীর্ঘতম নদ কোনটি?", options: ["পদ্মা", "যমুনা", "সুরমা", "মেঘনা"], correct: 2, exp: "বাংলাদেশের অভ্যন্তরীণ প্রবাহ বিবেচনায় সুরমা নদের দৈর্ঘ্য সবচেয়ে বেশি।" },
+            { id: 5, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের জাতীয় সংসদের মোট আসন সংখ্যা কত?", options: ["৩০০", "৩৫০", "৩৬০", "৪০০"], correct: 1, exp: "৩০০টি সরাসরি নির্বাচিত আসন এবং ৫০টি সংরক্ষিত মহিলা আসন নিয়ে মোট ৩৫০টি।" },
+            { id: 6, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের সর্ববৃহৎ হাওর কোনটি?", options: ["হাকালুকি হাওর", "টাঙ্গুয়ার হাওর", "শনির হাওর", "চলনবিল"], correct: 0, exp: "সিলেট ও মৌলভীবাজার জেলায় বিস্তৃত হাকালুকি হাওর বাংলাদেশের সর্ববৃহৎ হাওর।" },
+            { id: 7, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের সংবিধানে মোট কয়টি ভাগ রয়েছে?", options: ["৯টি", "১০টি", "১১টি", "১২টি"], correct: 2, exp: "গণপ্রজাতন্ত্রী বাংলাদেশের সংবিধানে মোট ১১টি ভাগ রয়েছে।" },
+            { id: 8, section: "বাংলাদেশ বিষয়াবলি", q: "'বীরশ্রেষ্ঠ' উপাধিতে ভূষিত হন মোট কতজন?", options: ["৫ জন", "৭ জন", "৮ জন", "১০ জন"], correct: 1, exp: "মুক্তিযুদ্ধে অসামান্য বীরত্বের জন্য ৭ জনকে 'বীরশ্রেষ্ঠ' উপাধি প্রদান করা হয়।" },
+            { id: 9, section: "বাংলাদেশ বিষয়াবলি", q: "কত সালে বাংলা একাডেমি প্রতিষ্ঠিত হয়?", options: ["১৯৫২", "১৯৫৫", "১৯৫৬", "১৯৬০"], correct: 1, exp: "ভাষা আন্দোলনের চেতনায় ১৯৫৫ সালের ৩ ডিসেম্বর বাংলা একাডেমি প্রতিষ্ঠিত হয়।" },
+            { id: 10, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের সংবিধানের কোন অনুচ্ছেদে 'রাষ্ট্রধর্ম' সম্পর্কে বলা হয়েছে?", options: ["অনুচ্ছেদ ১", "অনুচ্ছেদ ২ক", "অনুচ্ছেদ ৭", "অনুচ্ছেদ ১৫"], correct: 1, exp: "বাংলাদেশের সংবিধানের ২ক অনুচ্ছেদে রাষ্ট্রধর্মের বিধান রয়েছে।" },
+            { id: 11, section: "বাংলাদেশ বিষয়াবলি", q: "মুক্তিযুদ্ধের সময় বাংলাদেশকে কয়টি সেক্টরে ভাগ করা হয়েছিল?", options: ["৯টি", "১০টি", "১১টি", "১২টি"], correct: 2, exp: "১৯৭১ সালের মুক্তিযুদ্ধে সমগ্র বাংলাদেশকে ১১টি সেক্টরে ভাগ করা হয়।" },
+            { id: 12, section: "বাংলাদেশ বিষয়াবলি", q: "পাহাড়পুর বৌদ্ধ বিহার কোন জেলায় অবস্থিত?", options: ["বগুড়া", "নওগাঁ", "রাজশাহী", "দিনাজপুর"], correct: 1, exp: "সোমপুর মহাবিহার বা পাহাড়পুর বৌদ্ধ বিহার নওগাঁ জেলার বদলগাছীতে অবস্থিত।" },
+            { id: 13, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের একমাত্র প্রবাল দ্বীপ কোনটি?", options: ["সোনাদিয়া", "মহেশখালী", "সেন্ট মার্টিন", "নিঝুম দ্বীপ"], correct: 2, exp: "সেন্ট মার্টিন বাংলাদেশের একমাত্র প্রবাল দ্বীপ।" },
+            { id: 14, section: "বাংলাদেশ বিষয়াবলি", q: "ঐতিহাসিক ছয় দফা দাবি কবে পেশ করা হয়?", options: ["১৯৬৫", "১৯৬৬", "১৯৬৯", "১৯৭০"], correct: 1, exp: "১৯৬৬ সালে বঙ্গবন্ধু শেখ মুজিবুর রহমান বাঙালির মুক্তির সনদ ছয় দফা পেশ করেন।" },
+            { id: 15, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের জাতীয় পতাকার নকশাকার কে?", options: ["জয়নুল আবেদিন", "কামরুল হাসান", "শিব নারায়ণ দাশ", "হাশেম খান"], correct: 2, exp: "১৯৭১ সালে প্রথম জাতীয় পতাকার নকশা করেন শিব নারায়ণ দাশ; পরবর্তীতে কামরুল হাসান এর রূপ নির্ধারণ করেন।" },
+            { id: 16, section: "বাংলাদেশ বিষয়াবলি", q: "কোন নদী বাংলাদেশ ও মিয়ানমারকে বিভক্ত করেছে?", options: ["কর্ণফুলী", "নাফ", "সাঙ্গু", "মাতামুহুরী"], correct: 1, exp: "নাফ নদী বাংলাদেশ ও মিয়ানমারের দক্ষিণ-পূর্বাংশকে পৃথক করেছে।" },
+            { id: 17, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের সংবিধান কবে গৃহীত হয়?", options: ["১৬ ডিসেম্বর ১৯৭১", "৪ নভেম্বর ১৯৭২", "১৬ ডিসেম্বর ১৯৭২", "২৬ মার্চ ১৯৭৩"], correct: 1, exp: "১৯৭২ সালের ৪ নভেম্বর গণপরিষদে বাংলাদেশের সংবিধান গৃহীত হয় এবং ১৬ ডিসেম্বর কার্যকর হয়।" },
+            { id: 18, section: "বাংলাদেশ বিষয়াবলি", q: "কাপ্তাই হ্রদ কোন জেলায় অবস্থিত?", options: ["খাগড়াছড়ি", "বান্দরবান", "রাঙ্গামাটি", "কক্সবাজার"], correct: 2, exp: "কাপ্তাই হ্রদ রাঙ্গামাটি জেলায় অবস্থিত।" },
+            { id: 19, section: "বাংলাদেশ বিষয়াবলি", q: "'অপরাজেয় বাংলা' ভাস্কর্যটি কোথায় অবস্থিত?", options: ["টিএসসি চত্বর", "কলা ভবন প্রাঙ্গণ, ঢাবি", "শহীদ মিনার প্রাঙ্গণ", "সোহরাওয়ার্দী উদ্যান"], correct: 1, exp: "ভাস্কর সৈয়দ আব্দুল্লাহ খালিদ নির্মিত 'অপরাজেয় বাংলা' ঢাকা বিশ্ববিদ্যালয়ের কলা ভবন প্রাঙ্গণে অবস্থিত।" },
+            { id: 20, section: "বাংলাদেশ বিষয়াবলি", q: "সুন্দরবনের কত শতাংশ এলাকা বাংলাদেশের অন্তর্ভুক্ত?", options: ["প্রায় ৫২%", "প্রায় ৬২%", "প্রায় ৭০%", "প্রায় ৭৫%"], correct: 1, exp: "সুন্দরবনের প্রায় ৬২ শতাংশ বাংলাদেশে এবং বাকি অংশ ভারতের পশ্চিমবঙ্গে অবস্থিত।" },
+            { id: 21, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের জাতীয় সংসদে 'কোরাম' পূর্ণ হয় কতজন সদস্যের উপস্থিতিতে?", options: ["৫০ জন", "৬০ জন", "৭০ জন", "৭৫ জন"], correct: 1, exp: "সংবিধান অনুযায়ী জাতীয় সংসদের অধিবেশন শুরুর কোরাম ৬০ জন সদস্য নিয়ে গঠিত হয়।" },
+            { id: 22, section: "বাংলাদেশ বিষয়াবলি", q: "প্রাচীন বাংলার 'পুণ্ড্রবর্ধন'-এর রাজধানী কোথায় ছিল?", options: ["মহাস্থানগড়", "ময়নামতি", "পাহাড়পুর", "সোনারগাঁও"], correct: 0, exp: "পুণ্ড্রবর্ধনের রাজধানী ছিল বর্তমান বগুড়ার মহাস্থানগড়ে।" },
+            { id: 23, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের সর্বোচ্চ পর্বতশৃঙ্গ কোনটি?", options: ["কেওক্রাডং", "তাজিংডং", "সাকা হাফং", "জো ত্লাং"], correct: 2, exp: "তথ্যগত ভিন্নতা থাকলেও সাম্প্রতিক জরিপ অনুযায়ী সাকা হাফংকে বাংলাদেশের সর্বোচ্চ শৃঙ্গ হিসেবে উল্লেখ করা হয়।" },
+            { id: 24, section: "বাংলাদেশ বিষয়াবলি", q: "মুক্তিযুদ্ধের সময় 'স্বাধীন বাংলা বেতার কেন্দ্র' কবে প্রতিষ্ঠিত হয়?", options: ["২৫ মার্চ ১৯৭১", "২৬ মার্চ ১৯৭১", "১০ এপ্রিল ১৯৭১", "১৭ এপ্রিল ১৯৭১"], correct: 1, exp: "১৯৭১ সালের ২৬ মার্চ চট্টগ্রামের কালুরঘাট থেকে স্বাধীন বাংলা বেতার কেন্দ্র যাত্রা শুরু করে।" },
+            { id: 25, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের জাতীয় স্মৃতিসৌধের স্থপতি কে?", options: ["মাজহারুল ইসলাম", "সৈয়দ মাইনুল হোসেন", "ফজলুর রহমান খান", "তানভীর করিম"], correct: 1, exp: "সাভারের জাতীয় স্মৃতিসৌধের স্থপতি সৈয়দ মাইনুল হোসেন।" },
+            { id: 26, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের প্রথম অস্থায়ী রাষ্ট্রপতি কে ছিলেন?", options: ["তাজউদ্দীন আহমদ", "সৈয়দ নজরুল ইসলাম", "এম. মনসুর আলী", "এ. এইচ. এম. কামারুজ্জামান"], correct: 1, exp: "মুজিবনগর সরকারের অস্থায়ী রাষ্ট্রপতি ছিলেন সৈয়দ নজরুল ইসলাম এবং প্রধানমন্ত্রী তাজউদ্দীন আহমদ।" },
+            { id: 27, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশ কবে জাতিসংঘের সদস্যপদ লাভ করে?", options: ["১৯৭২", "১৯৭৩", "১৯৭৪", "১৯৭৫"], correct: 2, exp: "বাংলাদেশ ১৯৭৪ সালের ১৭ সেপ্টেম্বর জাতিসংঘের ১৩৬তম সদস্য হিসেবে যোগ দেয়।" },
+            { id: 28, section: "বাংলাদেশ বিষয়াবলি", q: "ঢাকা শহর কত সালে বাংলার রাজধানী হিসেবে প্রথম প্রতিষ্ঠিত হয়?", options: ["১৬০৮", "১৬১০", "১৬১২", "১৭০৪"], correct: 1, exp: "সুবাদার ইসলাম খান ১৬১০ সালে ঢাকাকে বাংলার রাজধানী করেন।" },
+            { id: 29, section: "বাংলাদেশ বিষয়াবলি", q: "বাংলাদেশের সংবিধানের কোন অনুচ্ছেদে 'মৌলিক অধিকার' বলবৎ করার কথা বলা হয়েছে?", options: ["অনুচ্ছেদ ৪৪", "অনুচ্ছেদ ১০২", "অনুচ্ছেদ ২৬", "অনুচ্ছেদ ৩১"], correct: 0, exp: "সংবিধানের ৪৪ অনুচ্ছেদ অনুযায়ী মৌলিক অধিকার বলবৎ করার অধিকার রয়েছে।" },
+            { id: 30, section: "বাংলাদেশ বিষয়াবলি", q: "কোন জেলাটি ভারতের সীমান্ত স্পর্শ করেনি?", options: ["পঞ্চগড়", "ঠাকুরগাঁও", "নাটোর", "কুড়িগ্রাম"], correct: 2, exp: "নাটোর একটি অভ্যন্তরীণ জেলা; এটি কোনো আন্তর্জাতিক সীমান্ত স্পর্শ করেনি।" },
+            { id: 31, section: "আন্তর্জাতিক বিষয়াবলি", q: "জাতিসংঘের প্রধান অঙ্গসংস্থা কয়টি?", options: ["৫টি", "৬টি", "৭টি", "৮টি"], correct: 1, exp: "সাধারণ পরিষদ, নিরাপত্তা পরিষদ, অর্থনৈতিক ও সামাজিক পরিষদ, অছি পরিষদ, আন্তর্জাতিক বিচার আদালত ও সচিবালয়—মোট ৬টি।" },
+            { id: 32, section: "আন্তর্জাতিক বিষয়াবলি", q: "'ন্যাটো (NATO)'-এর সদর দপ্তর কোথায় অবস্থিত?", options: ["জেনেভা", "ব্রাসেলস", "ভিয়েনা", "প্যারিস"], correct: 1, exp: "বেলজিয়ামের রাজধানী ব্রাসেলসে ন্যাটোর সদর দপ্তর অবস্থিত।" },
+            { id: 33, section: "আন্তর্জাতিক বিষয়াবলি", q: "বিশ্বের দীর্ঘতম স্থলসীমান্ত রয়েছে কোন দুটি দেশের মধ্যে?", options: ["চীন ও রাশিয়া", "যুক্তরাষ্ট্র ও কানাডা", "ভারত ও বাংলাদেশ", "ব্রাজিল ও আর্জেন্টিনা"], correct: 1, exp: "যুক্তরাষ্ট্র ও কানাডার মধ্যে বিশ্বের দীর্ঘতম স্থলসীমান্ত রয়েছে।" },
+            { id: 34, section: "আন্তর্জাতিক বিষয়াবলি", q: "'আন্তর্জাতিক বিচার আদালত (ICJ)' কোথায় অবস্থিত?", options: ["নিউইয়র্ক", "লন্ডন", "দ্য হেগ", "রোম"], correct: 2, exp: "নেদারল্যান্ডসের দ্য হেগ শহরে আন্তর্জাতিক বিচার আদালত অবস্থিত।" },
+            { id: 35, section: "আন্তর্জাতিক বিষয়াবলি", q: "'ইউনেস্কো (UNESCO)'-এর সদর দপ্তর কোথায় অবস্থিত?", options: ["লন্ডন", "প্যারিস", "নিউইয়র্ক", "রোম"], correct: 1, exp: "ফ্রান্সের রাজধানী প্যারিসে ইউনেস্কোর সদর দপ্তর অবস্থিত।" },
+            { id: 36, section: "আন্তর্জাতিক বিষয়াবলি", q: "বিশ্বের ক্ষুদ্রতম দেশ কোনটি?", options: ["মোনাকো", "নাউরু", "ভ্যাটিকান সিটি", "সান মারিনো"], correct: 2, exp: "আয়তন ও জনসংখ্যা উভয় দিক থেকেই ভ্যাটিকান সিটি বিশ্বের ক্ষুদ্রতম দেশ।" },
+            { id: 37, section: "আন্তর্জাতিক বিষয়াবলি", q: "'সার্ক (SAARC)' কত সালে প্রতিষ্ঠিত হয়?", options: ["১৯৮৩", "১৯৮৫", "১৯৮৭", "১৯৯০"], correct: 1, exp: "১৯৮৫ সালের ৮ ডিসেম্বর ঢাকায় প্রথম শীর্ষ সম্মেলনের মাধ্যমে সার্ক প্রতিষ্ঠিত হয়।" },
+            { id: 38, section: "আন্তর্জাতিক বিষয়াবলি", q: "'আন্তর্জাতিক শ্রম সংস্থা (ILO)'-এর সদর দপ্তর কোথায়?", options: ["জেনেভা", "ভিয়েনা", "ব্রাসেলস", "টোকিও"], correct: 0, exp: "সুইজারল্যান্ডের জেনেভায় ILO-এর সদর দপ্তর অবস্থিত।" },
+            { id: 39, section: "আন্তর্জাতিক বিষয়াবলি", q: "কোন প্রণালী এশিয়া ও ইউরোপকে পৃথক করেছে?", options: ["বেরিং প্রণালী", "বসফরাস প্রণালী", "পক প্রণালী", "হরমুজ প্রণালী"], correct: 1, exp: "বসফরাস প্রণালী এশিয়া ও ইউরোপকে পৃথক করেছে এবং কৃষ্ণ সাগর ও মর্মর সাগরকে যুক্ত করেছে।" },
+            { id: 40, section: "আন্তর্জাতিক বিষয়াবলি", q: "সুয়েজ খাল কোন দুটি সাগরকে সংযুক্ত করেছে?", options: ["ভূমধ্যসাগর ও লোহিত সাগর", "লোহিত সাগর ও আরব সাগর", "কৃষ্ণ সাগর ও ভূমধ্যসাগর", "উত্তর সাগর ও বাল্টিক সাগর"], correct: 0, exp: "মিশরের সুয়েজ খাল ভূমধ্যসাগর ও লোহিত সাগরকে সংযুক্ত করেছে।" },
+            { id: 41, section: "আন্তর্জাতিক বিষয়াবলি", q: "জাতিসংঘের দাপ্তরিক ভাষা কয়টি?", options: ["৪টি", "৫টি", "৬টি", "৭টি"], correct: 2, exp: "জাতিসংঘের দাপ্তরিক ভাষা ৬টি: ইংরেজি, ফ্রেঞ্চ, রুশ, স্প্যানিশ, আরবি ও ম্যান্ডারিন।" },
+            { id: 42, section: "আন্তর্জাতিক বিষয়াবলি", q: "বিশ্বব্যাংকের সদর দপ্তর কোথায় অবস্থিত?", options: ["নিউইয়র্ক", "জেনেভা", "ওয়াশিংটন ডিসি", "লন্ডন"], correct: 2, exp: "যুক্তরাষ্ট্রের ওয়াশিংটন ডিসিতে বিশ্বব্যাংক ও IMF-এর সদর দপ্তর অবস্থিত।" },
+            { id: 43, section: "আন্তর্জাতিক বিষয়াবলি", q: "WTO-এর পূর্ব নাম কী ছিল?", options: ["UNCTAD", "GATT", "OECD", "NAFTA"], correct: 1, exp: "WTO-এর পূর্ব নাম ছিল GATT (General Agreement on Tariffs and Trade)।" },
+            { id: 44, section: "আন্তর্জাতিক বিষয়াবলি", q: "আন্তর্জাতিক তারিখ রেখা মূলত কোন দ্রাঘিমা রেখা অনুসরণ করে কল্পিত?", options: ["০°", "৯০°", "১৮০°", "২৩.৫°"], correct: 2, exp: "১৮০° দ্রাঘিমা রেখা অনুসরণ করে আন্তর্জাতিক তারিখ রেখা কল্পনা করা হয়।" },
+            { id: 45, section: "আন্তর্জাতিক বিষয়াবলি", q: "পৃথিবীর সর্ববৃহৎ মহাসাগর কোনটি?", options: ["আটলান্টিক মহাসাগর", "ভারত মহাসাগর", "প্রশান্ত মহাসাগর", "আর্কটিক মহাসাগর"], correct: 2, exp: "আয়তন ও গভীরতায় প্রশান্ত মহাসাগর পৃথিবীর সর্ববৃহৎ মহাসাগর।" },
+            { id: 46, section: "আন্তর্জাতিক বিষয়াবলি", q: "'ম্যাকমোহন লাইন' কোন দুটি দেশের সীমান্ত নির্ধারণ করে?", options: ["ভারত ও পাকিস্তান", "ভারত ও চীন", "চীন ও মিয়ানমার", "যুক্তরাষ্ট্র ও কানাডা"], correct: 1, exp: "ম্যাকমোহন লাইন ভারত ও চীনের মধ্যে সীমান্ত রেখা হিসেবে পরিচিত।" },
+            { id: 47, section: "আন্তর্জাতিক বিষয়াবলি", q: "ওজোন স্তর ক্ষয়ের জন্য প্রধানত দায়ী কোনটি?", options: ["CO2", "CFC", "SO2", "N2O"], correct: 1, exp: "ক্লোরোফ্লোরোকার্বন (CFC) ওজোন স্তর ক্ষয়ের জন্য অন্যতম প্রধান দায়ী গ্যাস।" },
+            { id: 48, section: "আন্তর্জাতিক বিষয়াবলি", q: "'কিয়োটো প্রটোকল' মূলত কিসের সাথে সম্পর্কিত?", options: ["পারমাণবিক নিরস্ত্রীকরণ", "জলবায়ু পরিবর্তন ও গ্রিনহাউস গ্যাস", "সামুদ্রিক সীমান্ত", "অবাধ বাণিজ্য"], correct: 1, exp: "কিয়োটো প্রটোকল বৈশ্বিক উষ্ণতা ও গ্রিনহাউস গ্যাস নিঃসরণ হ্রাসের সাথে সম্পর্কিত।" },
+            { id: 49, section: "আন্তর্জাতিক বিষয়াবলি", q: "আফ্রিকা মহাদেশের দীর্ঘতম নদী কোনটি?", options: ["কঙ্গো", "নাইজার", "নীল নদ", "জাম্বেজি"], correct: 2, exp: "নীল নদ আফ্রিকা তথা বিশ্বের অন্যতম দীর্ঘতম নদী।" },
+            { id: 50, section: "আন্তর্জাতিক বিষয়াবলি", q: "মানবাধিকারের সর্বজনীন ঘোষণাপত্র (UDHR) কবে গৃহীত হয়?", options: ["২৪ অক্টোবর ১৯৪৫", "১০ ডিসেম্বর ১৯৪৮", "১৬ ডিসেম্বর ১৯৬৬", "১ জানুয়ারি ১৯৫০"], correct: 1, exp: "১৯৪৮ সালের ১০ ডিসেম্বর জাতিসংঘ সাধারণ পরিষদে মানবাধিকারের সর্বজনীন ঘোষণাপত্র গৃহীত হয়।" },
+            { id: 51, section: "আন্তর্জাতিক বিষয়াবলি", q: "কোন সংস্থাটি 'ব্রেটন উডস' সম্মেলনের সাথে সম্পর্কিত?", options: ["UNESCO", "IMF", "WHO", "ILO"], correct: 1, exp: "১৯৪৪ সালের ব্রেটন উডস সম্মেলনে IMF ও বিশ্বব্যাংকের (IBRD) কাঠামো তৈরি হয়।" },
+            { id: 52, section: "আন্তর্জাতিক বিষয়াবলি", q: "ফরাসি বিপ্লব কোন সালে শুরু হয়েছিল?", options: ["১৭৭৬", "১৭৮৯", "১৮১৫", "১৯১৭"], correct: 1, exp: "ফরাসি বিপ্লব শুরু হয় ১৭৮৯ সালে।" },
+            { id: 53, section: "আন্তর্জাতিক বিষয়াবলি", q: "পানামা খাল কোন দুটি মহাসাগরকে সংযুক্ত করেছে?", options: ["আটলান্টিক ও ভারত", "প্রশান্ত ও ভারত", "আটলান্টিক ও প্রশান্ত", "আর্কটিক ও আটলান্টিক"], correct: 2, exp: "পানামা খাল আটলান্টিক মহাসাগর ও প্রশান্ত মহাসাগরকে যুক্ত করেছে।" },
+            { id: 54, section: "আন্তর্জাতিক বিষয়াবলি", q: "OIC-এর সদর দপ্তর কোথায় অবস্থিত?", options: ["রিয়াদ", "জেদ্দা", "কায়রো", "আবুধাবি"], correct: 1, exp: "সৌদি আরবের জেদ্দায় ইসলামী সহযোগিতা সংস্থা (OIC)-এর সদর দপ্তর অবস্থিত।" },
+            { id: 55, section: "আন্তর্জাতিক বিষয়াবলি", q: "আয়তনে বিশ্বের বৃহত্তম দেশ কোনটি?", options: ["কানাডা", "চীন", "যুক্তরাষ্ট্র", "রাশিয়া"], correct: 3, exp: "আয়তনের দিক থেকে রাশিয়া বিশ্বের বৃহত্তম দেশ।" },
+            { id: 56, section: "আন্তর্জাতিক বিষয়াবলি", q: "কোন মরুভূমিকে 'শীতল মরুভূমি' বলা হয়?", options: ["সাহারা", "থর", "গোবি", "আতাকামা"], correct: 2, exp: "মধ্য এশিয়ার গোবি মরুভূমি শীতল মরুভূমি হিসেবে পরিচিত।" },
+            { id: 57, section: "আন্তর্জাতিক বিষয়াবলি", q: "জাতিসংঘের বর্তমান মহাসচিব কে?", options: ["বান কি-মুন", "কফি আনান", "অ্যান্টোনিও গুতেরেস", "বুট্রোস ঘালি"], correct: 2, exp: "পর্তুগালের অ্যান্টোনিও গুতেরেস জাতিসংঘের মহাসচিব।" },
+            { id: 58, section: "আন্তর্জাতিক বিষয়াবলি", q: "হামাসের সামরিক শাখার নাম কী?", options: ["আল-কুদস ব্রিগেড", "ইজুদ্দিন আল কাসসাম ব্রিগেড", "রেভল্যুশনারি গার্ড", "পেশমের্গা"], correct: 1, exp: "হামাসের সামরিক শাখা ইজুদ্দিন আল কাসসাম ব্রিগেড নামে পরিচিত।" },
+            { id: 59, section: "আন্তর্জাতিক বিষয়াবলি", q: "'র‍্যাডক্লিফ লাইন' কোন অঞ্চলের সীমান্ত নির্ধারণে গঠিত হয়েছিল?", options: ["ভারত-পাকিস্তান-বাংলাদেশ", "ভারত-নেপাল", "পাকিস্তান-আফগানিস্তান", "ভারত-ভুটান"], correct: 0, exp: "১৯৪৭ সালে ব্রিটিশ ভারতের বিভাজনের সময় র‍্যাডক্লিফ লাইন অঙ্কন করা হয়।" },
+            { id: 60, section: "আন্তর্জাতিক বিষয়াবলি", q: "পৃথিবীর সর্বত্র দিন ও রাত্রি সমান হয় কোন দুটি দিনে?", options: ["২১ জুন ও ২২ ডিসেম্বর", "২১ মার্চ ও ২৩ সেপ্টেম্বর", "২১ মে ও ২৩ নভেম্বর", "২১ জানুয়ারি ও ২৩ জুলাই"], correct: 1, exp: "২১ মার্চ ও ২৩ সেপ্টেম্বর সূর্য বিষুবরেখার ওপর লম্বভাবে কিরণ দেওয়ায় দিন-রাত্রি সমান হয়।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let timeLeft = 25 * 60;
+        let startTime;
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            renderPalette();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').textContent = `সময়: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const qObj = questions[index];
+            document.getElementById('current-q-num').textContent = index + 1;
+            document.getElementById('section-badge').textContent = qObj.section;
+            document.getElementById('question-text').textContent = `${index + 1}. ${qObj.q}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const labels = ['ক', 'খ', 'গ', 'ঘ'];
+            qObj.options.forEach((opt, i) => {
+                const isSelected = userAnswers[index] === i;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition duration-150 flex items-center gap-3 ${
+                    isSelected
+                        ? 'bg-emerald-700/60 border-emerald-400 text-white font-semibold'
+                        : 'bg-slate-800/80 hover:bg-slate-700 border-slate-600 text-slate-200'
+                }`;
+                btn.innerHTML = `<span class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${
+                    isSelected ? 'bg-emerald-500 text-slate-900' : 'bg-slate-700 text-slate-300'
+                }">${labels[i]}</span><span>${opt}</span>`;
+                btn.onclick = () => selectOption(i);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
+
+            const nextBtn = document.getElementById('next-btn');
+            if (index === questions.length - 1) {
+                nextBtn.textContent = 'সাবমিট করুন ✓';
+                nextBtn.className = 'px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            } else {
+                nextBtn.textContent = 'পরবর্তী →';
+                nextBtn.className = 'px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQuestion] = optIndex;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) loadQuestion(currentQuestion - 1);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                confirmSubmit();
+            }
+        }
+
+        function renderPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `pal-${idx}`;
+                btn.textContent = idx + 1;
+                btn.className = 'py-1.5 text-xs font-bold rounded bg-slate-800 border border-slate-600 text-slate-300 hover:bg-slate-700';
+                btn.onclick = () => loadQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        function updatePalette() {
+            questions.forEach((_, idx) => {
+                const btn = document.getElementById(`pal-${idx}`);
+                if (!btn) return;
+                btn.className = 'py-1.5 text-xs font-bold rounded border transition ';
+                if (idx === currentQuestion) {
+                    btn.className += 'ring-2 ring-amber-400 ';
+                }
+                if (userAnswers[idx] !== null) {
+                    btn.className += 'bg-emerald-700 border-emerald-500 text-white';
+                } else {
+                    btn.className += 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700';
+                }
+            });
+        }
+
+        function confirmSubmit() {
+            if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষাটি সাবমিট করতে চান?')) {
+                submitQuiz();
+            }
+        }
+
+        let correctList = [], wrongList = [], skippedList = [];
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('time-taken-text').textContent = `সময় লেগেছে: ${mins} মিনিট ${secs} সেকেন্ড`;
+
+            correctList = [];
+            wrongList = [];
+            skippedList = [];
+
+            questions.forEach((q, idx) => {
+                const ans = userAnswers[idx];
+                if (ans === null) {
+                    skippedList.push({ ...q, idx, userAns: null });
+                } else if (ans === q.correct) {
+                    correctList.push({ ...q, idx, userAns: ans });
+                } else {
+                    wrongList.push({ ...q, idx, userAns: ans });
+                }
+            });
+
+            const score = (correctList.length * 1) - (wrongList.length * 0.25);
+            document.getElementById('final-score').textContent = score.toFixed(2);
+            document.getElementById('final-correct').textContent = correctList.length;
+            document.getElementById('final-wrong').textContent = wrongList.length;
+            document.getElementById('final-skipped').textContent = skippedList.length;
+
+            document.getElementById('count-correct').textContent = correctList.length;
+            document.getElementById('count-wrong').textContent = wrongList.length;
+            document.getElementById('count-skipped').textContent = skippedList.length;
+
+            switchTab('correct');
+        }
+
+        function switchTab(type) {
+            const tabs = ['correct', 'wrong', 'skipped'];
+            const colors = {
+                correct: 'border-emerald-500 text-emerald-400',
+                wrong: 'border-rose-500 text-rose-400',
+                skipped: 'border-blue-500 text-blue-400'
+            };
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}-btn`);
+                if (t === type) {
+                    btn.className = `flex-1 py-3 text-sm font-bold text-center border-b-2 ${colors[t]} transition duration-150`;
+                } else {
+                    btn.className = 'flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150';
+                }
+            });
+
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+            const data = type === 'correct' ? correctList : type === 'wrong' ? wrongList : skippedList;
+
+            if (data.length === 0) {
+                container.innerHTML = '<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>';
+                return;
+            }
+
+            const labels = ['A', 'B', 'C', 'D'];
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800/95 p-5 rounded-2xl border border-slate-700 space-y-4 shadow-md';
+
+                const optionsGridHtml = item.options.map((opt, i) => {
+                    const isCorrectOpt = i === item.correct;
+                    const isUserWrongOpt = item.userAns !== null && item.userAns === i && !isCorrectOpt;
+
+                    let boxStyle = 'bg-slate-900/70 border-slate-700/90 text-slate-300';
+                    let badgeStyle = 'bg-slate-800 border-slate-600 text-slate-300';
+                    let statusTag = '';
+
+                    if (isCorrectOpt) {
+                        boxStyle = 'bg-emerald-950/55 border-emerald-500/80 text-emerald-200 font-semibold';
+                        badgeStyle = 'bg-emerald-600/30 border-emerald-400 text-emerald-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white">সঠিক উত্তর</span>`;
+                    } else if (isUserWrongOpt) {
+                        boxStyle = 'bg-rose-950/55 border-rose-500/80 text-rose-200 font-semibold';
+                        badgeStyle = 'bg-rose-600/30 border-rose-400 text-rose-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-rose-600 text-white">আপনার উত্তর</span>`;
+                    }
+
+                    return `
+                        <div class="p-3.5 rounded-xl border ${boxStyle} flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full border ${badgeStyle} flex items-center justify-center text-xs font-bold shrink-0">${labels[i]}</span>
+                            <span class="text-sm leading-snug">${opt}</span>
+                            ${statusTag}
+                        </div>
+                    `;
+                }).join('');
+
+                const skippedNotice = item.userAns === null
+                    ? `<p class="text-xs text-blue-400 font-medium">আপনার উত্তর: উত্তর দেওয়া হয়নি</p>`
+                    : '';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-3">
+                        <span class="font-bold text-amber-400 text-sm shrink-0">প্রশ্ন #${item.idx + 1}</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 shrink-0">${item.section}</span>
+                    </div>
+                    <p class="font-bold text-slate-100 text-base md:text-lg leading-relaxed">${item.q}</p>
+                    ${skippedNotice}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${optionsGridHtml}</div>
+                    <div class="text-sm text-slate-200 bg-slate-900/90 p-3.5 rounded-xl border border-slate-700 leading-relaxed">
+                        <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${item.exp}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            timeLeft = 25 * 60;
+            document.getElementById('timer').textContent = 'সময়: 25:00';
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            loadQuestion(0);
+            startTimer();
+        }
+    </script>
+</body>
+</html>

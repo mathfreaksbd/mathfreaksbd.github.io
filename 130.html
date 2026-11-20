@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আন্তর্জাতিক বিষয়াবলি — অধ্যায় ০১: পৃথিবী পরিচিতি (Exam)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-indigo-800 via-blue-800 to-cyan-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">আন্তর্জাতিক বিষয়াবলি — অধ্যায় ০১: পৃথিবী পরিচিতি</h1>
+            <p class="text-sm text-blue-100 mt-1">অধ্যায়ভিত্তিক পরীক্ষা | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>বিষয়: আন্তর্জাতিক বিষয়াবলি — অধ্যায় ০১ (পৃথিবী পরিচিতি)।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের ৪টি অপশন ও ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm gap-2">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-blue-900 text-blue-200 border border-blue-700">অধ্যায় ০১: পৃথিবী পরিচিতি</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                        সময়: 25:00
+                    </div>
+                    <button onclick="confirmSubmit()" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition duration-200">
+                        সাবমিট করুন
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "পৃথিবীর সবগুলো মহাদেশ একসাথে জুড়ে যে বিশাল আদি মহাদেশ ছিল তার নাম কী?", options: ["গন্ডোয়ানা", "প্যানজিয়া", "লরেশিয়া", "প্যানথালাসা"], correct: 1, exp: "পৃথিবীর সবগুলো মহাদেশ একসাথে জুড়ে থাকা বিশাল মহাদেশটির নাম ছিল প্যানজিয়া।" },
+            { id: 2, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "পৃথিবীর সর্বত্র দিন-রাত্রি সমান হয় কোন দুটি তারিখে?", options: ["২১ জুন ও ২২ ডিসেম্বর", "২১ মার্চ ও ২৩ সেপ্টেম্বর", "২১ মার্চ ও ২১ জুন", "২৩ সেপ্টেম্বর ও ২২ ডিসেম্বর"], correct: 1, exp: "পৃথিবীর সর্বত্র দিন-রাত্রি সমান হয় ২১ মার্চ ও ২৩ সেপ্টেম্বর তারিখে।" },
+            { id: 3, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "পৃথিবীর বৃহত্তম ও ক্ষুদ্রতম মহাদেশ যথাক্রমে কোন দুটি?", options: ["আফ্রিকা ও ইউরোপ", "এশিয়া ও ওশেনিয়া", "এশিয়া ও ইউরোপ", "উত্তর আমেরিকা ও ওশেনিয়া"], correct: 1, exp: "পৃথিবীর বৃহত্তম মহাদেশ এশিয়া এবং ক্ষুদ্রতম মহাদেশ ওশেনিয়া।" },
+            { id: 4, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'গ্রিনিচ' শব্দটি কীসের সাথে সম্পর্কিত এবং মূল মধ্যরেখা ইংল্যান্ডের কোন শহরের উপর দিয়ে কল্পনা করা হয়?", options: ["দূরত্ব - লন্ডন", "সময় - গ্রিনিচ শহর", "অক্ষাংশ - অক্সফোর্ড", "সময় - কেমব্রিজ"], correct: 1, exp: "'গ্রিনিচ' শব্দটি সময়ের সাথে সম্পর্কিত এবং মূল মধ্যরেখা ইংল্যান্ডের গ্রিনিচ শহরের উপর দিয়ে কল্পনা করা হয়।" },
+            { id: 5, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "আন্তর্জাতিক তারিখ রেখা কোন রেখা অনুসরণ করে কল্পনা করা হয়?", options: ["০° দ্রাঘিমা রেখা", "১৮০° দ্রাঘিমা রেখা", "২৩.৫° উত্তর অক্ষাংশ", "৯০° পূর্ব দ্রাঘিমা রেখা"], correct: 1, exp: "আন্তর্জাতিক তারিখ রেখা ১৮০ ডিগ্রি দ্রাঘিমা রেখা অনুসরণ করে কল্পনা করা হয়।" },
+            { id: 6, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "জনসংখ্যার ঘনত্বে বিশ্বে শীর্ষ দেশ কোনটি এবং আয়তনে জাতিসংঘভুক্ত ক্ষুদ্রতম দেশ কোনটি?", options: ["ভ্যাটিকান সিটি - ভ্যাটিকান সিটি", "মোনাকো - মোনাকো", "সিঙ্গাপুর - নাউরু", "মোনাকো - সান মারিনো"], correct: 1, exp: "জনসংখ্যার ঘনত্বে বিশ্বে শীর্ষ দেশ মোনাকো এবং আয়তনে জাতিসংঘভুক্ত ক্ষুদ্রতম দেশও মোনাকো।" },
+            { id: 7, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'গ্রেট পিরামিড অব গিজা' তৈরি হয়েছিল কবে এবং মিশরের সবচেয়ে বড় পিরামিড কোনটি?", options: ["২৫০০ খ্রিষ্টপূর্বাব্দ - তুতেনখামেনের পিরামিড", "২৬০০ খ্রিষ্টপূর্বাব্দ - ফারাও খুফুর পিরামিড", "২৭০০ খ্রিষ্টপূর্বাব্দ - নেফারতিতির পিরামিড", "২৬০০ খ্রিষ্টপূর্বাব্দ - খাফরের পিরামিড"], correct: 1, exp: "'গ্রেট পিরামিড অব গিজা' তৈরি হয়েছিল ২৬০০ খ্রিষ্টপূর্বাব্দে এবং মিশরের সবচেয়ে বড় পিরামিড হলো ফারাও খুফুর পিরামিড।" },
+            { id: 8, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "বিষুবরেখা অনুযায়ী নামকরণ হয়েছে কোন দুটি দেশের?", options: ["কলম্বিয়া ও ব্রাজিল", "ইকুয়েডর ও নিরক্ষীয় গিনি", "পেরু ও ইকুয়েডর", "কঙ্গো ও গ্যাবন"], correct: 1, exp: "বিষুবরেখা অনুযায়ী নামকরণ হয়েছে ইকুয়েডর ও নিরক্ষীয় গিনির।" },
+            { id: 9, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "কোন প্রাচীন সভ্যতা প্রথম পরিচিত লেখার পদ্ধতি তৈরি করে এবং তাদের লিখন পদ্ধতির নাম কী ছিল?", options: ["মিশরীয় - হায়ারোগ্লিফিক", "সুমেরীয় - কিউনিফর্ম", "ব্যাবিলনীয় - কোড অব হাম্মুরাবি", "চৈনিক - চিত্রলিপি"], correct: 1, exp: "সুমেরীয় সভ্যতা প্রথম পরিচিত লেখার পদ্ধতি তৈরি করে, যা কিউনিফর্ম লিখন পদ্ধতি নামে পরিচিত।" },
+            { id: 10, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "পৃথিবীর সবচেয়ে পুরাতন কীর্তিস্তম্ভ কোনটি?", options: ["কলোসিয়াম", "পিরামিড", "জিকুরাত", "স্টোনহেঞ্জ"], correct: 1, exp: "পৃথিবীর সবচেয়ে পুরাতন কীর্তিস্তম্ভ হলো পিরামিড।" },
+            { id: 11, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "নেফারতিতি প্রাচীন কোন সাম্রাজ্যের রানি ছিলেন এবং 'সার্পেন্ট অব দি নাইল' কাকে বলা হয়?", options: ["ব্যাবিলন - হাতশেপসুত", "মিশর - ক্লিওপেট্রা", "পারস্য - নেফারতিতি", "গ্রিস - হেলেন"], correct: 1, exp: "নেফারতিতি প্রাচীন মিশরের রানি ছিলেন এবং মিশরের রানি ক্লিওপেট্রাকে 'সার্পেন্ট অব দি নাইল' বলা হয়।" },
+            { id: 12, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'সিন্ধু সভ্যতা' বিকাশ লাভ করেছিল কোন দুটি দেশে এবং কত সালে তা আবিষ্কৃত হয়?", options: ["ভারত ও নেপাল - ১৯২১", "ভারত ও পাকিস্তান - ১৯২২", "পাকিস্তান ও আফগানিস্তান - ১৯২২", "ভারত ও বাংলাদেশ - ১৯২৪"], correct: 1, exp: "সিন্ধু সভ্যতা ভারত ও পাকিস্তানে বিকাশ লাভ করে এবং ১৯২২ সালে রাখালদাস বন্দ্যোপাধ্যায়, স্যার জন মার্শাল ও দয়ারাম সাহনী তা আবিষ্কার করেন।" },
+            { id: 13, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "প্রাচীন শিক্ষা কেন্দ্র 'তক্ষশীলা' কোন দেশে অবস্থিত এবং শূন্যের ধারণা কোন দেশের গণিতবিদের?", options: ["ভারত - গ্রিস", "পাকিস্তান - ভারত", "ভারত - চীন", "পাকিস্তান - মিশর"], correct: 1, exp: "তক্ষশীলা বর্তমানে পাকিস্তানে অবস্থিত এবং শূন্যের ধারণা ভারতের গণিতবিদের অবদান।" },
+            { id: 14, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "চীনের মহাপ্রাচীরের নির্মাণকাজ শুরু করে কোন রাজবংশ এবং বর্তমান প্রাচীরের বৃহৎ অংশ কোন আমলে নির্মিত হয়?", options: ["চৌ - হান সাম্রাজ্য", "কিং - মিং সাম্রাজ্য", "হান - কিং সাম্রাজ্য", "চিন - সুই সাম্রাজ্য"], correct: 1, exp: "চীনের মহাপ্রাচীরের নির্মাণকাজ শুরু করে কিং রাজবংশ; তবে বর্তমান প্রাচীরের বৃহৎ অংশ নির্মিত হয় মিং সাম্রাজ্যের আমলে।" },
+            { id: 15, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "কোন সাম্রাজ্যকে চৈনিক সভ্যতার স্বর্ণযুগ বলা হয় এবং চীনের সবচেয়ে প্রভাবশালী দার্শনিক কে ছিলেন?", options: ["মিং সাম্রাজ্য - লাওৎসু", "হান সাম্রাজ্য - কনফুসিয়াস", "তাং সাম্রাজ্য - মেনসিয়াস", "কিং সাম্রাজ্য - কনফুসিয়াস"], correct: 1, exp: "হান সাম্রাজ্যকে চৈনিক সভ্যতার স্বর্ণযুগ বলা হয় এবং চীনের সবচেয়ে প্রভাবশালী দার্শনিক ছিলেন কনফুসিয়াস।" },
+            { id: 16, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "ফিনিশীয় সভ্যতার বড় অবদান কী এবং তারা প্রথম কয়টি ব্যঞ্জনবর্ণ উদ্ভাবন করে?", options: ["চাকার ব্যবহার - ২০টি", "বর্ণমালার উদ্ভব - ২২টি", "কাগজ উদ্ভাবন - ২৪টি", "পঞ্জিকা উদ্ভাবন - ১৮টি"], correct: 1, exp: "ফিনিশীয় সভ্যতার বড় অবদান বর্ণমালার উদ্ভব এবং ফিনিশীয়রাই প্রথম ২২টি ব্যঞ্জনবর্ণ উদ্ভাবন করে।" },
+            { id: 17, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "পেলোপনেশীয় যুদ্ধ সংঘটিত হয়েছিল কাদের মধ্যে?", options: ["রোম ও কার্থেজ", "এথেন্স ও স্পার্টা", "মিশর ও হিটাইট", "পারস্য ও গ্রিস"], correct: 1, exp: "পেলোপনেশীয় যুদ্ধ সংঘটিত হয়েছিল গ্রিসের এথেন্স ও স্পার্টার মধ্যে।" },
+            { id: 18, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "সর্বপ্রথম 'রোমান আইন' কিসে সংকলন করা হয় এবং রোমান সভ্যতার স্থাপত্য নিদর্শন 'কলোসিয়াম' কী?", options: ["শিলার ফলকে - প্রাসাদ", "১২টি ব্রোঞ্জপাতে - নাট্যশালা", "প্যাপিরাসে - অ্যাম্ফিথিয়েটার", "১০টি ব্রোঞ্জপাতে - নাট্যশালা"], correct: 1, exp: "সর্বপ্রথম রোমান আইন ১২টি ব্রোঞ্জপাতে সংকলন করা হয় এবং রোমান সভ্যতার নিদর্শন কলোসিয়াম হলো নাট্যশালা।" },
+            { id: 19, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "মায়া সভ্যতা কোন অঞ্চলে বিরাজমান ছিল এবং 'ইনকা' সভ্যতার ধ্বংসাবশেষ কোথায় আবিষ্কৃত হয়েছে?", options: ["দক্ষিণ আমেরিকা - মেক্সিকোতে", "মধ্য আমেরিকা - পেরুতে", "উত্তর আমেরিকা - বলিভিয়ায়", "মধ্য আমেরিকা - চিলিতে"], correct: 1, exp: "মায়া সভ্যতা মধ্য আমেরিকায় বিরাজমান ছিল এবং ইনকা সভ্যতার ধ্বংসাবশেষ (মাচুপিচু) পেরুতে আবিষ্কৃত হয়েছে।" },
+            { id: 20, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "সেমীয় ভাষা কোনটি এবং মালদ্বীপের প্রধান ভাষার নাম কী?", options: ["ফারসি ও কুর্দি - সিংহলি", "আরবি ও হিব্রু - ধিভেহী", "হিব্রু ও তামিল - মালদ্বীপিয়ান", "আরবি ও উর্দু - ধিভেহী"], correct: 1, exp: "আরবি ও হিব্রু সেমীয় ভাষা এবং মালদ্বীপের প্রধান ভাষার নাম ধিভেহী।" },
+            { id: 21, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'পশতু' কোন দেশের ভাষা এবং 'আকান' কোন দেশের ভাষা?", options: ["ইরান - নাইজেরিয়া", "আফগানিস্তান - ঘানা", "পাকিস্তান - কেনিয়া", "আফগানিস্তান - সেনেগাল"], correct: 1, exp: "'পশতু' আফগানিস্তানের ভাষা এবং 'আকান' ঘানার ভাষা।" },
+            { id: 22, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'ইমোজি' শব্দটি কোন ভাষা থেকে এসেছে এবং মধ্যপ্রাচ্যের অধিকাংশ অধিবাসী কোন নৃগোষ্ঠীর?", options: ["কোরিয়ান - মঙ্গোলীয়", "জাপানিজ - ককেশীয়", "চাইনিজ - ককেশীয়", "জাপানিজ - নিগ্রয়েড"], correct: 1, exp: "'ইমোজি' শব্দটি জাপানিজ ভাষা থেকে এসেছে এবং মধ্যপ্রাচ্যের অধিকাংশ অধিবাসী ককেশীয়।" },
+            { id: 23, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "রোহিঙ্গা জনগোষ্ঠী মিয়ানমারের কোন রাজ্যে বসবাস করে এবং চীনের জিনজিয়াং-এর মুসলিম জনগোষ্ঠী কী নামে পরিচিত?", options: ["শান - হুই", "রাখাইন - উইঘুর", "কাচিন - তাজিক", "আরাকান - উইঘুর"], correct: 1, exp: "রোহিঙ্গা জনগোষ্ঠী মিয়ানমারের রাখাইন রাজ্যে বসবাস করে এবং চীনের জিনজিয়াং প্রদেশের মুসলিম জনগোষ্ঠী উইঘুর নামে পরিচিত।" },
+            { id: 24, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "মেইতেই, নাগা ও কুকি সম্প্রদায় কোথায় বসবাস করে এবং 'জুলু' কোন দেশের প্রধান আদিবাসী?", options: ["আসাম - কেনিয়া", "ভারতের মণিপুরে - দক্ষিণ আফ্রিকা", "নাগাল্যান্ড - নামিবিয়া", "মণিপুর - জিম্বাবুয়ে"], correct: 1, exp: "মেইতেই, নাগা ও কুকি সম্প্রদায় ভারতের মণিপুরে বসবাস করে এবং 'জুলু' দক্ষিণ আফ্রিকার প্রধান আদিবাসী।" },
+            { id: 25, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "নর্ডিক অঞ্চলভুক্ত দেশ মোট কয়টি ও কী কী?", options: ["৩টি; নরওয়ে, সুইডেন ও ডেনমার্ক", "৫টি; ডেনমার্ক, নরওয়ে, সুইডেন, ফিনল্যান্ড ও আইসল্যান্ড", "৪টি; ডেনমার্ক, নরওয়ে, সুইডেন ও ফিনল্যান্ড", "৬টি; ডেনমার্ক, নরওয়ে, সুইডেন, ফিনল্যান্ড, আইসল্যান্ড ও এস্তোনিয়া"], correct: 1, exp: "নর্ডিক অঞ্চলভুক্ত দেশ ৫টি: ডেনমার্ক, নরওয়ে, সুইডেন, ফিনল্যান্ড ও আইসল্যান্ড।" },
+            { id: 26, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "এশিয়ার 'বজ্রপাতের ভূমি' কোন দেশ এবং 'Gift of the Nile' বলা হয় কোন দেশকে?", options: ["নেপাল - সুদান", "ভুটান - মিশর", "শ্রীলংকা - মিশর", "ভুটান - ইথিওপিয়া"], correct: 1, exp: "ভুটানকে এশিয়ার 'বজ্রপাতের ভূমি' এবং মিশরকে 'Gift of the Nile' বলা হয়।" },
+            { id: 27, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "কোন দেশকে 'ইউরোপের ককপিট' এবং কোন দেশকে ইউরোপের 'রুটির ঝুড়ি' বলা হয়?", options: ["নেদারল্যান্ডস ও পোল্যান্ড", "বেলজিয়াম ও ইউক্রেন", "সুইজারল্যান্ড ও ইউক্রেন", "বেলজিয়াম ও রোমানিয়া"], correct: 1, exp: "বেলজিয়ামকে 'ইউরোপের ককপিট' এবং ইউক্রেনকে ইউরোপের 'রুটির ঝুড়ি' বলা হয়।" },
+            { id: 28, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "কোন দেশকে 'হাজার হ্রদের দেশ' এবং কোন দেশকে 'ল্যান্ড অব মার্বেল' বলা হয়?", options: ["নরওয়ে ও গ্রিস", "ফিনল্যান্ড ও ইতালি", "সুইডেন ও ইতালি", "ফিনল্যান্ড ও স্পেন"], correct: 1, exp: "ফিনল্যান্ডকে 'হাজার হ্রদের দেশ' এবং ইতালিকে 'ল্যান্ড অব মার্বেল' বলা হয়।" },
+            { id: 29, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "ভারতের 'গোলাপী শহর' কোনটি এবং কোন শহর 'বিগ অ্যাপেল' নামে পরিচিত?", options: ["উদয়পুর - শিকাগো", "জয়পুর - নিউইয়র্ক", "যোধপুর - লস অ্যাঞ্জেলেস", "জয়পুর - বোস্টন"], correct: 1, exp: "ভারতের জয়পুর শহর 'গোলাপী শহর' এবং যুক্তরাষ্ট্রের নিউইয়র্ক শহর 'বিগ অ্যাপেল' নামে পরিচিত।" },
+            { id: 30, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "পৃথিবীর কোন শহরকে 'স্বর্ণনগরী' বলা হয় এবং আয়তনে পৃথিবীর বৃহত্তম ও ক্ষুদ্রতম দেশ কোন দুটি?", options: ["কেপটাউন - কানাডা ও ভ্যাটিকান সিটি", "জোহানেসবার্গ - রাশিয়া ও ভ্যাটিকান সিটি", "প্রিটোরিয়া - রাশিয়া ও মোনাকো", "জোহানেসবার্গ - চীন ও ভ্যাটিকান সিটি"], correct: 1, exp: "জোহানেসবার্গকে 'স্বর্ণনগরী' বলা হয় এবং আয়তনে পৃথিবীর বৃহত্তম দেশ রাশিয়া ও ক্ষুদ্রতম দেশ ভ্যাটিকান সিটি।" },
+            { id: 31, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "জনসংখ্যায় পৃথিবীর বৃহত্তম ও ক্ষুদ্রতম দেশ কোন দুটি এবং পৃথিবীর সবচেয়ে প্রলম্বিত বা সরু দেশের নাম কী?", options: ["চীন ও ভ্যাটিকান সিটি - নরওয়ে", "ভারত ও ভ্যাটিকান সিটি - চিলি", "ভারত ও মোনাকো - চিলি", "যুক্তরাষ্ট্র ও ভ্যাটিকান সিটি - ভিয়েতনাম"], correct: 1, exp: "জনসংখ্যায় বৃহত্তম দেশ ভারত ও ক্ষুদ্রতম দেশ ভ্যাটিকান সিটি; আর সবচেয়ে প্রলম্বিত বা সরু দেশের নাম চিলি।" },
+            { id: 32, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "পৃথিবীর সর্বাধিক সীমান্তবর্তী দেশ কোন দুটি ও কয়টি করে দেশের সীমান্ত রয়েছে?", options: ["ভারত ও চীন - ১৩টি করে", "চীন ও রাশিয়া - ১৪টি করে", "রাশিয়া ও ব্রাজিল - ১৪টি করে", "চীন ও রাশিয়া - ১২টি করে"], correct: 1, exp: "চীন ও রাশিয়া উভয় দেশই সর্বাধিক ১৪টি করে দেশের সাথে সীমান্তযুক্ত।" },
+            { id: 33, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "পৃথিবীর দীর্ঘতম সীমান্ত কোন দুটি দেশের মধ্যে এবং এককভাবে পৃথিবীর দীর্ঘতম নদী কোনটি?", options: ["রাশিয়া-কাজাখস্তান - আমাজন নদী", "যুক্তরাষ্ট্র-কানাডা - নীল নদ", "যুক্তরাষ্ট্র-মেক্সিকো - নীল নদ", "চীন-মঙ্গোলিয়া - ইয়াংসিকিয়াং"], correct: 1, exp: "পৃথিবীর দীর্ঘতম সীমান্ত রয়েছে যুক্তরাষ্ট্র ও কানাডার মধ্যে এবং এককভাবে দীর্ঘতম নদী নীল নদ।" },
+            { id: 34, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "পৃথিবীকে উত্তর-দক্ষিণে বিভক্ত করেছে কোন রেখাটি এবং ০° অক্ষাংশ রেখা কী নামে পরিচিত?", options: ["মূল মধ্যরেখা - কর্কটক্রান্তি রেখা", "নিরক্ষরেখা - নিরক্ষরেখা/বিষুবরেখা", "মকরক্রান্তি রেখা - মূল মধ্যরেখা", "নিরক্ষরেখা - মকরক্রান্তি রেখা"], correct: 1, exp: "নিরক্ষরেখা বা বিষুবরেখা (০° অক্ষাংশ) পৃথিবীকে উত্তর-দক্ষিণে বিভক্ত করেছে।" },
+            { id: 35, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'মেসোপটেমিয়া' শব্দের অর্থ কী এবং এটি কোন দুটি নদীর মধ্যবর্তী অঞ্চলে গড়ে ওঠে?", options: ["মৃতদের টিলা - ইউফ্রেটিস ও নীল নদ", "দুই নদীর মধ্যবর্তী অঞ্চল - টাইগ্রিস (দজলা) ও ইউফ্রেটিস (ফোরাত)", "উর্বর ভূমি - দজলা ও সিন্ধু নদ", "দুই নদীর মধ্যবর্তী অঞ্চল - হোয়াংহো ও ইয়াংসিকিয়াং"], correct: 1, exp: "'মেসোপটেমিয়া' শব্দের অর্থ দুই নদীর মধ্যবর্তী অঞ্চল; এটি টাইগ্রিস (দজলা) ও ইউফ্রেটিস (ফোরাত) নদীর মধ্যবর্তী অঞ্চলে গড়ে ওঠে।" },
+            { id: 36, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "ব্যাবিলনীয় সভ্যতার স্থপতি কে ছিলেন এবং এর স্বর্ণযুগ বলা হয় কোন শাসনামলকে?", options: ["নেবুচাদনেজার - নেবুচাদনেজার আমল", "হাম্মুরাবি - হাম্মুরাবি শাসনামল", "সারগন - সারগন শাসনামল", "হাম্মুরাবি - ক্যালডীয় আমল"], correct: 1, exp: "ব্যাবিলনীয় সভ্যতার স্থপতি অ্যামোরাইট রাজা হাম্মুরাবি এবং এর স্বর্ণযুগ বলা হয় হাম্মুরাবি শাসনামলকে।" },
+            { id: 37, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "ক্যালডীয় সভ্যতার স্থপতি কে ছিলেন এবং 'ব্যাবিলনের শূন্য ঝুলন্ত উদ্যান' তৈরি করেন কে?", options: ["হাম্মুরাবি - হাম্মুরাবি", "রাজা নেবুচাদনেজার - রাজা নেবুচাদনেজার", "সাইরাস - রাজা নেবুচাদনেজার", "নেবুচাদনেজার - আলেকজান্ডার"], correct: 1, exp: "ক্যালডীয় (নব্য ব্যাবিলনীয়) সভ্যতার স্থপতি রাজা নেবুচাদনেজার এবং তিনিই ব্যাবিলনের শূন্য উদ্যান তৈরি করেন।" },
+            { id: 38, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "মিশরীয় সভ্যতা কোন নদীর তীরে গড়ে উঠেছিল এবং প্রাচীন মিশরের রাজাদের কী নামে ডাকা হতো?", options: ["ইউফ্রেটিস - সুলতান", "নীল নদের তীরে - ফারাও", "টাইগ্রিস - খলিফা", "নীল নদের তীরে - সম্রাট"], correct: 1, exp: "মিশরীয় সভ্যতা নীল নদের তীরে গড়ে উঠেছিল এবং প্রাচীন মিশরের রাজাদের ফারাও বলা হতো।" },
+            { id: 39, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "কোন প্রাচীন সভ্যতা নদীর তীরে গড়ে ওঠেনি এবং সর্বপ্রথম পৃথিবীর মানচিত্র অংকন করে কারা?", options: ["রোমান সভ্যতা - মিশরীয়রা", "গ্রিক সভ্যতা - গ্রিকরা", "ফিনিশীয় সভ্যতা - ব্যাবিলনীয়রা", "গ্রিক সভ্যতা - ফিনিশীয়রা"], correct: 1, exp: "গ্রিক সভ্যতা কোনো নদীর তীরে গড়ে ওঠেনি এবং গ্রিকরাই সর্বপ্রথম পৃথিবীর মানচিত্র অংকন করে।" },
+            { id: 40, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "সিন্ধু সভ্যতা গড়ে তুলেছিল কোন জাতি এবং হরপ্পা ও মহেঞ্জোদারোর মধ্যে 'মহেঞ্জোদারো' শব্দের অর্থ কী?", options: ["আর্য জাতি - জীবিতদের নগরী", "দ্রাবিড় জাতি - মৃতদের টিলা", "মঙ্গোলীয় জাতি - মৃতদের টিলা", "দ্রাবিড় জাতি - সোনার শহর"], correct: 1, exp: "সিন্ধু সভ্যতা গড়ে তুলেছিল দ্রাবিড় জাতি এবং মহেঞ্জোদারো শব্দের অর্থ মৃতদের টিলা।" },
+            { id: 41, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "হোয়াংহো ও ইয়াংসিকিয়াং নদীর তীরে কোন সভ্যতা গড়ে উঠেছিল?", options: ["মেসোপটেমীয় সভ্যতা", "চৈনিক সভ্যতা", "সিন্ধু সভ্যতা", "পারস্য সভ্যতা"], correct: 1, exp: "হোয়াংহো ও ইয়াংসিকিয়াং নদীর তীরে চৈনিক সভ্যতা গড়ে উঠেছিল।" },
+            { id: 42, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "হিব্রু সভ্যতা কোন নগরীকে কেন্দ্র করে গড়ে ওঠে এবং পৃথিবীর প্রাচীনতম ভাষার নাম কী?", options: ["ব্যাবিলন - আরবি", "জেরুজালেম নগরীকে কেন্দ্র করে - হিব্রু", "দামেস্ক - সংস্কৃত", "জেরুজালেম - সুমেরীয়"], correct: 1, exp: "হিব্রু সভ্যতা ফিলিস্তিনের জেরুজালেম নগরীকে কেন্দ্র করে গড়ে ওঠে এবং হিব্রু পৃথিবীর প্রাচীনতম ভাষা।" },
+            { id: 43, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "অ্যাজটেক সভ্যতা গড়ে উঠেছিল কোথায় এবং পারস্য উপসাগরীয় কোন দুটি দেশে রাজতন্ত্র নেই?", options: ["পেরুতে - কুয়েত ও কাতার", "মেক্সিকোতে - ইরাক ও ইরান", "বলিভিয়ায় - ওমান ও বাহরাইন", "মেক্সিকোতে - ইরান ও সৌদি আরব"], correct: 1, exp: "অ্যাজটেক সভ্যতা মেক্সিকোতে গড়ে ওঠে এবং পারস্য উপসাগরীয় ইরাক ও ইরানে রাজতন্ত্র নেই।" },
+            { id: 44, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "কফির জন্মস্থান কোথায় এবং ড্যারিয়েন গ্যাপ কেন আলোচিত?", options: ["ব্রাজিল - গভীর সমুদ্র খাত", "ইথিওপিয়া - মাদক ও মানবপাচারের গোপন রুট হিসেবে", "ইয়েমেন - প্রাকৃতিক গ্যাসক্ষেত্র", "ইথিওপিয়া - সামরিক ঘাঁটি হিসেবে"], correct: 1, exp: "কফির জন্মস্থান ইথিওপিয়া এবং ড্যারিয়েন গ্যাপ মাদক ও মানবপাচারের গোপন রুট হিসেবে আলোচিত।" },
+            { id: 45, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "জাপান কতটি প্রধান দ্বীপ নিয়ে গঠিত ও কী কী?", options: ["৩টি; হোক্কাইডো, হনসু ও কিউশু", "৪টি; হোক্কাইডো, হনসু, কিউশু ও শিকোকু", "৫টি; হোক্কাইডো, হনসু, কিউশু, শিকোকু ও ওকিনাওয়া", "৪টি; হনসু, কিউশু, শিকোকু ও তাইওয়ান"], correct: 1, exp: "জাপান ৪টি প্রধান দ্বীপ নিয়ে গঠিত: হোক্কাইডো, হনসু, কিউশু ও শিকোকু।" },
+            { id: 46, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "মাতৃভাষা হিসেবে সর্বাধিক ব্যবহৃত ভাষার নাম কী এবং পৃথিবীর সর্বাধিক ভাষার দেশ কোনটি?", options: ["ইংরেজি - ভারত", "ম্যান্ডারিন - পাপুয়া নিউগিনি (প্রায় ৮৪০টি)", "স্প্যানিশ - ইন্দোনেশিয়া", "ম্যান্ডারিন - বলিভিয়া"], correct: 1, exp: "মাতৃভাষা হিসেবে সর্বাধিক ব্যবহৃত ভাষা ম্যান্ডারিন এবং পৃথিবীর সর্বাধিক ভাষার দেশ পাপুয়া নিউগিনি (প্রায় ৮৪০টি)।" },
+            { id: 47, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "মানব শিশুর প্রথম ভাষা কী নামে পরিচিত এবং কোন সভ্যতার সময়কালে ওজন ও দৈর্ঘ্য মাপার পদ্ধতি আবিষ্কার হয়েছিল?", options: ["ক্রায়িং - মিশরীয় সভ্যতা", "বাবলিং - সিন্ধু সভ্যতা", "কুইং - সুমেরীয় সভ্যতা", "বাবলিং - ব্যাবিলনীয় সভ্যতা"], correct: 1, exp: "মানব শিশুর প্রথম ভাষা বাবলিং এবং সিন্ধু সভ্যতার সময়কালে ওজন পরিমাপ ও দৈর্ঘ্য মাপার পদ্ধতি আবিষ্কার হয়েছিল।" },
+            { id: 48, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "২৩.৫° উত্তর ও ২৩.৫° দক্ষিণ অক্ষাংশ বরাবর কল্পিত রেখা দুটি যথাক্রমে কী নামে পরিচিত?", options: ["মকরক্রান্তি রেখা ও কর্কটক্রান্তি রেখা", "কর্কটক্রান্তি রেখা ও মকরক্রান্তি রেখা", "নিরক্ষরেখা ও মকরক্রান্তি রেখা", "সুমেরু বৃত্ত ও কুমেরু বৃত্ত"], correct: 1, exp: "২৩.৫° উত্তর অক্ষাংশ কর্কটক্রান্তি রেখা (Tropic of Cancer) এবং ২৩.৫° দক্ষিণ অক্ষাংশ মকরক্রান্তি রেখা (Tropic of Capricorn) নামে পরিচিত।" },
+            { id: 49, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "মণিপুরের রাজধানী কোথায় এবং কোন শহরকে 'সম্মেলনের শহর' বলা হয়?", options: ["কোহিমা - ভিয়েনা", "ইম্ফল - জেনেভা", "আইজল - জেনেভা", "ইম্ফল - ব্রাসেলস"], correct: 1, exp: "মণিপুরের রাজধানী ইম্ফল এবং জেনেভা শহরকে 'সম্মেলনের শহর' বলা হয়।" },
+            { id: 50, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'প্যাগোডার দেশ' হিসেবে পরিচিত কোন দেশ এবং 'নিষিদ্ধ দেশ' বলা হয় কোন দেশকে?", options: ["থাইল্যান্ড - ভুটান", "মিয়ানমার - তিব্বতকে", "কম্বোডিয়া - তিব্বতকে", "মিয়ানমার - নেপালকে"], correct: 1, exp: "মিয়ানমার 'প্যাগোডার দেশ' এবং তিব্বত 'নিষিদ্ধ দেশ' হিসেবে পরিচিত।" },
+            { id: 51, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'নিশীথ সূর্যের দেশ' ও 'ধীবর ও মৎস্যজীবীদের দেশ' কোনটি এবং 'আগুনের দ্বীপ' বলা হয় কোন দেশকে?", options: ["ফিনল্যান্ড - গ্রিনল্যান্ডকে", "নরওয়েকে - আইসল্যান্ডকে", "আইসল্যান্ড - নরওয়েকে", "নরওয়েকে - জাপানকে"], correct: 1, exp: "নরওয়েকে 'নিশীথ সূর্যের দেশ' ও 'ধীবর ও মৎস্যজীবীদের দেশ' এবং আইসল্যান্ডকে 'আগুনের দ্বীপ' বলা হয়।" },
+            { id: 52, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'পৃথিবীর চিনির আধার' ও 'মুক্তার দেশ' কোন দেশ এবং গ্রিনিচ থেকে বাংলাদেশের সময়ের পার্থক্য কত?", options: ["ব্রাজিল - GMT+5", "কিউবা - GMT+6 (৬ ঘণ্টা)", "জ্যামাইকা - GMT+6", "কিউবা - GMT+5:30"], correct: 1, exp: "কিউবাকে 'পৃথিবীর চিনির আধার' ও 'মুক্তার দেশ' বলা হয়; গ্রিনিচ থেকে বাংলাদেশের সময়ের পার্থক্য GMT+6 (৬ ঘণ্টা)।" },
+            { id: 53, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'আফ্রিকার শিং' (Horn of Africa)-এর অন্তর্ভুক্ত দেশ কোন চারটি?", options: ["সুদান, ইরিত্রিয়া, সোমালিয়া ও জিবুতি", "সোমালিয়া, ইরিত্রিয়া, ইথিওপিয়া ও জিবুতি", "সোমালিয়া, কেনিয়া, ইথিওপিয়া ও উগান্ডা", "ইথিওপিয়া, সোমালিয়া, সুদান ও চাদ"], correct: 1, exp: "আফ্রিকার শিং (Horn of Africa)-এর অন্তর্ভুক্ত দেশ ৪টি: সোমালিয়া, ইরিত্রিয়া, ইথিওপিয়া ও জিবুতি।" },
+            { id: 54, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'সাহেল' অঞ্চলভুক্ত দেশগুলোর মধ্যে কোন দেশগুলো অন্তর্ভুক্ত?", options: ["নাইজেরিয়া, ঘানা, মালি ও চাদ", "সুদান, ইরিত্রিয়া, সেনেগাল, মৌরিতানিয়া, মালি, বুরকিনা ফাসো, নাইজার ও চাদ", "সোমালিয়া, মালি, নাইজার ও সুদান", "মালি, বুরকিনা ফাসো, নাইজার, চাদ ও কেনিয়া"], correct: 1, exp: "সাহেল অঞ্চলভুক্ত দেশগুলো হলো: সুদান, ইরিত্রিয়া, সেনেগাল, মৌরিতানিয়া, মালি, বুরকিনা ফাসো, নাইজার ও চাদ।" },
+            { id: 55, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'গোল্ডেন ট্রায়াঙ্গেল' ও 'গোল্ডেন ক্রিসেন্ট' যথাক্রমে কোন দেশগুলো নিয়ে গঠিত?", options: ["লাওস, কম্বোডিয়া, ভিয়েতনাম এবং ইরান, ইরাক, আফগানিস্তান", "লাওস, মিয়ানমার ও থাইল্যান্ড এবং আফগানিস্তান, ইরান ও পাকিস্তান", "বাংলাদেশ, ভারত, নেপাল এবং লাওস, মিয়ানমার, থাইল্যান্ড", "মিয়ানমার, থাইল্যান্ড, মালয়েশিয়া এবং পাকিস্তান, ইরান, তুরস্ক"], correct: 1, exp: "গোল্ডেন ট্রায়াঙ্গেল গঠিত লাওস, মিয়ানমার ও থাইল্যান্ড নিয়ে এবং গোল্ডেন ক্রিসেন্ট আফগানিস্তান, ইরান ও পাকিস্তান নিয়ে।" },
+            { id: 56, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'গোল্ডেন ওয়েজ' ও 'ইন্দোচীন' অঞ্চল দুটির সাথে সংশ্লিষ্ট দেশ কোনগুলো?", options: ["লাওস, মিয়ানমার, থাইল্যান্ড এবং ভিয়েতনাম, থাইল্যান্ড, কম্বোডিয়া", "বাংলাদেশ, ভারত ও নেপাল সীমান্ত এবং লাওস, কম্বোডিয়া ও ভিয়েতনাম", "ভারত, নেপাল, ভুটান এবং লাওস, মিয়ানমার, ভিয়েতনাম", "বাংলাদেশ, মিয়ানমার, থাইল্যান্ড এবং কম্বোডিয়া, থাইল্যান্ড, ভিয়েতনাম"], correct: 1, exp: "গোল্ডেন ওয়েজ হলো বাংলাদেশ, ভারত ও নেপাল সীমান্ত এবং ইন্দোচীন গঠিত লাওস, কম্বোডিয়া ও ভিয়েতনাম নিয়ে।" },
+            { id: 57, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'স্ক্যান্ডিনেভিয়ান অঞ্চল' ও 'বাল্টিক রাষ্ট্র' যথাক্রমে কোন দেশগুলো নিয়ে গঠিত?", options: ["নরওয়ে, সুইডেন, ফিনল্যান্ড এবং লিথুয়ানিয়া, লাটভিয়া, বেলারুশ", "নরওয়ে, সুইডেন ও ডেনমার্ক এবং লিথুয়ানিয়া, লাটভিয়া ও এস্তোনিয়া", "ডেনমার্ক, ফিনল্যান্ড, আইসল্যান্ড এবং এস্তোনিয়া, পোল্যান্ড, লিথুয়ানিয়া", "নরওয়ে, সুইডেন, ডেনমার্ক এবং লাটভিয়া, এস্তোনিয়া, ইউক্রেন"], correct: 1, exp: "স্ক্যান্ডিনেভিয়ান অঞ্চল গঠিত নরওয়ে, সুইডেন ও ডেনমার্ক নিয়ে; আর বাল্টিক রাষ্ট্র হলো লিথুয়ানিয়া, লাটভিয়া ও এস্তোনিয়া।" },
+            { id: 58, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "'দক্ষিণ এশিয়ার স্থলবেষ্টিত রাষ্ট্র' কোন তিনটি এবং 'ফোর টাইগার্স' কোন চারটি?", options: ["নেপাল, ভুটান, শ্রীলংকা এবং সিঙ্গাপুর, মালয়েশিয়া, তাইওয়ান, হংকং", "আফগানিস্তান, নেপাল ও ভুটান এবং সিঙ্গাপুর, তাইওয়ান, দক্ষিণ কোরিয়া ও হংকং", "আফগানিস্তান, ভুটান, মিয়ানমার এবং জাপান, তাইওয়ান, দক্ষিণ কোরিয়া, হংকং", "নেপাল, ভুটান, মালদ্বীপ এবং সিঙ্গাপুর, ভিয়েতনাম, দক্ষিণ কোরিয়া, হংকং"], correct: 1, exp: "দক্ষিণ এশিয়ার স্থলবেষ্টিত রাষ্ট্র ৩টি: আফগানিস্তান, নেপাল ও ভুটান; এবং ফোর টাইগার্স হলো সিঙ্গাপুর, তাইওয়ান, দক্ষিণ কোরিয়া ও হংকং।" },
+            { id: 59, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "পিগমি, কুর্দি ও উইঘুর জাতিগোষ্ঠীর অবস্থান যথাক্রমে কোথায়?", options: ["আফ্রিকা মহাদেশ; ইরাক, ইরান ও তুর্কিয়ে; চীনের জিনজিয়াং প্রদেশ", "দক্ষিণ আমেরিকা; সিরিয়া, ইরাক ও ইরান; তিব্বত", "আফ্রিকা মহাদেশ; ইরান, পাকিস্তান ও তুর্কিয়ে; মঙ্গোলিয়া", "অস্ট্রেলিয়া; ইরাক, ইরান ও তুর্কিয়ে; চীনের জিনজিয়াং প্রদেশ"], correct: 1, exp: "পিগমি আফ্রিকা মহাদেশে, কুর্দি ইরাক, ইরান ও তুর্কিয়েতে এবং উইঘুর চীনের জিনজিয়াং প্রদেশে বসবাস করে।" },
+            { id: 60, section: "অধ্যায় ০১: পৃথিবী পরিচিতি", q: "মৃতদেহ সৎকারের জন্য 'চিলঘর' ব্যবহৃত হতো কোন সভ্যতায় এবং বাংলাদেশের প্রতিপাদ স্থান কোথায় অবস্থিত?", options: ["মিশরীয় সভ্যতায় - ব্রাজিলের নিকট আটলান্টিক মহাসাগরে", "পারস্য সভ্যতায় - চিলির নিকট প্রশান্ত মহাসাগরে", "সুমেরীয় সভ্যতায় - আর্জেন্টিনার নিকট প্রশান্ত মহাসাগরে", "পারস্য সভ্যতায় - পেরুর নিকট প্রশান্ত মহাসাগরে"], correct: 1, exp: "মৃতদেহ সৎকারের জন্য চিলঘর ব্যবহৃত হতো পারস্য সভ্যতায় এবং বাংলাদেশের প্রতিপাদ স্থান চিলির নিকট প্রশান্ত মহাসাগরে অবস্থিত।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let timeLeft = 25 * 60;
+        let startTime;
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            renderPalette();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').textContent = `সময়: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const qObj = questions[index];
+            document.getElementById('current-q-num').textContent = index + 1;
+            document.getElementById('section-badge').textContent = qObj.section;
+            document.getElementById('question-text').textContent = `${index + 1}. ${qObj.q}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const labels = ['ক', 'খ', 'গ', 'ঘ'];
+            qObj.options.forEach((opt, i) => {
+                const isSelected = userAnswers[index] === i;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition duration-150 flex items-center gap-3 ${
+                    isSelected
+                        ? 'bg-emerald-700/60 border-emerald-400 text-white font-semibold'
+                        : 'bg-slate-800/80 hover:bg-slate-700 border-slate-600 text-slate-200'
+                }`;
+                btn.innerHTML = `<span class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${
+                    isSelected ? 'bg-emerald-500 text-slate-900' : 'bg-slate-700 text-slate-300'
+                }">${labels[i]}</span><span>${opt}</span>`;
+                btn.onclick = () => selectOption(i);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
+
+            const nextBtn = document.getElementById('next-btn');
+            if (index === questions.length - 1) {
+                nextBtn.textContent = 'সাবমিট করুন ✓';
+                nextBtn.className = 'px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            } else {
+                nextBtn.textContent = 'পরবর্তী →';
+                nextBtn.className = 'px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQuestion] = optIndex;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) loadQuestion(currentQuestion - 1);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                confirmSubmit();
+            }
+        }
+
+        function renderPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `pal-${idx}`;
+                btn.textContent = idx + 1;
+                btn.className = 'py-1.5 text-xs font-bold rounded bg-slate-800 border border-slate-600 text-slate-300 hover:bg-slate-700';
+                btn.onclick = () => loadQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        function updatePalette() {
+            questions.forEach((_, idx) => {
+                const btn = document.getElementById(`pal-${idx}`);
+                if (!btn) return;
+                btn.className = 'py-1.5 text-xs font-bold rounded border transition ';
+                if (idx === currentQuestion) {
+                    btn.className += 'ring-2 ring-amber-400 ';
+                }
+                if (userAnswers[idx] !== null) {
+                    btn.className += 'bg-emerald-700 border-emerald-500 text-white';
+                } else {
+                    btn.className += 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700';
+                }
+            });
+        }
+
+        function confirmSubmit() {
+            if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষাটি সাবমিট করতে চান?')) {
+                submitQuiz();
+            }
+        }
+
+        let correctList = [], wrongList = [], skippedList = [];
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('time-taken-text').textContent = `সময় লেগেছে: ${mins} মিনিট ${secs} সেকেন্ড`;
+
+            correctList = [];
+            wrongList = [];
+            skippedList = [];
+
+            questions.forEach((q, idx) => {
+                const ans = userAnswers[idx];
+                if (ans === null) {
+                    skippedList.push({ ...q, idx, userAns: null });
+                } else if (ans === q.correct) {
+                    correctList.push({ ...q, idx, userAns: ans });
+                } else {
+                    wrongList.push({ ...q, idx, userAns: ans });
+                }
+            });
+
+            const score = (correctList.length * 1) - (wrongList.length * 0.25);
+            document.getElementById('final-score').textContent = score.toFixed(2);
+            document.getElementById('final-correct').textContent = correctList.length;
+            document.getElementById('final-wrong').textContent = wrongList.length;
+            document.getElementById('final-skipped').textContent = skippedList.length;
+
+            document.getElementById('count-correct').textContent = correctList.length;
+            document.getElementById('count-wrong').textContent = wrongList.length;
+            document.getElementById('count-skipped').textContent = skippedList.length;
+
+            switchTab('correct');
+        }
+
+        function switchTab(type) {
+            const tabs = ['correct', 'wrong', 'skipped'];
+            const colors = {
+                correct: 'border-emerald-500 text-emerald-400',
+                wrong: 'border-rose-500 text-rose-400',
+                skipped: 'border-blue-500 text-blue-400'
+            };
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}-btn`);
+                if (t === type) {
+                    btn.className = `flex-1 py-3 text-sm font-bold text-center border-b-2 ${colors[t]} transition duration-150`;
+                } else {
+                    btn.className = 'flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150';
+                }
+            });
+
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+            const data = type === 'correct' ? correctList : type === 'wrong' ? wrongList : skippedList;
+
+            if (data.length === 0) {
+                container.innerHTML = '<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>';
+                return;
+            }
+
+            const labels = ['A', 'B', 'C', 'D'];
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800/95 p-5 rounded-2xl border border-slate-700 space-y-4 shadow-md';
+
+                const optionsGridHtml = item.options.map((opt, i) => {
+                    const isCorrectOpt = i === item.correct;
+                    const isUserWrongOpt = item.userAns !== null && item.userAns === i && !isCorrectOpt;
+
+                    let boxStyle = 'bg-slate-900/70 border-slate-700/90 text-slate-300';
+                    let badgeStyle = 'bg-slate-800 border-slate-600 text-slate-300';
+                    let statusTag = '';
+
+                    if (isCorrectOpt) {
+                        boxStyle = 'bg-emerald-950/55 border-emerald-500/80 text-emerald-200 font-semibold';
+                        badgeStyle = 'bg-emerald-600/30 border-emerald-400 text-emerald-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white">সঠিক উত্তর</span>`;
+                    } else if (isUserWrongOpt) {
+                        boxStyle = 'bg-rose-950/55 border-rose-500/80 text-rose-200 font-semibold';
+                        badgeStyle = 'bg-rose-600/30 border-rose-400 text-rose-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-rose-600 text-white">আপনার উত্তর</span>`;
+                    }
+
+                    return `
+                        <div class="p-3.5 rounded-xl border ${boxStyle} flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full border ${badgeStyle} flex items-center justify-center text-xs font-bold shrink-0">${labels[i]}</span>
+                            <span class="text-sm leading-snug">${opt}</span>
+                            ${statusTag}
+                        </div>
+                    `;
+                }).join('');
+
+                const skippedNotice = item.userAns === null
+                    ? `<p class="text-xs text-blue-400 font-medium">আপনার উত্তর: উত্তর দেওয়া হয়নি</p>`
+                    : '';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-3">
+                        <span class="font-bold text-amber-400 text-sm shrink-0">প্রশ্ন #${item.idx + 1}</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 shrink-0">${item.section}</span>
+                    </div>
+                    <p class="font-bold text-slate-100 text-base md:text-lg leading-relaxed">${item.q}</p>
+                    ${skippedNotice}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${optionsGridHtml}</div>
+                    <div class="text-sm text-slate-200 bg-slate-900/90 p-3.5 rounded-xl border border-slate-700 leading-relaxed">
+                        <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${item.exp}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            timeLeft = 25 * 60;
+            document.getElementById('timer').textContent = 'সময়: 25:00';
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            loadQuestion(0);
+            startTimer();
+        }
+    </script>
+</body>
+</html>
