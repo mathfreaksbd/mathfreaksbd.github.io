@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Textbook — Set 02 (From 2.pdf)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-indigo-800 via-blue-800 to-cyan-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">English Textbook — Model Test 02 (Set 02)</h1>
+            <p class="text-sm text-blue-100 mt-1">Source: 2.pdf | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>বিষয়: English Textbook (2.pdf — Children in School & Civic Engagement)।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি ভিন্ন প্রশ্ন (পূর্ণমান ৬০)।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের ৪টি অপশন ও ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm gap-2">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-blue-900 text-blue-200 border border-blue-700">Set 02</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                        সময়: 25:00
+                    </div>
+                    <button onclick="confirmSubmit()" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition duration-200">
+                        সাবমিট করুন
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "Children in School • Text MCQ", q: "Who is the author of 'Totto-chan: The Little Girl at the Window'?", options: ["Rabindranath Tagore", "Tetsuko Kuroyanagi", "Leo Tolstoy", "Ruskin Bond"], correct: 1, exp: "শিটের MCQ অনুযায়ী গ্রন্থটির লেখিকা Tetsuko Kuroyanagi।" },
+            { id: 2, section: "Children in School • Text MCQ", q: "The memoir 'Totto-chan: The Little Girl at the Window' is based on the author's —", options: ["university life", "childhood recollection", "wartime experience", "professional career"], correct: 1, exp: "এটি লেখিকার শৈশবের স্মৃতিচারণমূলক রচনা (childhood recollection)।" },
+            { id: 3, section: "Children in School • Text MCQ", q: "What did the school use as classrooms?", options: ["Treehouses", "Railroad cars", "Tents", "Boats"], correct: 1, exp: "স্কুলে পরিত্যক্ত রেলগাড়ির বগিগুলোকে (abandoned railroad cars) শ্রেণিকক্ষ হিসেবে ব্যবহার করা হতো।" },
+            { id: 4, section: "Children in School • Text MCQ", q: "Totto-chan's eyes sparkled more than —", options: ["the flowers", "the sunlight", "the train windows", "the trees"], correct: 2, exp: "রেলগাড়ির শ্রেণিকক্ষ দেখে টোট্টো-চ্যানের চোখ ট্রেনের জানালার চেয়েও বেশি ঝলমল করছিল।" },
+            { id: 5, section: "Children in School • Text MCQ", q: "Why did Totto-chan think the headmaster must be a stationmaster?", options: ["He wore a railway uniform", "He owned trains", "He sold train tickets", "He lived in a station"], correct: 1, exp: "শিট অনুযায়ী টোট্টো-চ্যান ভেবেছিল ট্রেনগুলোর মালিক হিসেবে তিনি নিশ্চয়ই স্টেশনমাস্টার।" },
+            { id: 6, section: "Children in School • Text MCQ", q: "Mother compared Daddy's violins with —", options: ["a violin school", "a music shop", "a violin shop", "a concert hall"], correct: 2, exp: "শিটের প্রশ্ন অনুযায়ী মা বাবার বেহালাগুলোকে একটি বেহালার দোকানের (a violin shop) সাথে তুলনা করেছিলেন।" },
+            { id: 7, section: "Children in School • Text MCQ", q: "Totto-chan asked the headmaster —", options: ["politely", "timidly", "angrily", "spiritedly"], correct: 3, exp: "টোট্টো-চ্যান উৎসাহ ও উদ্যমের সাথে (spiritedly) হেডমাস্টারকে প্রশ্ন করেছিল।" },
+            { id: 8, section: "Children in School • Text MCQ", q: "The headmaster wanted to —", options: ["test Totto-chan", "talk to Totto-chan alone", "punish Totto-chan", "meet her father"], correct: 1, exp: "হেডমাস্টার টোট্টো-চ্যানের সাথে একান্তে কথা বলতে (talk to Totto-chan alone) চেয়েছিলেন।" },
+            { id: 9, section: "Children in School • Text MCQ", q: "Totto-chan became happy because the headmaster —", options: ["gave her chocolates", "let her talk freely", "praised her dress", "allowed her to play"], correct: 1, exp: "হেডমাস্টার তাকে মন খুলে কথা বলতে দেওয়ায় (let her talk freely) টোট্টো-চ্যান খুশি হয়েছিল।" },
+            { id: 10, section: "Children in School • Text MCQ", q: "Rocky was —", options: ["her teacher", "Totto-chan's dog", "her brother", "her friend"], correct: 1, exp: "Rocky ছিল টোট্টো-চ্যানের পোষা কুকুর (Totto-chan's dog)।" },
+            { id: 11, section: "Children in School • Text MCQ", q: "Totto-chan used scissors inside her mouth when she was in —", options: ["primary school", "high school", "kindergarten", "college"], correct: 2, exp: "কিন্ডারগার্টেন (kindergarten) পর্যায়ে পড়ার সময় সে মুখের ভেতরে কাঁচি ব্যবহার করত।" },
+            { id: 12, section: "Children in School • Text MCQ", q: "Totto-chan and her mother arrived at the school at —", options: ["seven", "eight", "nine", "ten"], correct: 1, exp: "শিটের MCQ অনুযায়ী তারা সকাল আটটায় (eight) স্কুলে পৌঁছেছিল।" },
+            { id: 13, section: "Children in School • Text MCQ", q: "The headmaster never seemed —", options: ["angry", "impatient", "bored", "tired"], correct: 2, exp: "দীর্ঘ সময় কথা বলার পরও হেডমাস্টারকে কখনো বিরক্ত (bored) মনে হয়নি।" },
+            { id: 14, section: "Children in School • Text MCQ", q: "Totto-chan had a naturally sunny —", options: ["behavior", "appearance", "disposition", "nature"], correct: 2, exp: "টোট্টো-চ্যানের স্বভাবগতভাবেই এক প্রাণবন্ত বা উজ্জ্বল স্বভাব/মনোভাব (sunny disposition) ছিল।" },
+            { id: 15, section: "Children in School • Text MCQ", q: "The headmaster made Totto-chan feel —", options: ["nervous", "lonely", "safe and happy", "ashamed"], correct: 2, exp: "হেডমাস্টারের আচরণে টোট্টো-চ্যান নিজেকে নিরাপদ ও আনন্দিত (safe and happy) অনুভব করেছিল।" },
+            { id: 16, section: "Children in School • Text MCQ", q: "Totto-chan _____ when she saw the gate of the new school.", options: ["laughed", "stopped", "cried", "shouted"], correct: 1, exp: "নতুন স্কুলের গেট দেখে টোট্টো-চ্যান থমকে দাঁড়িয়েছিল (stopped)।" },
+            { id: 17, section: "Children in School • Text MCQ", q: "The gateposts of the new school still had _____ on them.", options: ["flowers and fruits", "electric wires", "leaves and roots", "branches and nests"], correct: 2, exp: "গাছের গুঁড়ি দিয়ে তৈরি খুঁটিগুলোতে তখনো পাতা ও শিকড় (leaves and roots) ছিল।" },
+            { id: 18, section: "Children in School • Text MCQ", q: "Totto-chan thought the gate would grow taller than the —", options: ["school building", "trees with roots", "telephone poles", "train station"], correct: 2, exp: "টোট্টো-চ্যান ভেবেছিল গেটটি একসময় টেলিফোনের খুঁটির (telephone poles) চেয়েও উঁচু হয়ে যাবে।" },
+            { id: 19, section: "Children in School • Text MCQ", q: "Totto-chan caught a glimpse of something that made her think she must be —", options: ["surprised", "dreaming", "frightened", "confused"], correct: 1, exp: "স্কুলের ভেতর ট্রেন দেখে তার মনে হয়েছিল সে নিশ্চয়ই স্বপ্ন দেখছে (dreaming)।" },
+            { id: 20, section: "Children in School • Text MCQ", q: "The school used _____ railroad cars as classrooms.", options: ["modern", "decorated", "abandoned", "expensive"], correct: 2, exp: "পরিত্যক্ত রেলগাড়ির বগিগুলোকে (abandoned railroad cars) শ্রেণিকক্ষ বানানো হয়েছিল।" },
+            { id: 21, section: "Children in School • Text MCQ", q: "Totto-chan let out a whoop of _____ and started running.", options: ["sorrow", "anger", "joy", "fear"], correct: 2, exp: "আনন্দের উল্লাসধ্বনি (whoop of joy) দিয়ে সে দৌড় শুরু করেছিল।" },
+            { id: 22, section: "Children in School • Text MCQ", q: "Mother had once been on a _____ team.", options: ["football", "basketball", "volleyball", "cricket"], correct: 1, exp: "শিটের প্রশ্ন অনুযায়ী মা একসময় বাস্কেটবল (basketball) দলে ছিলেন।" },
+            { id: 23, section: "Children in School • Text MCQ", q: "The headmaster had thin hair and a few teeth —", options: ["shining", "broken", "missing", "growing"], correct: 2, exp: "হেডমাস্টারের পাতলা চুল ছিল এবং কয়েকটি দাঁত অনুপস্থিত বা ভাঙা/পড়া ছিল (missing)।" },
+            { id: 24, section: "Children in School • Text MCQ", q: "The headmaster asked Totto-chan to tell him _____ about herself.", options: ["nothing", "all", "little", "something against"], correct: 1, exp: "হেডমাস্টার টোট্টো-চ্যানকে নিজের সম্পর্কে সবকিছু (all) বলতে বলেছিলেন।" },
+            { id: 25, section: "Children in School • Text MCQ", q: "Totto-chan was happy because she could talk about _____ she liked.", options: ["whenever", "wherever", "whatever", "whoever"], correct: 2, exp: "সে যা খুশি তা নিয়েই (whatever she liked) কথা বলতে পারায় খুশি হয়েছিল।" },
+            { id: 26, section: "Children in School • Text MCQ", q: "Totto-chan's mother scolded her if her nose was —", options: ["dirty", "runny", "red", "swollen"], correct: 1, exp: "নাক দিয়ে শিস বা পানি ঝরলে (runny nose) মা তাকে বকা দিতেন।" },
+            { id: 27, section: "Children in School • Text MCQ", q: "The dress Totto-chan wore that day had dark red and gray —", options: ["dots", "checks", "stripes", "flowers"], correct: 1, exp: "শিটের MCQ অনুযায়ী সেদিন তার পরা পোশাকে গাঢ় লাল ও ধূসর রঙের চেক (checks) ছিল।" },
+            { id: 28, section: "Children in School • Text MCQ", q: "The headmaster placed his large, warm hand on Totto-chan's —", options: ["shoulder", "head", "arm", "cheek"], correct: 1, exp: "হেডমাস্টার তার বড় ও উষ্ণ হাত টোট্টো-চ্যানের মাথায় (head) রেখেছিলেন।" },
+            { id: 29, section: "Children in School • Vocabulary", q: "What is the antonym of 'Abandoned' in the vocabulary list?", options: ["Deserted", "Forsaken", "Occupied", "Left empty"], correct: 2, exp: "'Abandoned' অর্থ পরিত্যক্ত; এর বিপরীত শব্দ occupied (ব্যবহৃত/দখলকৃত)।" },
+            { id: 30, section: "Children in School • Vocabulary", q: "What is the synonym of 'Uneasiness' in the word list?", options: ["Calmness", "Composure", "Anxiety", "Relaxation"], correct: 2, exp: "'Uneasiness' অর্থ অস্থিরতা বা দুশ্চিন্তা—যার সমার্থক শব্দ anxiety বা worry।" },
+            { id: 31, section: "Children in School • Vocabulary", q: "The word 'Squat' in the vocabulary list means —", options: ["stand upright", "sit on your heels / crouch", "run fast", "lie down flat"], correct: 1, exp: "'Squat' অর্থ উবু হয়ে বসা বা হাঁটু গেড়ে বসা (crouch / sit on your heels)।" },
+            { id: 32, section: "Children in School • Vocabulary", q: "What is the synonym of 'Glimpse' in the vocabulary list?", options: ["Stare", "Glance / sight", "Ignore", "Gape"], correct: 1, exp: "'Glimpse' অর্থ এক পলক বা অল্প সময়ের জন্য দেখা—যার সমার্থক glance বা sight।" },
+            { id: 33, section: "Civic Engagement • Text MCQ", q: "Identify the statement that does NOT agree with the passage:", options: ["Civic engagement promotes discrimination.", "Social work is appreciated everywhere.", "Civic engagement involves protesting against any unjust decision.", "People engaged in civic movement address social issues."], correct: 0, exp: "Civic engagement কখনো বৈষম্যকে (discrimination) উৎসাহিত করে না; বরং এটি সামাজিক সমস্যা মোকাবিলা ও ন্যায়বিচারের সাথে যুক্ত।" },
+            { id: 34, section: "Civic Engagement • Text MCQ", q: "According to the paragraph, what do we learn from school?", options: ["Knowledge, skills and values", "Knowledge, skills and culture", "Knowledge, politics and motivation", "Knowledge, experience and manner"], correct: 0, exp: "পাঠ্যাংশ অনুযায়ী স্কুল থেকে আমরা knowledge, skills এবং values শিখি।" },
+            { id: 35, section: "Civic Engagement • Text MCQ", q: "Civic engagement promotes the quality of life in a community by _____ the improvement of health and wellbeing.", options: ["contribute to", "contributing to", "contribute no", "contributed"], correct: 1, exp: "'By'-এর পর gerund 'contributing to' বসে।" },
+            { id: 36, section: "Civic Engagement • Text MCQ", q: "Civically engaged individuals recognize themselves as members of a _____ social community.", options: ["Large", "Larger", "Largest", "None"], correct: 1, exp: "শিটের MCQ অনুযায়ী তারা নিজেদের একটি বৃহত্তর (larger) সামাজিক সম্প্রদায়ের সদস্য মনে করে।" },
+            { id: 37, section: "Civic Engagement • Text MCQ", q: "Civic engagement involves working to make a difference in the _____ of the community.", options: ["public life", "private life", "personal life", "individual life"], correct: 0, exp: "Civic engagement সম্প্রদায়ের জনজীবনে (public life) ইতিবাচক পরিবর্তন আনার সাথে যুক্ত।" },
+            { id: 38, section: "Civic Engagement • Text MCQ", q: "Education helps us apply the knowledge, skills, and values that we learn in a classroom in our _____ with the world outside.", options: ["engagement", "interaction", "participation", "connection"], correct: 0, exp: "বাইরের জগতের সাথে সম্পৃক্ততা বা engagement-এ শ্রেণিকক্ষের শিক্ষা প্রয়োগ করা হয়।" },
+            { id: 39, section: "Civic Engagement • Text MCQ", q: "Civic engagement _____ individuals to work for the betterment of the community.", options: ["needs", "forces", "encourages", "expects"], correct: 2, exp: "Civic engagement ব্যক্তিদের সম্প্রদায়ের কল্যাণে কাজ করতে উৎসাহিত করে (encourages)।" },
+            { id: 40, section: "Civic Engagement • Text MCQ", q: "Service learning involves making a _____ plan of action.", options: ["planning", "planner", "planned", "plan"], correct: 3, exp: "শিটের প্রশ্ন অনুযায়ী সঠিক শব্দ হলো 'plan' (a plan of action)।" },
+            { id: 41, section: "Civic Engagement • Text MCQ", q: "Civic engagement involves individual or group activities to protect _____ interest.", options: ["interest", "interesting", "public", "interests"], correct: 2, exp: "জনস্বার্থ বা public interest রক্ষায় ব্যক্তিগত বা দলগত কার্যক্রম পরিচালিত হয়।" },
+            { id: 42, section: "Civic Engagement • Text MCQ", q: "Alex was not an outgoing boy in his school and mostly kept _____ himself.", options: ["to", "with", "for", "in"], correct: 0, exp: "নিজের মধ্যে গুটিয়ে থাকা অর্থে 'keep to oneself' ব্যবহৃত হয়।" },
+            { id: 43, section: "Civic Engagement • Text MCQ", q: "We are expected to apply the knowledge, skills, and values that _____ learn in a classroom.", options: ["we", "they", "us", "you"], correct: 0, exp: "শিটের উত্তর অনুযায়ী শূন্যস্থানে 'we' বসবে।" },
+            { id: 44, section: "Civic Engagement • Text MCQ", q: "Civically engaged individuals recognize themselves as members of a larger _____ community.", options: ["social", "civic", "local", "global"], correct: 0, exp: "শিটের MCQ অনুযায়ী সঠিক উত্তর 'social'।" },
+            { id: 45, section: "Civic Engagement • Text MCQ", q: "Education aims at —", options: ["creating positive changes in behaviour", "bringing down positive changes in behaviour", "causing derogatory changes in behaviour", "making abnormal changes in behaviour"], correct: 0, exp: "শিক্ষার লক্ষ্য আচরণে ইতিবাচক পরিবর্তন (creating positive changes in behaviour) আনা।" },
+            { id: 46, section: "Civic Engagement • Text MCQ", q: "Where is civic engagement irregular?", options: ["in service-learning", "in volunteerism", "in community activities", "in classroom activities"], correct: 1, exp: "Volunteerism-এ জনসম্পৃক্ততা স্বতঃস্ফূর্ত ও অনিয়মিত (irregular) হয়ে থাকে।" },
+            { id: 47, section: "Civic Engagement • Text MCQ", q: "True education tries to —", options: ["gear up individuality", "better communication", "outspread human quality", "strengthen personality"], correct: 2, exp: "প্রকৃত শিক্ষা মানবিক গুণাবলিকে বিকশিত বা ছড়িয়ে দিতে (outspread human quality) সচেষ্ট হয়।" },
+            { id: 48, section: "Civic Engagement • Text MCQ", q: "Education remains incomplete —", options: ["without a grade", "without commitment to society", "until getting a good job", "till being confident"], correct: 1, exp: "সমাজের প্রতি দায়বদ্ধতা বা commitment ছাড়া শিক্ষা অপূর্ণ থেকে যায়।" },
+            { id: 49, section: "Civic Engagement • Text MCQ", q: "'Civic engagement' is essential for a —", options: ["standard community", "better society", "improved cooperation", "stronger personality"], correct: 1, exp: "শিটের MCQ অনুযায়ী একটি উন্নত সমাজের (better society) জন্য civic engagement অপরিহার্য।" },
+            { id: 50, section: "Civic Engagement • Text MCQ", q: "Civic engagement involves the _____ of knowledge and skills.", options: ["presentation", "academic background", "application", "exhibition"], correct: 2, exp: "জ্ঞান ও দক্ষতার বাস্তব প্রয়োগ বা application এর সাথে যুক্ত।" },
+            { id: 51, section: "Civic Engagement • Text MCQ", q: "The public life and private life of the citizens are —", options: ["similar", "different", "comfortable", "uncomfortable"], correct: 1, exp: "নাগরিকদের জনজীবন ও ব্যক্তিগত জীবন ভিন্ন (different)।" },
+            { id: 52, section: "Civic Engagement • Text MCQ", q: "What are the prerequisites of making a difference in civic life?", options: ["knowledge, skills, courage and motivation", "knowledge, competence, values and motivation", "devotion, skills, values and motivation", "knowledge, skills, values and ambition"], correct: 1, exp: "শিটের MCQ অনুযায়ী সঠিক উত্তর 'knowledge, competence, values and motivation'।" },
+            { id: 53, section: "Civic Engagement • Text MCQ", q: "A civically engaged individual is concerned about —", options: ["personal issues", "family issues", "cultural issues", "public issues"], correct: 3, exp: "জনসচেতন ব্যক্তি নাগরিক বা জনস্বার্থসংশ্লিষ্ট বিষয় (public issues) নিয়ে উদ্বিগ্ন থাকেন।" },
+            { id: 54, section: "Civic Engagement • Text MCQ", q: "Civic engagement promotes —", options: ["the comfort of life", "the worries of life", "the standard of life", "the purity of life"], correct: 2, exp: "শিটের MCQ অনুযায়ী এটি জীবনের মান বা 'the standard of life' উন্নত করে।" },
+            { id: 55, section: "Civic Engagement • Text MCQ", q: "What does the word 'civic' in the passage mean?", options: ["savage", "nomadic", "vagabond", "public"], correct: 3, exp: "'Civic' অর্থ নাগরিক বা জনসংশ্লিষ্ট (public)।" },
+            { id: 56, section: "Civic Engagement • Text MCQ", q: "'Civic issues' are opposite to —", options: ["national crisis", "social problems", "personal problems", "communal issues"], correct: 2, exp: "Civic issues ব্যক্তিগত সমস্যার (personal problems) বিপরীত।" },
+            { id: 57, section: "Civic Engagement • Vocabulary", q: "What is the synonym of 'Atrocity' in the word list?", options: ["Kindness", "Humanity", "Cruelty / violence", "Peace"], correct: 2, exp: "'Atrocity' অর্থ নৃশংসতা বা পাশবিকতা—যার সমার্থক cruelty বা violence।" },
+            { id: 58, section: "Civic Engagement • Vocabulary", q: "What is the antonym of 'Purification' in the word list?", options: ["Refinement", "Rectification", "Adulteration", "Clarity"], correct: 2, exp: "'Purification' অর্থ পরিশোধন; এর বিপরীত শব্দ adulteration (ভেজালকরণ)।" },
+            { id: 59, section: "Civic Engagement • Vocabulary", q: "What is the synonym of 'Unjust' in the word list?", options: ["Fair", "Impartial", "Unfair / biased", "Neutral"], correct: 2, exp: "'Unjust' অর্থ অন্যায্য বা পক্ষপাতদুষ্ট—যার সমার্থক unfair বা biased।" },
+            { id: 60, section: "Civic Engagement • Vocabulary", q: "What is the antonym of 'Sufficient' in the word list?", options: ["Enough", "Adequate", "Ample", "Inadequate / deficient"], correct: 3, exp: "'Sufficient' অর্থ পর্যাপ্ত; এর বিপরীত শব্দ inadequate বা deficient (অপর্যাপ্ত)।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let timeLeft = 25 * 60;
+        let startTime;
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            renderPalette();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').textContent = `সময়: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const qObj = questions[index];
+            document.getElementById('current-q-num').textContent = index + 1;
+            document.getElementById('section-badge').textContent = qObj.section;
+            document.getElementById('question-text').textContent = `${index + 1}. ${qObj.q}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const labels = ['A', 'B', 'C', 'D'];
+            qObj.options.forEach((opt, i) => {
+                const isSelected = userAnswers[index] === i;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition duration-150 flex items-center gap-3 ${
+                    isSelected
+                        ? 'bg-emerald-700/60 border-emerald-400 text-white font-semibold'
+                        : 'bg-slate-800/80 hover:bg-slate-700 border-slate-600 text-slate-200'
+                }`;
+                btn.innerHTML = `<span class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${
+                    isSelected ? 'bg-emerald-500 text-slate-900' : 'bg-slate-700 text-slate-300'
+                }">${labels[i]}</span><span>${opt}</span>`;
+                btn.onclick = () => selectOption(i);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
+
+            const nextBtn = document.getElementById('next-btn');
+            if (index === questions.length - 1) {
+                nextBtn.textContent = 'সাবমিট করুন ✓';
+                nextBtn.className = 'px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            } else {
+                nextBtn.textContent = 'পরবর্তী →';
+                nextBtn.className = 'px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQuestion] = optIndex;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) loadQuestion(currentQuestion - 1);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                confirmSubmit();
+            }
+        }
+
+        function renderPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `pal-${idx}`;
+                btn.textContent = idx + 1;
+                btn.className = 'py-1.5 text-xs font-bold rounded bg-slate-800 border border-slate-600 text-slate-300 hover:bg-slate-700';
+                btn.onclick = () => loadQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        function updatePalette() {
+            questions.forEach((_, idx) => {
+                const btn = document.getElementById(`pal-${idx}`);
+                if (!btn) return;
+                btn.className = 'py-1.5 text-xs font-bold rounded border transition ';
+                if (idx === currentQuestion) {
+                    btn.className += 'ring-2 ring-amber-400 ';
+                }
+                if (userAnswers[idx] !== null) {
+                    btn.className += 'bg-emerald-700 border-emerald-500 text-white';
+                } else {
+                    btn.className += 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700';
+                }
+            });
+        }
+
+        function confirmSubmit() {
+            if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষাটি সাবমিট করতে চান?')) {
+                submitQuiz();
+            }
+        }
+
+        let correctList = [], wrongList = [], skippedList = [];
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('time-taken-text').textContent = `সময় লেগেছে: ${mins} মিনিট ${secs} সেকেন্ড`;
+
+            correctList = [];
+            wrongList = [];
+            skippedList = [];
+
+            questions.forEach((q, idx) => {
+                const ans = userAnswers[idx];
+                if (ans === null) {
+                    skippedList.push({ ...q, idx, userAns: null });
+                } else if (ans === q.correct) {
+                    correctList.push({ ...q, idx, userAns: ans });
+                } else {
+                    wrongList.push({ ...q, idx, userAns: ans });
+                }
+            });
+
+            const score = (correctList.length * 1) - (wrongList.length * 0.25);
+            document.getElementById('final-score').textContent = score.toFixed(2);
+            document.getElementById('final-correct').textContent = correctList.length;
+            document.getElementById('final-wrong').textContent = wrongList.length;
+            document.getElementById('final-skipped').textContent = skippedList.length;
+
+            document.getElementById('count-correct').textContent = correctList.length;
+            document.getElementById('count-wrong').textContent = wrongList.length;
+            document.getElementById('count-skipped').textContent = skippedList.length;
+
+            switchTab('correct');
+        }
+
+        function switchTab(type) {
+            const tabs = ['correct', 'wrong', 'skipped'];
+            const colors = {
+                correct: 'border-emerald-500 text-emerald-400',
+                wrong: 'border-rose-500 text-rose-400',
+                skipped: 'border-blue-500 text-blue-400'
+            };
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}-btn`);
+                if (t === type) {
+                    btn.className = `flex-1 py-3 text-sm font-bold text-center border-b-2 ${colors[t]} transition duration-150`;
+                } else {
+                    btn.className = 'flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150';
+                }
+            });
+
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+            const data = type === 'correct' ? correctList : type === 'wrong' ? wrongList : skippedList;
+
+            if (data.length === 0) {
+                container.innerHTML = '<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>';
+                return;
+            }
+
+            const labels = ['A', 'B', 'C', 'D'];
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800/95 p-5 rounded-2xl border border-slate-700 space-y-4 shadow-md';
+
+                const optionsGridHtml = item.options.map((opt, i) => {
+                    const isCorrectOpt = i === item.correct;
+                    const isUserWrongOpt = item.userAns !== null && item.userAns === i && !isCorrectOpt;
+
+                    let boxStyle = 'bg-slate-900/70 border-slate-700/90 text-slate-300';
+                    let badgeStyle = 'bg-slate-800 border-slate-600 text-slate-300';
+                    let statusTag = '';
+
+                    if (isCorrectOpt) {
+                        boxStyle = 'bg-emerald-950/55 border-emerald-500/80 text-emerald-200 font-semibold';
+                        badgeStyle = 'bg-emerald-600/30 border-emerald-400 text-emerald-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white">সঠিক উত্তর</span>`;
+                    } else if (isUserWrongOpt) {
+                        boxStyle = 'bg-rose-950/55 border-rose-500/80 text-rose-200 font-semibold';
+                        badgeStyle = 'bg-rose-600/30 border-rose-400 text-rose-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-rose-600 text-white">আপনার উত্তর</span>`;
+                    }
+
+                    return `
+                        <div class="p-3.5 rounded-xl border ${boxStyle} flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full border ${badgeStyle} flex items-center justify-center text-xs font-bold shrink-0">${labels[i]}</span>
+                            <span class="text-sm leading-snug">${opt}</span>
+                            ${statusTag}
+                        </div>
+                    `;
+                }).join('');
+
+                const skippedNotice = item.userAns === null
+                    ? `<p class="text-xs text-blue-400 font-medium">আপনার উত্তর: উত্তর দেওয়া হয়নি</p>`
+                    : '';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-3">
+                        <span class="font-bold text-amber-400 text-sm shrink-0">প্রশ্ন #${item.idx + 1}</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 shrink-0">${item.section}</span>
+                    </div>
+                    <p class="font-bold text-slate-100 text-base md:text-lg leading-relaxed">${item.q}</p>
+                    ${skippedNotice}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${optionsGridHtml}</div>
+                    <div class="text-sm text-slate-200 bg-slate-900/90 p-3.5 rounded-xl border border-slate-700 leading-relaxed">
+                        <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${item.exp}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            timeLeft = 25 * 60;
+            document.getElementById('timer').textContent = 'সময়: 25:00';
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            loadQuestion(0);
+            startTimer();
+        }
+    </script>
+</body>
+</html>

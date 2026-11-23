@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit-03: Myths and Literature — Model Test 03</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-indigo-800 via-blue-800 to-cyan-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">Unit-03: Myths and Literature — Model Test 03</h1>
+            <p class="text-sm text-blue-100 mt-1">Lesson 01 & Lesson 02 (3.pdf) | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>বিষয়: Unit-03: Myths and Literature (Myths of Bengal, I Have Seen Bengal's Face, Daedalus & Icarus, Landscape with the Fall of Icarus)।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০) — Literature MCQ, Vocabulary, Synonyms & Antonyms, Grammar ও Fill in the Gaps।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের ৪টি অপশন ও ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm gap-2">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-blue-900 text-blue-200 border border-blue-700">Unit 03</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                        সময়: 25:00
+                    </div>
+                    <button onclick="confirmSubmit()" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition duration-200">
+                        সাবমিট করুন
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "Lesson 01 • Myths of Bengal", q: "Manasamangal is a/an —", options: ["tragedy", "comedy", "epic", "ethnic song"], correct: 2, exp: "শিটের MCQ অনুযায়ী Manasamangal একটি মধ্যযুগীয় মহাকাব্য বা epic।" },
+            { id: 2, section: "Lesson 01 • Myths of Bengal", q: "Who is Behula?", options: ["A legendary snake goddess", "The daughter of Chand Saodagar", "A medieval epic", "A legendary folk heroine"], correct: 3, exp: "বেহুলা মনসামঙ্গল কাব্যের কিংবদন্তি লোকনায়িকা (legendary folk heroine)।" },
+            { id: 3, section: "Lesson 01 • Myths of Bengal", q: "The name of the tree which is NOT mentioned in the poem 'I Have Seen Bengal's Face' is —", options: ["Hijol", "Tamal", "Taal", "Bat"], correct: 2, exp: "শিটের প্রশ্ন অনুযায়ী কবিতায় 'Taal' গাছের উল্লেখ নেই; Jam, Kanthal, Bat, Hijol ও Aswatha রয়েছে।" },
+            { id: 4, section: "Lesson 01 • Myths of Bengal", q: "'Bengal's face' in the poem is an example of —", options: ["Simile", "Metaphor", "Personification", "Paradox"], correct: 2, exp: "শিটের Literary Terms অনুযায়ী 'Bengal's face' হলো Personification-এর উদাহরণ।" },
+            { id: 5, section: "Lesson 01 • Myths of Bengal", q: "The poem 'I Have Seen Bengal's Face' is a —", options: ["ballad", "epic", "sonnet", "couplet"], correct: 2, exp: "জীবনানন্দ দাশের 'I Have Seen Bengal's Face' একটি সনেট বা sonnet।" },
+            { id: 6, section: "Lesson 01 • Myths of Bengal", q: "The waning moon sank on the _____.", options: ["beach", "sand", "banks", "sandbanks"], correct: 3, exp: "কবিতা ও শিট অনুযায়ী ক্ষীয়মাণ চাঁদ নদীর চরে বা sandbanks-এ ডুবে গিয়েছিল।" },
+            { id: 7, section: "Lesson 01 • Myths of Bengal", q: "Who danced like a desolate wagtail?", options: ["Behula", "Amara", "Chand", "Manasa"], correct: 0, exp: "বেহুলা (Behula) নিঃসঙ্গ খঞ্জন পাখির (desolate wagtail) মতো নেচেছিলেন।" },
+            { id: 8, section: "Lesson 01 • Myths of Bengal", q: "The fig-tree is compared to —", options: ["a boat", "an umbrella", "the moon", "a raft"], correct: 1, exp: "ডুমুর/অশ্বত্থের পাতাকে ছাতার (an umbrella) সাথে তুলনা করা হয়েছে।" },
+            { id: 9, section: "Lesson 01 • Myths of Bengal", q: "Where did the gods hold court according to the sheet?", options: ["Champa", "Ganguri", "Amara", "Ruposhi Bangla"], correct: 2, exp: "শিট অনুযায়ী দেবতারা 'Amara' (abode of gods)-তে সভা বসিয়েছিলেন।" },
+            { id: 10, section: "Lesson 01 • Myths of Bengal", q: "What was the reason behind Lakhindar's death?", options: ["He fell from a cliff", "He was attacked by a tiger", "He was bitten by a snake", "He drowned in a river"], correct: 2, exp: "সাপের কামড়ে (bitten by a snake) লখিন্দরের মৃত্যু হয়েছিল।" },
+            { id: 11, section: "Lesson 01 • Myths of Bengal", q: "Who was the snake goddess in the myth?", options: ["Shiva", "Manasa", "Behula", "Parvati"], correct: 1, exp: "মনসা (Manasa) হলেন সর্পদেবী (snake goddess)।" },
+            { id: 12, section: "Lesson 01 • Myths of Bengal", q: "Who did Lakhindar and Behula transform into at the end of the story?", options: ["Shiva and Parvati", "Krishna and Radha", "Aniruddha and Usa", "Vishnu and Lakshmi"], correct: 2, exp: "শিটের MCQ অনুযায়ী কাহিনির শেষে তারা অনিরুদ্ধ ও ঊষায় (Aniruddha and Usa) রূপান্তরিত হন।" },
+            { id: 13, section: "Lesson 01 • Spelling & Vocabulary", q: "Which one is the correct spelling?", options: ["incompareable", "incomparable", "incomporable", "incomparible"], correct: 1, exp: "সঠিক বানান হলো 'incomparable' (অতুলনীয়)।" },
+            { id: 14, section: "Lesson 01 • Spelling & Vocabulary", q: "The correct spelling is —", options: ["Impregnable", "Impreginable", "Impregneable", "Impregeneable"], correct: 0, exp: "সঠিক বানান হলো 'Impregnable' (দুর্ভেদ্য)।" },
+            { id: 15, section: "Lesson 01 • Vocabulary", q: "What is the antonym of 'Impregnable'?", options: ["Invincible", "Impenetrable", "Vulnerable", "Unconquerable"], correct: 2, exp: "'Impregnable' অর্থ দুর্ভেদ্য; এর বিপরীত শব্দ vulnerable (অরক্ষিত/ভেদ্য)।" },
+            { id: 16, section: "Lesson 01 • Vocabulary", q: "The word 'medieval' refers to —", options: ["the ancient age", "the middle age", "the romantic age", "the modern age"], correct: 1, exp: "'Medieval' অর্থ মধ্যযুগীয় বা middle age।" },
+            { id: 17, section: "Lesson 01 • Vocabulary", q: "The word 'minute' in the text is closest in meaning to —", options: ["small", "second", "hour", "degree"], correct: 0, exp: "এখানে 'minute' একটি adjective, যার অর্থ ক্ষুদ্র বা small।" },
+            { id: 18, section: "Lesson 01 • Vocabulary", q: "The word 'corpse' mentioned in the passage refers to —", options: ["dead body", "a piece of furniture", "a unit of army", "a bedsheet"], correct: 0, exp: "'Corpse' অর্থ মৃতদেহ বা dead body।" },
+            { id: 19, section: "Lesson 01 • Vocabulary", q: "What is the synonym of 'Restore' in the word list?", options: ["Destroy", "Revive / resurrect", "Refuse", "Deny"], correct: 1, exp: "'Restore' অর্থ ফিরিয়ে আনা বা পুনরুজ্জীবিত করা—যার সমার্থক revive বা resurrect।" },
+            { id: 20, section: "Lesson 01 • Vocabulary", q: "What is the antonym of 'Waning' in the word list?", options: ["Disappearing", "Diminishing", "Rising / waxing", "Vanishing"], correct: 2, exp: "'Waning' অর্থ হ্রাসমান; এর বিপরীত শব্দ rising বা waxing।" },
+            { id: 21, section: "Lesson 01 • Grammar & Preposition", q: "Behula grew _____ to be a beautiful and intelligent woman.", options: ["in", "on", "up", "for"], correct: 2, exp: "বড় হয়ে ওঠা অর্থে 'grow up' ব্যবহৃত হয়।" },
+            { id: 22, section: "Lesson 01 • Grammar & Preposition", q: "Behula was married _____ Lakhindar.", options: ["to", "with", "into", "no preposition"], correct: 0, exp: "শিটের MCQ অনুযায়ী 'married to' ব্যবহৃত হয়েছে।" },
+            { id: 23, section: "Lesson 01 • Grammar & Preposition", q: "Behula refused _____ her husband's death.", options: ["accept", "to accept", "accepting", "accepted"], correct: 1, exp: "Grammar Hacks অনুযায়ী 'refuse to' + verb-এর base form বসে।" },
+            { id: 24, section: "Lesson 01 • Grammar & Preposition", q: "Behula set _____ on a hazardous journey towards the abode of the gods.", options: ["out", "for", "into", "up to"], correct: 0, exp: "যাত্রা শুরু করা অর্থে phrasal verb 'set out' বসে।" },
+            { id: 25, section: "Lesson 01 • Grammar & Preposition", q: "_____ all the dangers and temptations she encountered, Behula continued her journey.", options: ["In spite", "because", "Despite", "Though"], correct: 2, exp: "Noun phrase-এর আগে 'Despite' বসে ('In spite' হলে 'of' লাগতো)।" },
+            { id: 26, section: "Lesson 01 • Grammar & Preposition", q: "Behula succeeded _____ reaching the abode of the gods.", options: ["out", "for", "in", "up"], correct: 2, exp: "Grammar Hacks অনুযায়ী 'succeed in' + gerund (reaching) বসে।" },
+            { id: 27, section: "Lesson 01 • Parts of Speech", q: "And discover a leafy dome. Here the word 'leafy' is a/an —", options: ["Noun", "Verb", "Adjective", "Adverb"], correct: 2, exp: "'Leafy' শব্দটি 'dome' noun-কে বিশেষায়িত করছে, তাই এটি Adjective।" },
+            { id: 28, section: "Lesson 01 • Parts of Speech", q: "Behula too saw countless aswaths bats besides golden rice fields. Here 'besides' is a/an —", options: ["Noun", "Preposition", "Adjective", "Adverb"], correct: 1, exp: "শিটের MCQ অনুযায়ী এখানে 'besides' Preposition হিসেবে ব্যবহৃত হয়েছে।" },
+            { id: 29, section: "Lesson 02 • Daedalus & Icarus", q: "Why did King Minos imprison Daedalus and Icarus in the labyrinth?", options: ["To reward them for their service", "To prevent them from helping others escape", "Because they angered the Minotaur", "Because they destroyed the labyrinth"], correct: 1, exp: "গোলকধাঁধার রহস্য যেন অন্যদের কাছে প্রকাশ না পায় এবং কেউ পালাতে না পারে, সেজন্য রাজা মিনোস তাদের বন্দী করেছিলেন।" },
+            { id: 30, section: "Lesson 02 • Daedalus & Icarus", q: "What inspired Daedalus to create wings?", options: ["Observing ships on the sea", "Watching birds fly", "Learning about the Minotaur", "Hearing Icarus' idea"], correct: 1, exp: "পাখিদের উড়তে দেখে (watching birds fly) ডেডালাস ডানা তৈরির অনুপ্রেরণা পান।" },
+            { id: 31, section: "Lesson 02 • Daedalus & Icarus", q: "What material did Daedalus use to create the wings?", options: ["Metal and leather", "Wax and feathers", "Wood and cloth", "Rope and leaves"], correct: 1, exp: "মোম ও পালক (wax and feathers) দিয়ে তিনি ডানা তৈরি করেছিলেন।" },
+            { id: 32, section: "Lesson 02 • Daedalus & Icarus", q: "Why did Daedalus warn Icarus about flying too close to the sun?", options: ["The wings would burn instantly", "The wax would melt", "Birds might attack them", "The feathers would fall off"], correct: 1, exp: "সূর্যের খুব কাছে গেলে সূর্যের তাপে মোম গলে যাবে (the wax would melt)।" },
+            { id: 33, section: "Lesson 02 • Daedalus & Icarus", q: "What ultimately caused Icarus' fall?", options: ["His wings were not well-made", "He disobeyed his father's warning", "A storm knocked him down", "The Minotaur attacked him"], correct: 1, exp: "বাবার সতর্কতা অমান্য করে (he disobeyed his father's warning) খুব উঁচুতে ওড়ায় তিনি পড়ে যান।" },
+            { id: 34, section: "Lesson 02 • Daedalus & Icarus", q: "What did Daedalus do to honor his son after his death?", options: ["Built a monument", "Named the sea where he fell after him", "Returned to Crete", "Destroyed the labyrinth"], correct: 1, exp: "ইকারাস যে সাগরে পড়ে মারা গিয়েছিল, তার স্মরণে ডেডালাস ওই সাগরের নাম তার নামে রাখেন।" },
+            { id: 35, section: "Lesson 02 • Daedalus & Icarus", q: "What does the labyrinth symbolize in this story?", options: ["Freedom", "Hope", "Confusion and entrapment", "Courage"], correct: 2, exp: "গোলকধাঁধা বিভ্রান্তি ও বন্দিত্বের (confusion and entrapment) প্রতীক।" },
+            { id: 36, section: "Lesson 02 • Daedalus & Icarus", q: "The phrase 'gruesome end' most likely refers to —", options: ["a happy ending", "a painful and horrible death", "a peaceful sleep", "a long journey"], correct: 1, exp: "'Gruesome end' বলতে ভয়াবহ ও মর্মান্তিক পরিণতি/মৃত্যুকে (a painful and horrible death) বোঝায়।" },
+            { id: 37, section: "Lesson 02 • Daedalus & Icarus", q: "The moral of the story is —", options: ["Ambition is good even if dangerous", "Overconfidence leads to downfall", "Always challenge the gods", "Success needs no control"], correct: 1, exp: "শিটের Theme/Moral অনুযায়ী অতিরিক্ত আত্মবিশ্বাস বা অহংকার পতন ডেকে আনে (Overconfidence leads to downfall)।" },
+            { id: 38, section: "Lesson 02 • Daedalus & Icarus", q: "In 'escape was nearly impossible', 'nearly' is a/an —", options: ["Adjective", "Verb", "Conjunction", "Adverb"], correct: 3, exp: "'Nearly' শব্দটি 'impossible' adjective-কে modify করায় এটি Adverb।" },
+            { id: 39, section: "Lesson 02 • Grammar & Conjunctions", q: "The Minotaur terrorized the inhabitants, _____ King Minos sought a solution.", options: ["because", "so", "although", "unless"], correct: 1, exp: "ফলাফল বোঝাতে 'so' ব্যবহৃত হয়েছে।" },
+            { id: 40, section: "Lesson 02 • Grammar & Conjunctions", q: "_____ the Minotaur was imprisoned, King Minos felt secure.", options: ["Unless", "Although", "Once", "Because"], correct: 2, exp: "শিটের MCQ অনুযায়ী 'Once' (একবার/যেহেতু) সঠিক উত্তর।" },
+            { id: 41, section: "Lesson 02 • Grammar & Conjunctions", q: "Daedalus knew the labyrinth well; _____, he managed to escape.", options: ["otherwise", "therefore", "meanwhile", "nevertheless"], correct: 1, exp: "কারণ-ফলাফল বোঝাতে 'therefore' (অতএব/সুতরাং) বসে।" },
+            { id: 42, section: "Lesson 02 • Grammar & Prepositions", q: "The Minotaur was imprisoned _____ the labyrinth.", options: ["on", "at", "within", "over"], correct: 2, exp: "গোলকধাঁধার ভেতরে বন্দী অর্থে 'within' বসে।" },
+            { id: 43, section: "Lesson 02 • Grammar & Prepositions", q: "Icarus plummeted _____ the sea.", options: ["on", "at", "into", "over"], correct: 2, exp: "গতি নিয়ে ভেতরে পড়া বোঝাতে 'plummeted into' বসে।" },
+            { id: 44, section: "Lesson 02 • Grammar & Modals", q: "Too close to the sea, and the wings _____ become heavy with moisture.", options: ["must", "can", "should", "would"], correct: 3, exp: "শিটের MCQ অনুযায়ী শূন্যস্থানে 'would' বসে।" },
+            { id: 45, section: "Lesson 02 • Grammar & Modals", q: "Too close to the sun, and the wax _____ melt.", options: ["must", "can", "should", "would"], correct: 3, exp: "শিটের MCQ অনুযায়ী শূন্যস্থানে 'would' বসে।" },
+            { id: 46, section: "Lesson 02 • Vocabulary Matching", q: "Which word matches the meaning 'to pay attention to something, especially advice or a warning'?", options: ["terrorize", "heed", "strand", "overwhelm"], correct: 1, exp: "শিটের Column B অনুযায়ী 'heed' অর্থ উপদেশ বা সতর্কতায় মনোযোগ দেওয়া।" },
+            { id: 47, section: "Lesson 02 • Vocabulary Matching", q: "Which word matches 'leave (someone) without the means to move from somewhere'?", options: ["stranded", "intricate", "masterful", "plummet"], correct: 0, exp: "'Stranded' অর্থ আটকে পড়া বা অসহায় অবস্থায় পড়ে থাকা।" },
+            { id: 48, section: "Lesson 02 • Vocabulary Matching", q: "Which word means 'fall or drop straight down at high speed'?", options: ["ascend", "plummet", "heed", "terrorize"], correct: 1, exp: "'Plummet' অর্থ দ্রুত নিচে পড়ে যাওয়া।" },
+            { id: 49, section: "Lesson 02 • Vocabulary", q: "What is the antonym of 'Ascend' in the word list?", options: ["Climbed", "Mounted", "Descended / fallen", "Scaled"], correct: 2, exp: "'Ascend' অর্থ আরোহণ করা; এর বিপরীত শব্দ descended বা fallen (নিচে নেমে আসা/পড়ে যাওয়া)।" },
+            { id: 50, section: "Lesson 02 • Vocabulary", q: "What is the antonym of 'Intricate' in the word list?", options: ["Complicated", "Involved", "Simple / easy", "Complex"], correct: 2, exp: "'Intricate' অর্থ জটিল; এর বিপরীত শব্দ simple বা easy (সহজ)।" },
+            { id: 51, section: "Lesson 02 • Fall of Icarus Poem", q: "The poem 'Landscape with the Fall of Icarus' is written by —", options: ["Robert Frost", "William Carlos Williams", "Walt Whitman", "Ezra Pound"], correct: 1, exp: "কবিতাটির রচয়িতা William Carlos Williams।" },
+            { id: 52, section: "Lesson 02 • Fall of Icarus Poem", q: "The poem is based on a painting by —", options: ["Picasso", "Van Gogh", "Brueghel", "Da Vinci"], correct: 2, exp: "কবিতাটি চিত্রশিল্পী Brueghel-এর চিত্রকর্ম অবলম্বনে রচিত।" },
+            { id: 53, section: "Lesson 02 • Fall of Icarus Poem", q: "Who fell into the sea in the poem?", options: ["Daedalus", "Brueghel", "Icarus", "A farmer"], correct: 2, exp: "কবিতায় সাগরে পড়ে গিয়েছিল Icarus।" },
+            { id: 54, section: "Lesson 02 • Fall of Icarus Poem", q: "According to the poem, Icarus fell during —", options: ["winter", "autumn", "spring", "summer"], correct: 2, exp: "শিটের MCQ অনুযায়ী Icarus বসন্তকালে (spring) পড়ে গিয়েছিল।" },
+            { id: 55, section: "Lesson 02 • Fall of Icarus Poem", q: "What was the farmer doing when Icarus fell?", options: ["harvesting crops", "ploughing his field", "feeding animals", "fishing"], correct: 1, exp: "ইকারাসের পতনের সময় কৃষক তার জমিতে হাল চাষ করছিল (ploughing his field)।" },
+            { id: 56, section: "Lesson 02 • Fall of Icarus Poem", q: "The splash caused by Icarus' fall was —", options: ["celebrated", "carefully observed", "quite unnoticed", "loudly discussed"], correct: 2, exp: "কবিতা অনুযায়ী এই পতন ও ছলকে ওঠা শব্দ কারও চোখে পড়েনি বা প্রায় অলক্ষ্য ছিল (quite unnoticed)।" },
+            { id: 57, section: "Lesson 02 • Fall of Icarus Poem", q: "The drowning of Icarus is presented as —", options: ["a major event", "a tragic but unnoticed event", "a victory", "a celebration"], correct: 1, exp: "ইকারাসের ডুবে যাওয়াকে একটি মর্মান্তিক কিন্তু অলক্ষ্য ঘটনা (a tragic but unnoticed event) হিসেবে দেখানো হয়েছে।" },
+            { id: 58, section: "Lesson 02 • Fall of Icarus Poem", q: "The phrase 'awake tingling' appeals mainly to the sense of —", options: ["taste", "smell", "touch", "hearing"], correct: 2, exp: "'Awake tingling' স্পর্শানুভূতি বা sense of touch-এর সাথে যুক্ত।" },
+            { id: 59, section: "Lesson 02 • Fall of Icarus Poem", q: "The contrast between ordinary life and Icarus's death creates —", options: ["irony", "alliteration", "hyperbole", "rhyme"], correct: 0, exp: "সাধারণ মানুষের দৈনন্দিন ব্যস্ততার মাঝে এক করুণ মৃত্যুর অসংগতি বা বিপরীত চিত্র এখানে irony সৃষ্টি করে।" },
+            { id: 60, section: "Lesson 02 • Fall of Icarus Poem", q: "The farmer represents —", options: ["heroism", "human indifference", "wisdom", "curiosity"], correct: 1, exp: "কৃষকের নির্লিপ্ততা মানবিক উদাসীনতাকে (human indifference) তুলে ধরে।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let timeLeft = 25 * 60;
+        let startTime;
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            renderPalette();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').textContent = `সময়: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const qObj = questions[index];
+            document.getElementById('current-q-num').textContent = index + 1;
+            document.getElementById('section-badge').textContent = qObj.section;
+            document.getElementById('question-text').textContent = `${index + 1}. ${qObj.q}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const labels = ['A', 'B', 'C', 'D'];
+            qObj.options.forEach((opt, i) => {
+                const isSelected = userAnswers[index] === i;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition duration-150 flex items-center gap-3 ${
+                    isSelected
+                        ? 'bg-emerald-700/60 border-emerald-400 text-white font-semibold'
+                        : 'bg-slate-800/80 hover:bg-slate-700 border-slate-600 text-slate-200'
+                }`;
+                btn.innerHTML = `<span class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${
+                    isSelected ? 'bg-emerald-500 text-slate-900' : 'bg-slate-700 text-slate-300'
+                }">${labels[i]}</span><span>${opt}</span>`;
+                btn.onclick = () => selectOption(i);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
+
+            const nextBtn = document.getElementById('next-btn');
+            if (index === questions.length - 1) {
+                nextBtn.textContent = 'সাবমিট করুন ✓';
+                nextBtn.className = 'px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            } else {
+                nextBtn.textContent = 'পরবর্তী →';
+                nextBtn.className = 'px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQuestion] = optIndex;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) loadQuestion(currentQuestion - 1);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                confirmSubmit();
+            }
+        }
+
+        function renderPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `pal-${idx}`;
+                btn.textContent = idx + 1;
+                btn.className = 'py-1.5 text-xs font-bold rounded bg-slate-800 border border-slate-600 text-slate-300 hover:bg-slate-700';
+                btn.onclick = () => loadQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        function updatePalette() {
+            questions.forEach((_, idx) => {
+                const btn = document.getElementById(`pal-${idx}`);
+                if (!btn) return;
+                btn.className = 'py-1.5 text-xs font-bold rounded border transition ';
+                if (idx === currentQuestion) {
+                    btn.className += 'ring-2 ring-amber-400 ';
+                }
+                if (userAnswers[idx] !== null) {
+                    btn.className += 'bg-emerald-700 border-emerald-500 text-white';
+                } else {
+                    btn.className += 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700';
+                }
+            });
+        }
+
+        function confirmSubmit() {
+            if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষাটি সাবমিট করতে চান?')) {
+                submitQuiz();
+            }
+        }
+
+        let correctList = [], wrongList = [], skippedList = [];
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('time-taken-text').textContent = `সময় লেগেছে: ${mins} মিনিট ${secs} সেকেন্ড`;
+
+            correctList = [];
+            wrongList = [];
+            skippedList = [];
+
+            questions.forEach((q, idx) => {
+                const ans = userAnswers[idx];
+                if (ans === null) {
+                    skippedList.push({ ...q, idx, userAns: null });
+                } else if (ans === q.correct) {
+                    correctList.push({ ...q, idx, userAns: ans });
+                } else {
+                    wrongList.push({ ...q, idx, userAns: ans });
+                }
+            });
+
+            const score = (correctList.length * 1) - (wrongList.length * 0.25);
+            document.getElementById('final-score').textContent = score.toFixed(2);
+            document.getElementById('final-correct').textContent = correctList.length;
+            document.getElementById('final-wrong').textContent = wrongList.length;
+            document.getElementById('final-skipped').textContent = skippedList.length;
+
+            document.getElementById('count-correct').textContent = correctList.length;
+            document.getElementById('count-wrong').textContent = wrongList.length;
+            document.getElementById('count-skipped').textContent = skippedList.length;
+
+            switchTab('correct');
+        }
+
+        function switchTab(type) {
+            const tabs = ['correct', 'wrong', 'skipped'];
+            const colors = {
+                correct: 'border-emerald-500 text-emerald-400',
+                wrong: 'border-rose-500 text-rose-400',
+                skipped: 'border-blue-500 text-blue-400'
+            };
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}-btn`);
+                if (t === type) {
+                    btn.className = `flex-1 py-3 text-sm font-bold text-center border-b-2 ${colors[t]} transition duration-150`;
+                } else {
+                    btn.className = 'flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150';
+                }
+            });
+
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+            const data = type === 'correct' ? correctList : type === 'wrong' ? wrongList : skippedList;
+
+            if (data.length === 0) {
+                container.innerHTML = '<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>';
+                return;
+            }
+
+            const labels = ['A', 'B', 'C', 'D'];
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800/95 p-5 rounded-2xl border border-slate-700 space-y-4 shadow-md';
+
+                const optionsGridHtml = item.options.map((opt, i) => {
+                    const isCorrectOpt = i === item.correct;
+                    const isUserWrongOpt = item.userAns !== null && item.userAns === i && !isCorrectOpt;
+
+                    let boxStyle = 'bg-slate-900/70 border-slate-700/90 text-slate-300';
+                    let badgeStyle = 'bg-slate-800 border-slate-600 text-slate-300';
+                    let statusTag = '';
+
+                    if (isCorrectOpt) {
+                        boxStyle = 'bg-emerald-950/55 border-emerald-500/80 text-emerald-200 font-semibold';
+                        badgeStyle = 'bg-emerald-600/30 border-emerald-400 text-emerald-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white">সঠিক উত্তর</span>`;
+                    } else if (isUserWrongOpt) {
+                        boxStyle = 'bg-rose-950/55 border-rose-500/80 text-rose-200 font-semibold';
+                        badgeStyle = 'bg-rose-600/30 border-rose-400 text-rose-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-rose-600 text-white">আপনার উত্তর</span>`;
+                    }
+
+                    return `
+                        <div class="p-3.5 rounded-xl border ${boxStyle} flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full border ${badgeStyle} flex items-center justify-center text-xs font-bold shrink-0">${labels[i]}</span>
+                            <span class="text-sm leading-snug">${opt}</span>
+                            ${statusTag}
+                        </div>
+                    `;
+                }).join('');
+
+                const skippedNotice = item.userAns === null
+                    ? `<p class="text-xs text-blue-400 font-medium">আপনার উত্তর: উত্তর দেওয়া হয়নি</p>`
+                    : '';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-3">
+                        <span class="font-bold text-amber-400 text-sm shrink-0">প্রশ্ন #${item.idx + 1}</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 shrink-0">${item.section}</span>
+                    </div>
+                    <p class="font-bold text-slate-100 text-base md:text-lg leading-relaxed">${item.q}</p>
+                    ${skippedNotice}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${optionsGridHtml}</div>
+                    <div class="text-sm text-slate-200 bg-slate-900/90 p-3.5 rounded-xl border border-slate-700 leading-relaxed">
+                        <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${item.exp}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            timeLeft = 25 * 60;
+            document.getElementById('timer').textContent = 'সময়: 25:00';
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            loadQuestion(0);
+            startTimer();
+        }
+    </script>
+</body>
+</html>

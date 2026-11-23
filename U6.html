@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit-06: Dreams — Model Test 06</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-indigo-800 via-blue-800 to-cyan-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">Unit-06: Dreams — Model Test 06</h1>
+            <p class="text-sm text-blue-100 mt-1">Source: 6.pdf | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>বিষয়: Unit-06: Dreams (What is a Dream?, D.H. Lawrence, William Wordsworth, Langston Hughes, Naguib Mahfouz)।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০) — Dream Theories, Poems, Naguib Mahfouz, Vocabulary ও Grammar।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের ৪টি অপশন ও ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm gap-2">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-blue-900 text-blue-200 border border-blue-700">Unit 06</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                        সময়: 25:00
+                    </div>
+                    <button onclick="confirmSubmit()" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition duration-200">
+                        সাবমিট করুন
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "What is a Dream? • MCQ", q: "'Dreams are disguised fulfillments of repressed wishes.' The best synonym of 'repressed' is —", options: ["subdue", "encourage", "liberate", "accomplish"], correct: 0, exp: "'Repressed' অর্থ অবদমিত; এর সমার্থক শব্দ subdue (দমন করা/বশীভূত করা)।" },
+            { id: 2, section: "What is a Dream? • MCQ", q: "Which statement is FALSE about dreams?", options: ["Modern scientists believe that dreams help generate new ideas.", "According to Freud, dreams are conscious memories that we forgot for some time.", "Brain can connect to external stimulus like the radio signal.", "Dreams can work as mind-cleaner."], correct: 1, exp: "ফ্রয়েডের মতে স্বপ্ন অবদমিত/অবচেতন ইচ্ছার প্রকাশ, ভুলে যাওয়া সচেতন স্মৃতি নয়।" },
+            { id: 3, section: "What is a Dream? • MCQ", q: "'The Interpretation of Dreams' is a —", options: ["biological book", "theoretical book", "gothic book", "detective book"], correct: 1, exp: "শিটের MCQ অনুযায়ী এটি একটি তাত্ত্বিক বই বা theoretical book।" },
+            { id: 4, section: "What is a Dream? • MCQ", q: "In which issue researchers differ a lot?", options: ["dimension of dream", "purpose and function of dream", "hazard of dream", "essentials of dream"], correct: 1, exp: "স্বপ্নের উদ্দেশ্য ও কার্যাবলি (purpose and function of dream) নিয়ে গবেষকদের মধ্যে মতভেদ রয়েছে।" },
+            { id: 5, section: "What is a Dream? • MCQ", q: "Identify the word most similar to 'Baffle'.", options: ["Soften", "Hinder", "Illuminate", "Brighter"], correct: 1, exp: "শিটের উত্তর অনুযায়ী সঠিক উত্তর 'Hinder'।" },
+            { id: 6, section: "What is a Dream? • MCQ", q: "'The Interpretation of Dreams' is authored by —", options: ["Freud", "Byron", "Homer", "Hughes"], correct: 0, exp: "বইটির লেখক Sigmund Freud।" },
+            { id: 7, section: "What is a Dream? • MCQ", q: "'Dreams have fascinated philosophers for thousands of years.' Synonym of 'fascinated' in this context is —", options: ["frightened", "captivated", "fooled", "misguided"], correct: 1, exp: "'Fascinated' অর্থ মুগ্ধ বা অভিভূত করা—যার সমার্থক captivated।" },
+            { id: 8, section: "What is a Dream? • MCQ", q: "Which one of the following is TRUE?", options: ["Science does not understand the purpose of sleep.", "Science does not understand the purpose of dreams.", "Science understands the purpose of both sleep and dreams.", "None of the above"], correct: 1, exp: "শিট অনুযায়ী বিজ্ঞান এখনো স্বপ্নের প্রকৃত উদ্দেশ্য পুরোপুরি বুঝে উঠতে পারেনি।" },
+            { id: 9, section: "What is a Dream? • MCQ", q: "In place of the word 'unravelling' we can use —", options: ["untangling", "entangling", "twisting", "ignoring"], correct: 0, exp: "'Unravelling' অর্থ জট ছাড়ানো বা উদ্ঘাটন করা—যার সমার্থক untangling।" },
+            { id: 10, section: "What is a Dream? • Preposition", q: "Freud's theory contributed _____ the popularity of _____ interpretation.", options: ["to, dream", "of, dream", "with, dream", "to, dreaming"], correct: 0, exp: "শিটের MCQ অনুযায়ী সঠিক উত্তর 'to, dream'।" },
+            { id: 11, section: "What is a Dream? • Grammar", q: "Some researchers suggest that dreams _____ a subjective interpretation of signals generated by the brain during sleep.", options: ["are", "is", "be", "was"], correct: 0, exp: "Plural subject 'dreams'-এর সাথে plural verb 'are' বসে।" },
+            { id: 12, section: "What is a Dream? • Preposition", q: "Consistent _____ the psychoanalytic perspective, Sigmund Freud's theory suggests dreams are a representation of subconscious desires.", options: ["with", "of", "for", "out"], correct: 0, exp: "'Consistent with' হলো সঠিক preposition ব্যবহার।" },
+            { id: 13, section: "What is a Dream? • Grammar", q: "You've often found yourself _____ over the content of a dream.", options: ["puzzling", "puzzled", "puzzle", "none"], correct: 0, exp: "ব্যক্তির ক্ষেত্রে present participle 'puzzling' ব্যবহৃত হয়েছে।" },
+            { id: 14, section: "What is a Dream? • Preposition", q: "Dreaming is essential _____ mental, emotional and physical well-being.", options: ["to", "for", "with", "of"], correct: 0, exp: "শিটের MCQ অনুযায়ী 'essential to' সঠিক।" },
+            { id: 15, section: "What is a Dream? • Vocabulary", q: "The word 'cognitive' refers to a —", options: ["mental process of understanding", "process of entertainment", "process of keeping good health", "process of developing thoughts"], correct: 0, exp: "'Cognitive' অর্থ জ্ঞানভিত্তিক বা বোঝার মানসিক প্রক্রিয়া (mental process of understanding)।" },
+            { id: 16, section: "What is a Dream? • Vocabulary", q: "The word 'clutter' refers to —", options: ["confusion", "day-dream", "stimulant", "All of them"], correct: 0, exp: "'Clutter' অর্থ বিশৃঙ্খলা বা জট (confusion)।" },
+            { id: 17, section: "What is a Dream? • Vocabulary", q: "Dreams function as a form of —", options: ["radiotherapy", "psychotherapy", "physiotherapy", "brain therapy"], correct: 1, exp: "শিট অনুযায়ী স্বপ্ন এক ধরনের psychotherapy হিসেবে কাজ করে।" },
+            { id: 18, section: "What is a Dream? • Vocabulary", q: "The dream we have during the day time is called —", options: ["reverie", "nightmare", "short lasting", "silvery"], correct: 0, exp: "দিনের বেলায় দেখা স্বপ্ন বা দিবাস্বপ্নকে 'reverie' বলে।" },
+            { id: 19, section: "What is a Dream? • Vocabulary", q: "What does 'baffling' mean?", options: ["clear", "transparent", "confusing", "surprising"], correct: 2, exp: "'Baffling' অর্থ বিভ্রান্তিকর বা দুর্বোধ্য (confusing)।" },
+            { id: 20, section: "What is a Dream? • MCQ", q: "What does the computer metaphor theory suggest about the function of dreams?", options: ["Dreams interpret external stimuli", "Dreams incorporate radio sounds", "Dreams serve as psychotherapy", "Dreams clean up mental clutter"], correct: 3, exp: "কম্পিউটার রূপক তত্ত্ব অনুযায়ী স্বপ্ন মনের অপ্রয়োজনীয় জট বা clutter পরিষ্কার করে।" },
+            { id: 21, section: "D.H. Lawrence • MCQ", q: "'All people dream, but not equally.' Who wrote the line?", options: ["Langston Hughes", "D. H. Lawrence", "John Keats", "John Donne"], correct: 1, exp: "এই পঙ্‌ক্তিটি D.H. Lawrence-এর 'Dreams' কবিতার প্রথম লাইন।" },
+            { id: 22, section: "D.H. Lawrence • MCQ", q: "Which of the following is true about D. H. Lawrence?", options: ["English novelist, poet and essayist", "African poet and dramatist", "Indian poet and novelist", "American poet"], correct: 0, exp: "D.H. Lawrence ছিলেন একজন ইংরেজ ঔপন্যাসিক, কবি ও প্রাবন্ধিক।" },
+            { id: 23, section: "D.H. Lawrence • MCQ", q: "All people dream _____.", options: ["equally", "differently", "similarly", "closely"], correct: 1, exp: "কবিতা অনুযায়ী সবাই স্বপ্ন দেখে, কিন্তু সমানভাবে নয়—ভিন্নভাবে (differently)।" },
+            { id: 24, section: "D.H. Lawrence • MCQ", q: "The night dreamers forget their dreams in the _____.", options: ["evening", "noon", "morning", "night"], correct: 2, exp: "রাতের স্বপ্নদ্রষ্টারা সকালে (morning) ঘুম থেকে উঠে তাদের স্বপ্ন ভুলে যায়।" },
+            { id: 25, section: "D.H. Lawrence • MCQ", q: "Who dream with open eyes?", options: ["dreamers of the day", "night-dreamers", "all people", "every person"], correct: 0, exp: "দিনের স্বপ্নদ্রষ্টারা (dreamers of the day) খোলা চোখে স্বপ্ন দেখে।" },
+            { id: 26, section: "D.H. Lawrence • MCQ", q: "Those who dream _____ night in the dusty recesses of their mind.", options: ["at", "in", "on", "by"], correct: 3, exp: "কবিতার পঙ্‌ক্তি অনুযায়ী 'dream by night'।" },
+            { id: 27, section: "D.H. Lawrence • MCQ", q: "Who are the dangerous people according to D.H. Lawrence?", options: ["dreamers of the day", "night-dreamers", "fanciful", "every person"], correct: 0, exp: "দিনের স্বপ্নদ্রষ্টাদের (dreamers of the day) বিপজ্জনক বলা হয়েছে, কারণ তারা স্বপ্নকে বাস্তবে রূপ দেয়।" },
+            { id: 28, section: "D.H. Lawrence • MCQ", q: "'It was vanity.' Here 'it' refers to —", options: ["Day Dreamer", "Night Dreamer", "Imagination", "Dreamers"], correct: 1, exp: "শিটের MCQ অনুযায়ী এখানে 'it' রাতের স্বপ্নদ্রষ্টা বা নিষ্ক্রিয় স্বপ্নের অসারতাকে নির্দেশ করে।" },
+            { id: 29, section: "Wordsworth • MCQ", q: "William Wordsworth was a _____ poet.", options: ["Victorian", "Romantic", "Modern", "Classical"], correct: 1, exp: "উইলিয়াম ওয়ার্ডসওয়ার্থ ছিলেন একজন বিখ্যাত Romantic কবি।" },
+            { id: 30, section: "Wordsworth • MCQ", q: "William Wordsworth considered poets dreamers because they can turn 'our wish, our power, our thought' into 'a deed'. What does 'deed' mean?", options: ["Contract", "Construction", "Action", "Command"], correct: 2, exp: "'Deed' অর্থ কাজ বা কর্ম (action)।" },
+            { id: 31, section: "Langston Hughes • MCQ", q: "Langston Hughes urges to —", options: ["hold fast to dreams", "walk fast", "run away", "till the barren field"], correct: 0, exp: "ল্যাংস্টন হিউজ স্বপ্নকে দৃঢ়ভাবে আঁকড়ে ধরতে ('hold fast to dreams') আহ্বান জানান।" },
+            { id: 32, section: "Langston Hughes • MCQ", q: "'Life is a broken-winged bird / Life is a barren field' is an example of —", options: ["Metaphor", "Simile", "oxymoron", "alliteration"], correct: 0, exp: "'Like' বা 'as' ছাড়া সরাসরি তুলনা করায় এটি Metaphor।" },
+            { id: 33, section: "Langston Hughes • MCQ", q: "Langston Hughes is a/an _____ writer.", options: ["English", "Irish", "Australian", "American"], correct: 3, exp: "ল্যাংস্টন হিউজ ছিলেন একজন মার্কিন (American) কবি, নাট্যকার ও ঔপন্যাসিক।" },
+            { id: 34, section: "Langston Hughes • MCQ", q: "Which one is correctly spelt?", options: ["Renaissanse", "Renaisance", "Renaisence", "Renaissance"], correct: 3, exp: "সঠিক বানান হলো 'Renaissance' (নবজাগরণ)।" },
+            { id: 35, section: "Langston Hughes • MCQ", q: "In the line 'Hold fast to dreams', the word 'fast' is used as a/an —", options: ["Adjective", "Adverb", "Noun", "Pronoun"], correct: 1, exp: "'Hold' verb-কে modify করায় এখানে 'fast' হলো Adverb।" },
+            { id: 36, section: "Langston Hughes • MCQ", q: "When does life become a broken winged bird?", options: ["when dreams go", "if dreams survive", "when dreams come", "if dreams die"], correct: 3, exp: "কবিতা অনুযায়ী 'For if dreams die / Life is a broken-winged bird'।" },
+            { id: 37, section: "Langston Hughes • MCQ", q: "What does 'barren field' indicate?", options: ["useful life", "useless life", "purposeful life", "meaningful life"], correct: 1, exp: "'Barren field' অনুর্বরতা ও জীবনের অসারতা বা নিষ্ফলতা (useless life) নির্দেশ করে।" },
+            { id: 38, section: "Langston Hughes • MCQ", q: "In the line 'Life is a broken-winged bird', 'broken-winged' is a/an —", options: ["Adjective", "Noun", "Adverb", "Verb"], correct: 0, exp: "'Bird' noun-কে বিশেষায়িত করায় এটি Adjective।" },
+            { id: 39, section: "Langston Hughes • MCQ", q: "The poem uses which two main images to describe life without dreams?", options: ["Fire and water", "Broken bird and barren field", "Sunlight and storm", "Rain and thunder"], correct: 1, exp: "স্বপ্নহীন জীবন বোঝাতে ভাঙ্গা ডানার পাখি ও অনুর্বর মাঠ (Broken bird and barren field) চিত্রকল্প ব্যবহৃত হয়েছে।" },
+            { id: 40, section: "Langston Hughes • Vocabulary", q: "What is the antonym of 'Barren' in the word list?", options: ["Infertile", "Sterile", "Fertile / fruitful", "Unproductive"], correct: 2, exp: "'Barren' অর্থ অনুর্বর; এর বিপরীত শব্দ fertile বা fruitful (উর্বর)।" },
+            { id: 41, section: "Langston Hughes • Vocabulary", q: "What is the antonym of 'Broken' in the word list?", options: ["Deteriorated", "Split", "Repaired / unbreakable", "Disintegrated"], correct: 2, exp: "'Broken' অর্থ ভগ্ন/ভাঙ্গা; এর বিপরীত শব্দ repaired বা unbreakable।" },
+            { id: 42, section: "Dream #6 • Naguib Mahfouz", q: "The extract is taken from —", options: ["a novel", "a drama", "The Dreams", "a biography"], correct: 2, exp: "অংশটি নাজিব মাহফুজের 'The Dreams' গ্রন্থ থেকে নেওয়া।" },
+            { id: 43, section: "Dream #6 • Naguib Mahfouz", q: "'The Dreams' was written by —", options: ["Raymond Stock", "Naguib Mahfouz", "T. S. Eliot", "Pablo Neruda"], correct: 1, exp: "'The Dreams' রচনা করেছেন মিশরীয় সাহিত্যিক Naguib Mahfouz।" },
+            { id: 44, section: "Dream #6 • Naguib Mahfouz", q: "The telephone caller identified himself as —", options: ["a friend", "Shaykh Muharram", "a neighbor", "a doctor"], correct: 1, exp: "ফোনের ওপ্রান্তের ব্যক্তি নিজেকে শায়খ মোহাররম (Shaykh Muharram) হিসেবে পরিচয় দেন।" },
+            { id: 45, section: "Dream #6 • Naguib Mahfouz", q: "Shaykh Muharram was the narrator's —", options: ["father", "teacher", "uncle", "brother"], correct: 1, exp: "শায়খ মোহাররম ছিলেন কথকের পুরানো শিক্ষক (teacher)।" },
+            { id: 46, section: "Dream #6 • Naguib Mahfouz", q: "The narrator spoke with a —", options: ["rude tone", "fearful voice", "reverent air", "sarcastic manner"], correct: 2, exp: "কথক শ্রদ্ধাশীল ভঙ্গিতে বা 'with a reverent air' কথা বলেছিলেন।" },
+            { id: 47, section: "Dream #6 • Naguib Mahfouz", q: "The narrator had walked in the teacher's funeral procession —", options: ["ten years ago", "thirty years ago", "sixty years ago", "recently"], correct: 2, exp: "শিটের MCQ অনুযায়ী কথক ষাট বছর আগে (sixty years ago) শিক্ষকের জানাজার মিছিলে হেঁটেছিলেন।" },
+            { id: 48, section: "Dream #6 • Naguib Mahfouz", q: "The narrator remembered the teacher's —", options: ["wealth", "kindness only", "handsome face and harshness", "political power"], correct: 2, exp: "কথকের শিক্ষকের সুদর্শন চেহারা ও কঠোরতার (handsome face and harshness) কথা মনে পড়েছিল।" },
+            { id: 49, section: "Dream #6 • Naguib Mahfouz", q: "The teacher wore a lustrous —", options: ["coat", "jubba and caftan", "suit", "armor"], correct: 1, exp: "শায়খ তাঁর চকচকে জুব্বা ও কাফতান (jubba and caftan) পরে এসেছিলেন।" },
+            { id: 50, section: "Dream #6 • Naguib Mahfouz", q: "The shaykh said that some of his lessons needed —", options: ["repetition", "memorization", "correction", "translation"], correct: 2, exp: "শায়খ বলেন যে তিনি যে পাঠগুলো দিতেন, তার কিছু সংশোধন (correction) প্রয়োজন।" },
+            { id: 51, section: "Dream #6 • Naguib Mahfouz", q: "The corrections were written on —", options: ["a book", "a letter", "a paper in a folder", "a notebook"], correct: 2, exp: "শিটের MCQ অনুযায়ী সংশোধনগুলো একটি ফোল্ডারের ভেতর কাগজে (a paper in a folder) লেখা ছিল।" },
+            { id: 52, section: "Dream #6 • Naguib Mahfouz", q: "The narrator felt _____ before his old instructor.", options: ["shocked", "astonished", "no astonishment", "angry"], correct: 2, exp: "কথক বিন্দুমাত্র বিস্ময় অনুভব করেননি (no astonishment)।" },
+            { id: 53, section: "Dream #6 • Naguib Mahfouz", q: "Before visiting the narrator, the shaykh had dwelt with —", options: ["kings", "soldiers", "reciters of ancient verse and religious experts", "scientists"], correct: 2, exp: "প্রাচীন কবিতার আবৃত্তিকার ও ধর্মবিশেষজ্ঞদের (reciters of ancient verse and religious experts) সাথে তিনি অবস্থান করেছিলেন।" },
+            { id: 54, section: "Dream #6 • Naguib Mahfouz", q: "The shaykh left the folder on —", options: ["the chair", "the floor", "the shelf", "the table"], correct: 3, exp: "তিনি টেবিলের ওপর (on the table) ফোল্ডারটি রেখে গিয়েছিলেন।" },
+            { id: 55, section: "Dream #6 • Vocabulary", q: "The word 'reverent' in the passage means —", options: ["Rude", "Respectful", "Uninterested", "Fearful"], correct: 1, exp: "'Reverent' অর্থ শ্রদ্ধাশীল (respectful)।" },
+            { id: 56, section: "Dream #6 • Vocabulary", q: "'Indelible memories' means memories that are —", options: ["forgotten", "unclear", "unforgettable", "painful"], correct: 2, exp: "'Indelible' অর্থ অমোচনীয় বা অবিস্মরণীয় (unforgettable)।" },
+            { id: 57, section: "Dream #6 • Vocabulary", q: "'A host of indelible memories' — Here 'a host' means —", options: ["a small number", "a large number", "a type of memory", "a special event"], correct: 1, exp: "এখানে 'a host' অর্থ বিপুল সংখ্যক বা a large number।" },
+            { id: 58, section: "Dream #6 • Vocabulary", q: "The phrase 'without prologue' means —", options: ["without introduction", "with explanation", "after discussion", "with hesitation"], correct: 0, exp: "'Prologue' অর্থ ভূমিকা; তাই 'without prologue' অর্থ ভূমিকা ছাড়া (without introduction)।" },
+            { id: 59, section: "Dream #6 • Literature", q: "Naguib Mahfouz was from —", options: ["India", "Egypt", "France", "Spain"], correct: 1, exp: "নাজিব মাহফুজ ছিলেন মিশরের (Egypt) অধিবাসী।" },
+            { id: 60, section: "Dream #6 • Literature", q: "Naguib Mahfouz won the —", options: ["Booker Prize", "Nobel Prize in Literature", "Pulitzer Prize", "Academy Award"], correct: 1, exp: "তিনি সাহিত্যে নোবেল পুরস্কার (Nobel Prize in Literature) লাভ করেন।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let timeLeft = 25 * 60;
+        let startTime;
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            renderPalette();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').textContent = `সময়: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const qObj = questions[index];
+            document.getElementById('current-q-num').textContent = index + 1;
+            document.getElementById('section-badge').textContent = qObj.section;
+            document.getElementById('question-text').textContent = `${index + 1}. ${qObj.q}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const labels = ['A', 'B', 'C', 'D'];
+            qObj.options.forEach((opt, i) => {
+                const isSelected = userAnswers[index] === i;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition duration-150 flex items-center gap-3 ${
+                    isSelected
+                        ? 'bg-emerald-700/60 border-emerald-400 text-white font-semibold'
+                        : 'bg-slate-800/80 hover:bg-slate-700 border-slate-600 text-slate-200'
+                }`;
+                btn.innerHTML = `<span class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${
+                    isSelected ? 'bg-emerald-500 text-slate-900' : 'bg-slate-700 text-slate-300'
+                }">${labels[i]}</span><span>${opt}</span>`;
+                btn.onclick = () => selectOption(i);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
+
+            const nextBtn = document.getElementById('next-btn');
+            if (index === questions.length - 1) {
+                nextBtn.textContent = 'সাবমিট করুন ✓';
+                nextBtn.className = 'px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            } else {
+                nextBtn.textContent = 'পরবর্তী →';
+                nextBtn.className = 'px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQuestion] = optIndex;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) loadQuestion(currentQuestion - 1);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                confirmSubmit();
+            }
+        }
+
+        function renderPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `pal-${idx}`;
+                btn.textContent = idx + 1;
+                btn.className = 'py-1.5 text-xs font-bold rounded bg-slate-800 border border-slate-600 text-slate-300 hover:bg-slate-700';
+                btn.onclick = () => loadQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        function updatePalette() {
+            questions.forEach((_, idx) => {
+                const btn = document.getElementById(`pal-${idx}`);
+                if (!btn) return;
+                btn.className = 'py-1.5 text-xs font-bold rounded border transition ';
+                if (idx === currentQuestion) {
+                    btn.className += 'ring-2 ring-amber-400 ';
+                }
+                if (userAnswers[idx] !== null) {
+                    btn.className += 'bg-emerald-700 border-emerald-500 text-white';
+                } else {
+                    btn.className += 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700';
+                }
+            });
+        }
+
+        function confirmSubmit() {
+            if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষাটি সাবমিট করতে চান?')) {
+                submitQuiz();
+            }
+        }
+
+        let correctList = [], wrongList = [], skippedList = [];
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('time-taken-text').textContent = `সময় লেগেছে: ${mins} মিনিট ${secs} সেকেন্ড`;
+
+            correctList = [];
+            wrongList = [];
+            skippedList = [];
+
+            questions.forEach((q, idx) => {
+                const ans = userAnswers[idx];
+                if (ans === null) {
+                    skippedList.push({ ...q, idx, userAns: null });
+                } else if (ans === q.correct) {
+                    correctList.push({ ...q, idx, userAns: ans });
+                } else {
+                    wrongList.push({ ...q, idx, userAns: ans });
+                }
+            });
+
+            const score = (correctList.length * 1) - (wrongList.length * 0.25);
+            document.getElementById('final-score').textContent = score.toFixed(2);
+            document.getElementById('final-correct').textContent = correctList.length;
+            document.getElementById('final-wrong').textContent = wrongList.length;
+            document.getElementById('final-skipped').textContent = skippedList.length;
+
+            document.getElementById('count-correct').textContent = correctList.length;
+            document.getElementById('count-wrong').textContent = wrongList.length;
+            document.getElementById('count-skipped').textContent = skippedList.length;
+
+            switchTab('correct');
+        }
+
+        function switchTab(type) {
+            const tabs = ['correct', 'wrong', 'skipped'];
+            const colors = {
+                correct: 'border-emerald-500 text-emerald-400',
+                wrong: 'border-rose-500 text-rose-400',
+                skipped: 'border-blue-500 text-blue-400'
+            };
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}-btn`);
+                if (t === type) {
+                    btn.className = `flex-1 py-3 text-sm font-bold text-center border-b-2 ${colors[t]} transition duration-150`;
+                } else {
+                    btn.className = 'flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150';
+                }
+            });
+
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+            const data = type === 'correct' ? correctList : type === 'wrong' ? wrongList : skippedList;
+
+            if (data.length === 0) {
+                container.innerHTML = '<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>';
+                return;
+            }
+
+            const labels = ['A', 'B', 'C', 'D'];
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800/95 p-5 rounded-2xl border border-slate-700 space-y-4 shadow-md';
+
+                const optionsGridHtml = item.options.map((opt, i) => {
+                    const isCorrectOpt = i === item.correct;
+                    const isUserWrongOpt = item.userAns !== null && item.userAns === i && !isCorrectOpt;
+
+                    let boxStyle = 'bg-slate-900/70 border-slate-700/90 text-slate-300';
+                    let badgeStyle = 'bg-slate-800 border-slate-600 text-slate-300';
+                    let statusTag = '';
+
+                    if (isCorrectOpt) {
+                        boxStyle = 'bg-emerald-950/55 border-emerald-500/80 text-emerald-200 font-semibold';
+                        badgeStyle = 'bg-emerald-600/30 border-emerald-400 text-emerald-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white">সঠিক উত্তর</span>`;
+                    } else if (isUserWrongOpt) {
+                        boxStyle = 'bg-rose-950/55 border-rose-500/80 text-rose-200 font-semibold';
+                        badgeStyle = 'bg-rose-600/30 border-rose-400 text-rose-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-rose-600 text-white">আপনার উত্তর</span>`;
+                    }
+
+                    return `
+                        <div class="p-3.5 rounded-xl border ${boxStyle} flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full border ${badgeStyle} flex items-center justify-center text-xs font-bold shrink-0">${labels[i]}</span>
+                            <span class="text-sm leading-snug">${opt}</span>
+                            ${statusTag}
+                        </div>
+                    `;
+                }).join('');
+
+                const skippedNotice = item.userAns === null
+                    ? `<p class="text-xs text-blue-400 font-medium">আপনার উত্তর: উত্তর দেওয়া হয়নি</p>`
+                    : '';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-3">
+                        <span class="font-bold text-amber-400 text-sm shrink-0">প্রশ্ন #${item.idx + 1}</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 shrink-0">${item.section}</span>
+                    </div>
+                    <p class="font-bold text-slate-100 text-base md:text-lg leading-relaxed">${item.q}</p>
+                    ${skippedNotice}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${optionsGridHtml}</div>
+                    <div class="text-sm text-slate-200 bg-slate-900/90 p-3.5 rounded-xl border border-slate-700 leading-relaxed">
+                        <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${item.exp}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            timeLeft = 25 * 60;
+            document.getElementById('timer').textContent = 'সময়: 25:00';
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            loadQuestion(0);
+            startTimer();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit-04: Transformative Speeches & Great Women — Model Test 04</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+        
+        <header class="bg-gradient-to-r from-indigo-800 via-blue-800 to-cyan-800 p-6 text-center shadow-lg">
+            <h1 class="text-2xl md:text-3xl font-bold">Unit-04: Speeches & Great Women — Model Test 04</h1>
+            <p class="text-sm text-blue-100 mt-1">Source: 4.pdf | DU 'B' Unit স্ট্যান্ডার্ড | সময়: ২৫ মিনিট | পূর্ণমান: ৬০ | নেগেটিভ মার্ক: -০.২৫</p>
+        </header>
+
+        <div id="start-screen" class="p-8 text-center">
+            <div class="max-w-xl mx-auto space-y-4">
+                <div class="bg-slate-700 p-6 rounded-xl border border-slate-600 text-left space-y-2">
+                    <h2 class="text-lg font-bold text-amber-400">পরীক্ষার নির্দেশাবলী:</h2>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>বিষয়: Unit-04 (MLK Jr., 7th March Speech, Nelson Mandela, Virginia Woolf, Leela Nag, Nadera Begum, Razia Khan Amin, Marie Curie)।</li>
+                        <li>মোট প্রশ্ন ও নম্বর: ৬০টি প্রশ্ন (পূর্ণমান ৬০) — Passage/Speech MCQ, Vocabulary, Prepositions, Grammar।</li>
+                        <li>সময় বরাদ্দ: ২৫ মিনিট।</li>
+                        <li>সঠিক উত্তরে +১.০০ এবং ভুল উত্তরে -০.২৫ নম্বর কাটা যাবে।</li>
+                        <li>সাবমিট করার পর সঠিক, ভুল ও স্কিপ করা প্রতিটি প্রশ্নের ৪টি অপশন ও ব্যাখ্যা দেখতে পাবে।</li>
+                    </ul>
+                </div>
+                <button onclick="startQuiz()" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition duration-200 text-lg">
+                    পরীক্ষা শুরু করুন 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-700 p-4 rounded-xl border border-slate-600 text-sm gap-2">
+                <div>
+                    প্রশ্ন নং: <span id="current-q-num" class="font-bold text-amber-400 text-lg">1</span> / <span id="total-q-num">60</span>
+                    <span id="section-badge" class="ml-2 px-2 py-0.5 text-xs font-semibold rounded bg-blue-900 text-blue-200 border border-blue-700">Unit 04</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div id="timer" class="font-bold text-rose-400 bg-slate-800 px-3 py-1 rounded-lg border border-slate-600">
+                        সময়: 25:00
+                    </div>
+                    <button onclick="confirmSubmit()" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition duration-200">
+                        সাবমিট করুন
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 space-y-4">
+                <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed"></h2>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 font-semibold rounded-xl transition duration-200 border border-slate-600">
+                    ← পূর্ববর্তী
+                </button>
+                <button onclick="clearAnswer()" class="px-4 py-2.5 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 text-sm font-semibold rounded-xl border border-rose-500/30 transition duration-200">
+                    উত্তর মুছুন (Clear)
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md">
+                    পরবর্তী →
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-700">
+                <p class="text-xs text-slate-400 mb-2">প্রশ্ন প্যালেট:</p>
+                <div id="palette-grid" class="grid grid-cols-10 gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-900/50 rounded-xl border border-slate-700"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold text-emerald-400">পরীক্ষা সম্পন্ন হয়েছে! 🎉</h2>
+                <p id="time-taken-text" class="text-indigo-300 font-medium">সময় লেগেছে: ০ মিনিট ০ সেকেন্ড</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">চূড়ান্ত নম্বর</p>
+                    <p id="final-score" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">সঠিক উত্তর</p>
+                    <p id="final-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">ভুল উত্তর</p>
+                    <p id="final-wrong" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-xl border border-slate-600">
+                    <p class="text-xs text-slate-400">স্কিপ করা</p>
+                    <p id="final-skipped" class="text-2xl font-bold text-blue-400 mt-1">0</p>
+                </div>
+            </div>
+
+            <div class="flex border-b border-slate-700 pt-4">
+                <button onclick="switchTab('correct')" id="tab-correct-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-emerald-500 text-emerald-400 transition duration-150">
+                    সঠিক উত্তরসমূহ (<span id="count-correct">0</span>)
+                </button>
+                <button onclick="switchTab('wrong')" id="tab-wrong-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    ভুল উত্তরসমূহ (<span id="count-wrong">0</span>)
+                </button>
+                <button onclick="switchTab('skipped')" id="tab-skipped-btn" class="flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150">
+                    স্কিপ করা প্রশ্নসমূহ (<span id="count-skipped">0</span>)
+                </button>
+            </div>
+
+            <div id="tab-content" class="max-h-96 overflow-y-auto space-y-4 p-2 bg-slate-900/40 rounded-xl border border-slate-700"></div>
+
+            <div class="flex justify-center pt-2">
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl shadow-lg transition duration-200">
+                    পুনরায় পরীক্ষা দিন 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, section: "MLK Jr. Speech • MCQ", q: "The speech 'I have a dream' was delivered by —", options: ["Nelson Mandela", "Winston Churchill", "Martin Luther King Jr.", "Abraham Lincoln"], correct: 2, exp: "শিটের MCQ অনুযায়ী 'I have a dream' ভাষণটি প্রদান করেন Martin Luther King Jr." },
+            { id: 2, section: "MLK Jr. Speech • MCQ", q: "'I have a dream' is a —", options: ["Poem", "Novel", "Speech", "Pamphlet"], correct: 2, exp: "এটি একটি ঐতিহাসিক বক্তৃতা বা Speech।" },
+            { id: 3, section: "MLK Jr. Speech • MCQ", q: "How many children did Martin Luther King Jr. have?", options: ["two", "three", "four", "none"], correct: 2, exp: "ভাষণের উদ্ধৃতি অনুযায়ী তাঁর চারটি ছোট সন্তান ('my four little children') ছিল।" },
+            { id: 4, section: "MLK Jr. Speech • MCQ", q: "The governor of _____ dripped with the words of 'nullification' and 'interposition'.", options: ["Georgia", "Alabama", "New York", "Mississippi"], correct: 1, exp: "শিটের MCQ অনুযায়ী Alabama-এর গভর্নরের কথা বলা হয়েছে।" },
+            { id: 5, section: "MLK Jr. Speech • MCQ", q: "What does King hope will happen to the 'mountain of despair'?", options: ["It will become a symbol of hope", "It will be destroyed", "It will be transformed into a 'stone of hope'", "It will be forgotten"], correct: 2, exp: "হতাশার পাহাড় 'আশার পাথরে' (stone of hope) রূপান্তরিত হবে বলে তিনি আশা প্রকাশ করেন।" },
+            { id: 6, section: "MLK Jr. Speech • MCQ", q: "What does King mean by the phrase 'jangling discords'?", options: ["The conflicts and disagreements within American society", "The sounds of protest and dissent", "The noise of injustice and discrimination", "The disharmony of inequality and segregation"], correct: 0, exp: "শিটের উত্তর অনুযায়ী 'jangling discords' বলতে মার্কিন সমাজের দ্বন্দ্ব ও মতবিরোধকে বোঝানো হয়েছে।" },
+            { id: 7, section: "MLK Jr. Speech • Vocabulary", q: "Which word is NOT related to the word 'despair'?", options: ["Distress", "Anguish", "Ecstasy", "Giving up"], correct: 2, exp: "'Ecstasy' অর্থ পরমানন্দ, যা 'despair' (হতাশা)-এর বিপরীত/সম্পর্কহীন।" },
+            { id: 8, section: "MLK Jr. Speech • Vocabulary", q: "What is the synonym of the word 'Hamlet'?", options: ["Space", "Prison", "Asylum", "Village"], correct: 3, exp: "'Hamlet' অর্থ ছোট গ্রাম (village)।" },
+            { id: 9, section: "MLK Jr. Speech • Vocabulary", q: "What does 'Gentile' mean?", options: ["Jewish", "not Jewish", "non-believer", "heathen"], correct: 1, exp: "শব্দতালিকা অনুযায়ী 'Gentile' অর্থ ইহুদি নয় এমন ব্যক্তি (not Jewish)।" },
+            { id: 10, section: "MLK Jr. Speech • Vocabulary", q: "We will be able to transform the jangling discords of our nation into a beautiful _____.", options: ["symphony", "cacophony", "disharmony", "dissonance"], correct: 0, exp: "অমিল ও কোলাহলকে সুন্দর ঐক্য বা সুরের মূর্ছনায় (symphony) রূপান্তরিত করার কথা বলা হয়েছে।" },
+            { id: 11, section: "7th March Speech • MCQ", q: "'The struggle this time is a struggle for emancipation' is a very famous quote from —", options: ["Abraham Lincoln", "Nelson Mandela", "Netaji Subhash Chandra Bose", "Bangabandhu Sheikh Mujibur Rahman"], correct: 3, exp: "এটি ১৯৭১ সালের ৭ই মার্চের ভাষণে বঙ্গবন্ধু শেখ মুজিবুর রহমানের বিখ্যাত উক্তি।" },
+            { id: 12, section: "7th March Speech • MCQ", q: "The expression 'to commence' means —", options: ["to start", "to incorporate", "to defend", "to focus"], correct: 0, exp: "'Commence' অর্থ শুরু করা বা to start।" },
+            { id: 13, section: "7th March Speech • MCQ", q: "The word 'crimson' indicates —", options: ["bloody history", "glorious past", "previous battle", "history of conflict"], correct: 0, exp: "শিটের MCQ অনুযায়ী 'crimson' রক্তাক্ত ইতিহাস বা bloody history নির্দেশ করে।" },
+            { id: 14, section: "7th March Speech • MCQ", q: "The boys of Bengal were shot dead in the year —", options: ["1954", "1958", "1966", "1968"], correct: 0, exp: "শিটের প্রশ্ন অনুযায়ী সঠিক বছর '1954'।" },
+            { id: 15, section: "7th March Speech • Preposition", q: "You are fully aware _____ the events.", options: ["by", "to", "of", "on"], correct: 2, exp: "'Aware of' একটি সঠিক preposition ব্যবহার।" },
+            { id: 16, section: "7th March Speech • Preposition", q: "We have been trying to do our best to _____ the situation.", options: ["Cope up with", "cope up", "cope with", "deal with"], correct: 2, exp: "পরিস্থিতি সামাল দেওয়া অর্থে 'cope with' বসে।" },
+            { id: 17, section: "7th March Speech • Preposition", q: "See how our mothers are being deprived _____ their children.", options: ["off", "of", "on", "about"], correct: 1, exp: "'Deprived of' হলো সঠিক appropriate preposition।" },
+            { id: 18, section: "7th March Speech • Grammar", q: "I had agreed _____ a round table conference.", options: ["attend", "attending", "to attend", "attended"], correct: 2, exp: "'Agree to + verb (base form)' বসে।" },
+            { id: 19, section: "7th March Speech • Grammar", q: "We'll go down _____ blood that has been shed.", options: ["wading on", "wading over", "wade over", "to wade off"], correct: 1, exp: "শিটের MCQ অনুযায়ী সঠিক উত্তর 'wading over'।" },
+            { id: 20, section: "7th March Speech • Phrase", q: "I stand before you today with a heart overflowing with grief. Here 'with a heart overflowing with grief' is a/an —", options: ["Noun Phrase", "Adverb phrase", "adjective phrase", "participle phrase"], correct: 1, exp: "শিটের উত্তর অনুযায়ী এটি একটি Adverb phrase।" },
+            { id: 21, section: "Nelson Mandela • MCQ", q: "I am a convicted prisoner _____ five years in jail.", options: ["serve", "serving", "served", "serves"], correct: 1, exp: "শিটের MCQ অনুযায়ী সঠিক উত্তর 'serving'।" },
+            { id: 22, section: "Nelson Mandela • MCQ", q: "The ANC was formed in 1912 _____ the rights of the African people.", options: ["defend", "defending", "to defend", "defended"], correct: 2, exp: "উদ্দেশ্য বোঝাতে infinitive 'to defend' বসে।" },
+            { id: 23, section: "Nelson Mandela • MCQ", q: "More than 8,500 people _____ apartheid laws and went to jail.", options: ["defy", "defied", "defying", "defies"], correct: 1, exp: "অতীত ঘটনার বর্ণনায় Past Simple 'defied' বসে।" },
+            { id: 24, section: "Nelson Mandela • MCQ", q: "Anything else would have been _____ surrender.", options: ["abject", "ably", "abrupt", "absolute"], correct: 0, exp: "নিকৃষ্ট বা শোচনীয় আত্মসমর্পণ বোঝাতে 'abject' বসে।" },
+            { id: 25, section: "Nelson Mandela • MCQ", q: "Fifty years of non-violence had brought the African people _____ more repressive legislation.", options: ["something", "nothing but", "anything", "everything"], correct: 1, exp: "অহিংস আন্দোলনের ৫০ বছরে তারা আরও দমনমূলক আইন ছাড়া আর কিছুই পায়নি—তাই 'nothing but'।" },
+            { id: 26, section: "Nelson Mandela • MCQ", q: "Poverty goes hand _____ with malnutrition and disease.", options: ["by hand", "in hand", "on hand", "at hand"], correct: 1, exp: "ইডিয়ম 'go hand in hand' (হাত ধরাধরি করে চলা/সঙ্গে থাকা)।" },
+            { id: 27, section: "Nelson Mandela • MCQ", q: "White supremacy implies black _____.", options: ["superiority", "dignity", "inferiority", "equality"], correct: 2, exp: "শ্বেতাঙ্গ আধিপত্য কৃষ্ণাঙ্গদের হীনতা বা inferiority নির্দেশ করে।" },
+            { id: 28, section: "Nelson Mandela • Preposition", q: "At the outset, I want to say that the struggle is not _____ the influence of foreigners.", options: ["under", "with", "on", "below"], correct: 0, exp: "'Under the influence' সঠিক appropriate preposition।" },
+            { id: 29, section: "Nelson Mandela • Preposition", q: "For thirty-seven years, the ANC adhered strictly _____ a constitutional struggle.", options: ["to", "with", "on", "at"], correct: 0, exp: "'Adhere to' অর্থ কোনো নীতি বা নিয়মে অটল থাকা।" },
+            { id: 30, section: "Nelson Mandela • Preposition", q: "We shrank _____ any action which might drive the races further apart.", options: ["to", "from", "at", "with"], correct: 1, exp: "'Shrink from' অর্থ কোনো কিছু করতে দ্বিধাবোধ করা বা পিছিয়ে আসা।" },
+            { id: 31, section: "Nelson Mandela • Grammar", q: "This is what has motivated me in all _____ I have done in this case.", options: ["what", "that", "who", "whichever"], correct: 1, exp: "'All'-এর পর relative pronoun হিসেবে 'that' বসে।" },
+            { id: 32, section: "Nelson Mandela • Grammar", q: "Government has always sought _____ all its opponents as communists.", options: ["label", "to label", "labelling", "labelled"], correct: 1, exp: "'Seek to + verb (base form)' ব্যবহৃত হয়।" },
+            { id: 33, section: "Nelson Mandela • Grammar", q: "We decided that we _____ not obey this unjust decree.", options: ["will", "would", "can", "may"], correct: 1, exp: "Main clause past tense ('decided') হওয়ায় 'would' বসে।" },
+            { id: 34, section: "Nelson Mandela • Spelling", q: "Choose the correct spelling:", options: ["apartheid", "aparthid", "aparthied", "apartheied"], correct: 0, exp: "সঠিক বানান 'apartheid' (বর্ণবৈষম্য)।" },
+            { id: 35, section: "Virginia Woolf • MCQ", q: "'Sultana's Dream' written by _____ is considered the first science-fiction in Bengali literature.", options: ["Wangari Maathai", "Begum Rokeya", "Leela Nag", "Sufia Kamal"], correct: 1, exp: "'Sultana's Dream' বেগম রোকেয়ার লেখা।" },
+            { id: 36, section: "Virginia Woolf • MCQ", q: "A woman must have money and a room of her own if she _____ write.", options: ["is to", "was to", "should to", "will"], correct: 0, exp: "ভার্জিনিয়া উলফের উক্তি অনুযায়ী সঠিক রূপ 'is to'।" },
+            { id: 37, section: "Virginia Woolf • Preposition", q: "Bengali women were initiated _____ English education.", options: ["into", "in", "at", "by"], correct: 0, exp: "Grammar Hacks অনুযায়ী 'initiate into' হলো সঠিক preposition।" },
+            { id: 38, section: "Virginia Woolf • MCQ", q: "By 'room', Virginia Woolf meant a _____ space for a woman.", options: ["confined and solitary", "private and social", "public and political", "restricted and silent"], correct: 1, exp: "শিট অনুযায়ী 'room' বলতে তিনি ব্যক্তিগত ও সামাজিক পরিসর (private and social) বুঝিয়েছেন।" },
+            { id: 39, section: "Virginia Woolf • MCQ", q: "The phrase 'a room of her own' symbolizes a woman's —", options: ["luxury", "isolation", "freedom and opportunity", "property"], correct: 2, exp: "এটি নারীর স্বাধীনতা ও সুযোগের (freedom and opportunity) প্রতীক।" },
+            { id: 40, section: "Leela Nag • MCQ", q: "Leela Nag was the first woman to be admitted _____ the MA in English at the University of Dhaka.", options: ["to, in", "in, to", "in, of", "in, the"], correct: 0, exp: "শিটের MCQ অনুযায়ী 'admitted to' এবং 'in English'।" },
+            { id: 41, section: "Leela Nag • MCQ", q: "In 1946, she was the only Bengali woman _____ to the Constituent Assembly of Bengal.", options: ["elect", "electing", "elected", "to elect"], correct: 2, exp: "শিট অনুযায়ী সঠিক রূপ 'elected'।" },
+            { id: 42, section: "Leela Nag • MCQ", q: "Deepali Sangha served as a training institute for _____ activists.", options: ["religious", "anti-colonial", "commercial", "scientific"], correct: 1, exp: "দীপালি সংঘ উপনিবেশবিরোধী (anti-colonial) কর্মীদের প্রশিক্ষণ কেন্দ্র ছিল।" },
+            { id: 43, section: "Leela Nag • MCQ", q: "Leela Nag is described as a _____ in the passage.", options: ["novelist", "reformer only", "change agent", "poet"], correct: 2, exp: "শিট অনুযায়ী তাঁকে 'change agent' হিসেবে বর্ণনা করা হয়েছে।" },
+            { id: 44, section: "Leela Nag • MCQ", q: "What does the phrase 'glass ceiling' imply?", options: ["a visible barrier", "a financial limit", "a cultural norm", "an unacknowledged barrier to advancement"], correct: 3, exp: "'Glass ceiling' বলতে অগ্রগতির পথে অদৃশ্য বা অনুল্লেখিত বাধা (an unacknowledged barrier to advancement) বোঝায়।" },
+            { id: 45, section: "Nadera Begum • MCQ", q: "_____ Leela Nag made headlines during the 1947 Partition, Nadera Begum was making headlines in 1949.", options: ["Because", "Despite", "While", "Therefore"], correct: 2, exp: "বৈপরীত্য বা সমসাময়িক তুলনা বোঝাতে 'While' বসে।" },
+            { id: 46, section: "Nadera Begum • MCQ", q: "Nadira Begum came from an _____ political family.", options: ["poor", "affluent", "rural", "foreign"], correct: 1, exp: "তিনি একটি বিত্তবান বা affluent রাজনৈতিক পরিবার থেকে এসেছিলেন।" },
+            { id: 47, section: "Nadera Begum • MCQ", q: "In 1949, she was expelled _____ the University of Dhaka _____ fighting for the rights of the fourth-class employees.", options: ["from, for", "by, in", "from, to", "to, for"], correct: 0, exp: "বিশ্ববিদ্যালয় থেকে বহিষ্কৃত ('expelled from') এবং কারণের জন্য 'for'।" },
+            { id: 48, section: "Nadera Begum • MCQ", q: "Nadira Begum was a strong _____.", options: ["capitalist", "Marxist", "scientist", "journalist"], correct: 1, exp: "শিট অনুযায়ী তিনি ছিলেন একজন দৃঢ় মার্কসবাদী (Marxist)।" },
+            { id: 49, section: "Razia Khan Amin • MCQ", q: "_____ exposed the brutality of the 1971 Liberation War through stark images in her poems.", options: ["Nadera Begum", "Nurjahan Murshid", "Hamida Khatun", "Razia Khan Amin"], correct: 3, exp: "রাজিয়া খান আমিন তাঁর কবিতায় ১৯৭১ সালের মুক্তিযুদ্ধের নির্মমতা তুলে ধরেন।" },
+            { id: 50, section: "Razia Khan Amin • Preposition", q: "References to 'Muneer' and 'Hyder' form a tribute _____ the sacrifices of scholars of Bangladesh.", options: ["for", "of", "to", "on"], correct: 2, exp: "Grammar Hacks অনুযায়ী 'tribute to someone/something' বসে।" },
+            { id: 51, section: "Razia Khan Amin • Preposition", q: "In her poem 'The Old Man and the Girl', she breaks the silence and speaks out _____ child marriage and sexual oppression.", options: ["against", "for", "to", "with"], correct: 0, exp: "বিরুদ্ধে কথা বলা অর্থে 'speak out against' বসে।" },
+            { id: 52, section: "Razia Khan Amin • Vocabulary", q: "The word 'tumultuous' in the phrase 'during the tumultuous 60s' is closest in meaning to —", options: ["peaceful", "progressive", "chaotic", "silent"], correct: 2, exp: "'Tumultuous' অর্থ অশান্ত বা বিশৃঙ্খল (chaotic)।" },
+            { id: 53, section: "Razia Khan Amin • Idiom", q: "The phrase 'make headlines' means —", options: ["write a newspaper", "become widely known", "news", "publish a book"], correct: 1, exp: "শিটের MCQ অনুযায়ী 'make headlines' অর্থ ব্যাপকভাবে পরিচিত বা আলোচিত হওয়া (become widely known)।" },
+            { id: 54, section: "Razia Khan Amin • Idiom", q: "The phrase 'shine through' means —", options: ["disappear", "become hidden", "become clearly visible", "become weak"], correct: 2, exp: "শিট অনুযায়ী 'shine through' অর্থ স্পষ্টভাবে দৃশ্যমান হওয়া (become clearly visible)।" },
+            { id: 55, section: "Marie Curie • MCQ", q: "What award did Marie Curie win in 1903?", options: ["Nobel Prize for Chemistry", "Davy Medal of the Royal Society", "Nobel Prize for Physics", "Nelson Mandela Award"], correct: 2, exp: "১৯০৩ সালে মেরি কুরি পদার্থবিদ্যায় (Physics) নোবেল পুরস্কার লাভ করেন।" },
+            { id: 56, section: "Marie Curie • MCQ", q: "What elements were discovered by Marie and Pierre Curie?", options: ["Uranium and Thorium", "Radium and Polonium", "Helium and Lithium", "Zinc and Lead"], correct: 1, exp: "তারা রেডিয়াম ও পোলোনিয়াম (Radium and Polonium) আবিষ্কার করেন।" },
+            { id: 57, section: "Marie Curie • MCQ", q: "Why did Marie Curie name one of the elements 'Polonium'?", options: ["after her favorite scientist", "after her father's favorite place", "after her native country", "after her university"], correct: 2, exp: "তাঁর জন্মভূমি পোল্যান্ডের (native country) নামে তিনি 'Polonium' নামকরণ করেন।" },
+            { id: 58, section: "Marie Curie • MCQ", q: "In 1911 she was awarded the Nobel Prize _____ Chemistry.", options: ["of", "in", "for", "on"], correct: 1, exp: "বিষয়ে নোবেল পাওয়া অর্থে 'Nobel Prize in Chemistry' ব্যবহৃত হয়।" },
+            { id: 59, section: "Marie Curie • MCQ", q: "In 1910 her fundamental _____ on radioactivity was published.", options: ["article", "journal", "treatise", "essay"], correct: 2, exp: "শিটের MCQ অনুযায়ী সঠিক শব্দ 'treatise' (গ্রন্থ/অভিসন্দর্ভ)।" },
+            { id: 60, section: "Marie Curie • MCQ", q: "In 1995 Marie Curie's ashes were _____ in the Panthéon in Paris.", options: ["buried", "kept", "enshrined", "hidden"], correct: 2, exp: "Grammar Hacks অনুযায়ী প্যানথিওনে সম্মানজনকভাবে সমাহিত করা বোঝাতে 'enshrined' ব্যবহৃত হয়েছে।" }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let timeLeft = 25 * 60;
+        let startTime;
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            renderPalette();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer').textContent = `সময়: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const qObj = questions[index];
+            document.getElementById('current-q-num').textContent = index + 1;
+            document.getElementById('section-badge').textContent = qObj.section;
+            document.getElementById('question-text').textContent = `${index + 1}. ${qObj.q}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const labels = ['A', 'B', 'C', 'D'];
+            qObj.options.forEach((opt, i) => {
+                const isSelected = userAnswers[index] === i;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition duration-150 flex items-center gap-3 ${
+                    isSelected
+                        ? 'bg-emerald-700/60 border-emerald-400 text-white font-semibold'
+                        : 'bg-slate-800/80 hover:bg-slate-700 border-slate-600 text-slate-200'
+                }`;
+                btn.innerHTML = `<span class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${
+                    isSelected ? 'bg-emerald-500 text-slate-900' : 'bg-slate-700 text-slate-300'
+                }">${labels[i]}</span><span>${opt}</span>`;
+                btn.onclick = () => selectOption(i);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
+
+            const nextBtn = document.getElementById('next-btn');
+            if (index === questions.length - 1) {
+                nextBtn.textContent = 'সাবমিট করুন ✓';
+                nextBtn.className = 'px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            } else {
+                nextBtn.textContent = 'পরবর্তী →';
+                nextBtn.className = 'px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 shadow-md';
+            }
+
+            updatePalette();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQuestion] = optIndex;
+            loadQuestion(currentQuestion);
+        }
+
+        function clearAnswer() {
+            userAnswers[currentQuestion] = null;
+            loadQuestion(currentQuestion);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) loadQuestion(currentQuestion - 1);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                confirmSubmit();
+            }
+        }
+
+        function renderPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `pal-${idx}`;
+                btn.textContent = idx + 1;
+                btn.className = 'py-1.5 text-xs font-bold rounded bg-slate-800 border border-slate-600 text-slate-300 hover:bg-slate-700';
+                btn.onclick = () => loadQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        function updatePalette() {
+            questions.forEach((_, idx) => {
+                const btn = document.getElementById(`pal-${idx}`);
+                if (!btn) return;
+                btn.className = 'py-1.5 text-xs font-bold rounded border transition ';
+                if (idx === currentQuestion) {
+                    btn.className += 'ring-2 ring-amber-400 ';
+                }
+                if (userAnswers[idx] !== null) {
+                    btn.className += 'bg-emerald-700 border-emerald-500 text-white';
+                } else {
+                    btn.className += 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700';
+                }
+            });
+        }
+
+        function confirmSubmit() {
+            if (confirm('আপনি কি নিশ্চিতভাবে পরীক্ষাটি সাবমিট করতে চান?')) {
+                submitQuiz();
+            }
+        }
+
+        let correctList = [], wrongList = [], skippedList = [];
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('time-taken-text').textContent = `সময় লেগেছে: ${mins} মিনিট ${secs} সেকেন্ড`;
+
+            correctList = [];
+            wrongList = [];
+            skippedList = [];
+
+            questions.forEach((q, idx) => {
+                const ans = userAnswers[idx];
+                if (ans === null) {
+                    skippedList.push({ ...q, idx, userAns: null });
+                } else if (ans === q.correct) {
+                    correctList.push({ ...q, idx, userAns: ans });
+                } else {
+                    wrongList.push({ ...q, idx, userAns: ans });
+                }
+            });
+
+            const score = (correctList.length * 1) - (wrongList.length * 0.25);
+            document.getElementById('final-score').textContent = score.toFixed(2);
+            document.getElementById('final-correct').textContent = correctList.length;
+            document.getElementById('final-wrong').textContent = wrongList.length;
+            document.getElementById('final-skipped').textContent = skippedList.length;
+
+            document.getElementById('count-correct').textContent = correctList.length;
+            document.getElementById('count-wrong').textContent = wrongList.length;
+            document.getElementById('count-skipped').textContent = skippedList.length;
+
+            switchTab('correct');
+        }
+
+        function switchTab(type) {
+            const tabs = ['correct', 'wrong', 'skipped'];
+            const colors = {
+                correct: 'border-emerald-500 text-emerald-400',
+                wrong: 'border-rose-500 text-rose-400',
+                skipped: 'border-blue-500 text-blue-400'
+            };
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}-btn`);
+                if (t === type) {
+                    btn.className = `flex-1 py-3 text-sm font-bold text-center border-b-2 ${colors[t]} transition duration-150`;
+                } else {
+                    btn.className = 'flex-1 py-3 text-sm font-bold text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition duration-150';
+                }
+            });
+
+            const container = document.getElementById('tab-content');
+            container.innerHTML = '';
+            const data = type === 'correct' ? correctList : type === 'wrong' ? wrongList : skippedList;
+
+            if (data.length === 0) {
+                container.innerHTML = '<p class="text-center text-slate-400 py-8">এই বিভাগে কোনো প্রশ্ন নেই।</p>';
+                return;
+            }
+
+            const labels = ['A', 'B', 'C', 'D'];
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800/95 p-5 rounded-2xl border border-slate-700 space-y-4 shadow-md';
+
+                const optionsGridHtml = item.options.map((opt, i) => {
+                    const isCorrectOpt = i === item.correct;
+                    const isUserWrongOpt = item.userAns !== null && item.userAns === i && !isCorrectOpt;
+
+                    let boxStyle = 'bg-slate-900/70 border-slate-700/90 text-slate-300';
+                    let badgeStyle = 'bg-slate-800 border-slate-600 text-slate-300';
+                    let statusTag = '';
+
+                    if (isCorrectOpt) {
+                        boxStyle = 'bg-emerald-950/55 border-emerald-500/80 text-emerald-200 font-semibold';
+                        badgeStyle = 'bg-emerald-600/30 border-emerald-400 text-emerald-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-emerald-600 text-white">সঠিক উত্তর</span>`;
+                    } else if (isUserWrongOpt) {
+                        boxStyle = 'bg-rose-950/55 border-rose-500/80 text-rose-200 font-semibold';
+                        badgeStyle = 'bg-rose-600/30 border-rose-400 text-rose-300';
+                        statusTag = `<span class="ml-auto shrink-0 px-2.5 py-1 text-xs font-bold rounded-md bg-rose-600 text-white">আপনার উত্তর</span>`;
+                    }
+
+                    return `
+                        <div class="p-3.5 rounded-xl border ${boxStyle} flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full border ${badgeStyle} flex items-center justify-center text-xs font-bold shrink-0">${labels[i]}</span>
+                            <span class="text-sm leading-snug">${opt}</span>
+                            ${statusTag}
+                        </div>
+                    `;
+                }).join('');
+
+                const skippedNotice = item.userAns === null
+                    ? `<p class="text-xs text-blue-400 font-medium">আপনার উত্তর: উত্তর দেওয়া হয়নি</p>`
+                    : '';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-3">
+                        <span class="font-bold text-amber-400 text-sm shrink-0">প্রশ্ন #${item.idx + 1}</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 shrink-0">${item.section}</span>
+                    </div>
+                    <p class="font-bold text-slate-100 text-base md:text-lg leading-relaxed">${item.q}</p>
+                    ${skippedNotice}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${optionsGridHtml}</div>
+                    <div class="text-sm text-slate-200 bg-slate-900/90 p-3.5 rounded-xl border border-slate-700 leading-relaxed">
+                        <span class="font-bold text-amber-400">ব্যাখ্যা:</span> ${item.exp}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            timeLeft = 25 * 60;
+            document.getElementById('timer').textContent = 'সময়: 25:00';
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            startTime = Date.now();
+            loadQuestion(0);
+            startTimer();
+        }
+    </script>
+</body>
+</html>
